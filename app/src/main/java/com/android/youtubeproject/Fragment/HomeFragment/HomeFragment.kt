@@ -1,44 +1,64 @@
 package com.android.youtubeproject.HomeFragment
 
 import android.os.Bundle
-import android.provider.SyncStateContract.Constants
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.youtubeproject.API.NetWorkClient
-import com.android.youtubeproject.Fragment.HomeFragment.HomeFragmentAdapter
+import com.android.youtubeproject.Fragment.HomeFragment.HomeFavoritesAdapter
+import com.android.youtubeproject.ViewModel.Home.HomeViewModel
+import com.android.youtubeproject.ViewModel.Home.HomeViewModelFactory
 import com.android.youtubeproject.databinding.FragmentHomeBinding
-import kotlinx.coroutines.launch
-import retrofit2.http.Query
 
 
 class HomeFragment : Fragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private lateinit var adapter : HomeFragmentAdapter
-    private lateinit var homeLayoutManager : LinearLayoutManager
+    private lateinit var homeadapter: HomeFavoritesAdapter
+    private lateinit var homeLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
+    private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View{
 
-        setupView(inflater,container)
-        NetWork()
+        setupView()
+        setupListeners()
+
         return binding.root
     }
-    private fun setupView(inflater: LayoutInflater, container: ViewGroup?){
-        homeLayoutManager = LinearLayoutManager(context)
-        binding.apply {
-            homeRecyclerView.layoutManager = homeLayoutManager
-        }
-//        adapter= HomeFragmentAdapter(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
     }
-    private fun NetWork() = lifecycleScope.launch{
-        val responseData = NetWorkClient.apiService.getVideo("snippet","mostPopular",10,"0")
-        Log.d("YouTubeProjects", "데이터 : ${responseData}")
+    private fun observeViewModel(){
+        homeViewModel.homeResult.observe(viewLifecycleOwner){
+            Log.d("YouTubeProjects", "프래그먼트 데이터 : ${it}")
+            if(homeadapter !=null){
+                Log.d("YouTubeProjects", "어댑터 정상작동?")
+                homeadapter.items.addAll(it)
+                Log.d("YouTubeProjects", "adapter.items에 뭐가 찍혀있는데?${homeadapter.items}")
+                homeadapter.notifyDataSetChanged()
+
+            } else Log.d("YouTubeProjects", "어댑터 널값?")
+        }
+    }
+
+    private fun setupView() {
+        homeLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        homeadapter= HomeFavoritesAdapter(requireContext())
+        binding.homeRecyclerView1.apply {
+            layoutManager = homeLayoutManager
+            adapter = homeadapter
+            setHasFixedSize(true)
+        }
+
+    }
+    private fun setupListeners() {
+        homeViewModel.FavoritesResults()
     }
 }
