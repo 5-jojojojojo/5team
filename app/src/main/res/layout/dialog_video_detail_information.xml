@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_video_detail_dummyimage2"/>
+            android:src="@drawable/ic_video_detail_dummyimage"/>
         </LinearLayout>
         <TextView
             android:id="@+id/video_detail_dialog_text_title"
