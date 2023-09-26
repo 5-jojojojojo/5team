@@ -7,6 +7,13 @@
     android:background="@drawable/gradiant"
     tools:context=".Fragment.VideoDetailFragment.VideoDetail">
 
+    <ImageView
+        android:id="@+id/video_detail_Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_video_detail_dummyimage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbtmain"
         android:layout_width="30dp"

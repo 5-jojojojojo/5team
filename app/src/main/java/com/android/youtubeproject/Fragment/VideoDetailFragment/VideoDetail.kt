@@ -2,6 +2,8 @@ package com.android.youtubeproject.Fragment.VideoDetailFragment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.android.youtubeproject.R
 import com.android.youtubeproject.databinding.ActivityVideoDetailBinding
@@ -76,7 +78,14 @@ class VideoDetail : AppCompatActivity() {
             }
 
             "infomation" -> {
-
+                val builder = AlertDialog.Builder(this)
+                val binding_dialog = layoutInflater.inflate(R.layout.dialog_video_detail_information,null)
+                builder.setView(binding_dialog)
+                /*
+                이 사이에 다이어로그를 구현할 코드를 채우면 된다. 그냥 binding변수선언하고, 인플레이트하고, setView()하는거까지 똑같은데,
+                show()라는 빌더 클래스의 메서드를 호출해야 다이어로그가 보여진다.
+                 */
+                builder.show()
             }
 
             "share" -> {
@@ -111,3 +120,22 @@ class VideoDetail : AppCompatActivity() {
         }
     }
 }
+/*
+문제점이나 해야할것들
+1. com.google.android.material.floatingactionbutton.FloatingActionButton을 투명하게 만들기
+
+android:background="@color/colorTransparent"
+android:backgroundTint="@color/colorTransparent"
+app:rippleColor="@color/colorTransparent"
+app:borderWidth="0dp"
+이렇게 주어도, 하얀색 작은 원이 남아있게 되고, 클릭시 그림자 효과가 생긴다.
+
+그리고 이미지와 버튼의 위치가 맞지 않아서,
+app:fabCustomSize="30dp"
+app:maxImageSize="30dp" 를 추가하니 이미지가 맞춰졌다.
+
+2. 정보 클릭시 정보가 나오게 하기
+다이어 로그창으로 동영상에 대한 정보를 확인할 수 있다.
+
+
+ */
