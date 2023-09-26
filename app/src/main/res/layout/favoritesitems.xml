@@ -8,8 +8,7 @@
         android:id="@+id/Grid_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/type_iconCardView"
@@ -22,8 +21,8 @@
             <ImageView
                 android:id="@+id/home_url"
                 android:layout_width="150dp"
-                android:layout_height="145dp"
-                android:scaleType="centerCrop" />
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"/>
 
         </androidx.cardview.widget.CardView>
 
