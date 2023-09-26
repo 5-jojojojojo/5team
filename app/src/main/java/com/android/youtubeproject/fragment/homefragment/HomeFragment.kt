@@ -14,6 +14,7 @@ import com.android.youtubeproject.ViewModel.home.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
 import com.android.youtubeproject.fragment.homefragment.HomeFavoritesAdapter
 import com.android.youtubeproject.databinding.FragmentHomeBinding
+import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
 
 
@@ -58,7 +59,7 @@ class HomeFragment : Fragment() {
             adapter = homeadapter.apply {
                 itemClick = object : ItemClick {
                     override fun onClick(view: View, position: Int) {
-//                        startActivity(Intent(requireContext(),))
+//                        startActivity(Intent(requireContext(),VideoDetail::class.java))
                     }
 
                 }
