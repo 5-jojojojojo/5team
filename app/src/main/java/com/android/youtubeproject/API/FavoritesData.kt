@@ -1,7 +1,7 @@
-data class VideoData(
+data class FavoritesData(
     val kind: String,
     val etag: String,
-    val items: ArrayList<VideoItems>
+    val items: ArrayList<VideoItems>,
 )
 
 data class VideoItems(
