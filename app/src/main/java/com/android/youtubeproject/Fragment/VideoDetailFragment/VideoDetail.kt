@@ -1,5 +1,6 @@
 package com.android.youtubeproject.Fragment.VideoDetailFragment
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +14,6 @@ import kotlinx.coroutines.launch
 class VideoDetail : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
     var btmstate = false
-    var bt2state = false
     var bt3state = false
     var bt4state = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,13 +89,28 @@ class VideoDetail : AppCompatActivity() {
             }
 
             "share" -> {
-                bt2state = !bt2state
-                if (!bt2state) {
-                    binding.videoDetailFbt2.setImageResource(R.drawable.ic_video_detail_share_false)
-                } else if (bt2state) {
-                    binding.videoDetailFbt2.setImageResource(R.drawable.ic_video_detail_share_true)
-                }
+                /*
+                더미 url을 생성하고,
+                인텐트 인스턴스를 생성하고, 각 속성을 정해준다.
+                Intent().action은 인텐트의 목적을 정의한다. 우리가 설정한 값은 사용자가 선택한 정보를 제공하는 목적이다.
+                Intent().putExtra(Intext.EXTRA_TEXT,"")는 어떤 정보를 제공할 지 데이터를 첨부한다. EXTRA_TEXT는 일반 텍스트 데이터를 의미한다.
+                Intent().type은 인텐트가 다루는 데이터의 MIME 타입을 나타낸다. "text/plain"은 일반 텍스트 데이터를 나타낸다.
 
+                Intent.createChooser() 인스턴스는 사용자에게 데이터를 처리할 수 있는 여러 앱 중 하나를 선택하도록 하는 대화 상자(선택 창)를 생성하게 한다.
+                shareIntent.resolveActivity(packageManager)는, shareIntent를 처리할 수 있는 어플이 있는지 확인하고, 하나도 없으면 null을 반환한다.
+                즉 처리할 수 있는어플이 하나라도 있으면, 데이터를 처리할 수 있는 여러 앱 중 하나를 선택하도록 하는 대화 상자(선택 창)를 StartActvitiy 하게 된다.
+                 */
+                val dummyvideourl = "https://www.youtube.com/shorts/PCqAEHipf9s"
+                val shareIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, dummyvideourl)
+                    type = "text/plain"
+
+                }
+                val chooser = Intent.createChooser(shareIntent, "공유할 앱을 골라주세요.")
+                if (shareIntent.resolveActivity(packageManager) != null) {
+                    startActivity(chooser)
+                }
             }
 
             "dislike" -> {
@@ -122,6 +137,7 @@ class VideoDetail : AppCompatActivity() {
 }
 /*
 문제점이나 해야할것들
+[.xml]
 1. com.google.android.material.floatingactionbutton.FloatingActionButton을 투명하게 만들기
 
 android:background="@color/colorTransparent"
@@ -134,11 +150,20 @@ app:borderWidth="0dp"
 app:fabCustomSize="30dp"
 app:maxImageSize="30dp" 를 추가하니 이미지가 맞춰졌다.
 
-2. 정보 클릭시 정보가 나오게 하기
+2. 플로팅 버튼의 elevation 값을 0dp를 줌으로써 그림자를 없앳는데, 높이가 0이되니 이미지가 버튼과 겹칠때 클릭이 안되는 문제 발생
+ 이때, android:outlineProvider="none" 을 주면 그림자가 비활성된다. 따라서 elevation값을 높게 줄 수 있고 버튼이 이미지보다 위에 있게 된다.
+
+3. 이미지 둥근 사각형으로 만들기
+shape를 통해 모서리를 깎은 둥근 사각형을 뒷배경으로 주려고 했으나 실패하였고,
+이후 CardView 라이브러리를 추가하고, CardView 위젯을 통해 감싸주는 식으로 모서리가 깎인 사각형을 만들어주었다.
+
+[다이어로그]
+1. 정보 클릭시 정보가 나오게 하기
 다이어 로그창으로 동영상에 대한 정보를 확인할 수 있다.
 그런데, 이미지를 둥근 사각형으로 깎고 싶은데 잘 깎이지 않아 시간을 많이 허비했고, 실패하였다.
 
-3. 액티비티 진입시 애니메이션효과 나오게 하기
+[액티비티 전환시 특별한 효과 주기]
+1. 액티비티 진입시 애니메이션효과 나오게 하기
  overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)를 통해 가능하다.
  첫번째 인자는 어떻게 애니메이션 효과를 줄것인지에 대한 .xml 파일이고, 두번째 인자는 애니메이션 효과를 받을 .xml 파일이다.
 

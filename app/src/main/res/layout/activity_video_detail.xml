@@ -5,31 +5,46 @@
     android:id="@+id/video_detail_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingVertical="20dp"
     android:background="@drawable/gradiant"
     tools:context=".Fragment.VideoDetailFragment.VideoDetail">
 
-    <ImageView
-        android:id="@+id/video_detail_Image"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/video_detail_image_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_video_detail_dummyimage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:cardCornerRadius="10dp"
+        android:layout_margin="10dp"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <ImageView
+            android:id="@+id/video_detail_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:src="@drawable/ic_video_detail_dummyimage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbtmain"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorTransparent"
         android:backgroundTint="@color/colorTransparent"
         android:src="@drawable/ic_video_detail_more_vert"
         app:borderWidth="0dp"
+        app:elevation="2dp"
+        android:outlineProvider="none"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:fabCustomSize="30dp"
         app:maxImageSize="30dp"
-        app:elevation="0dp"
         app:rippleColor="@color/colorTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,71 +52,75 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="50dp"
         android:background="@color/colorTransparent"
         android:backgroundTint="@color/colorTransparent"
         android:src="@drawable/ic_video_detail_infomation"
         android:visibility="gone"
         app:borderWidth="0dp"
-        app:elevation="0dp"
+        app:elevation="2dp"
+        android:outlineProvider="none"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/colorTransparent"
-        app:fabCustomSize="30dp"
-        app:maxImageSize="30dp" />
+        app:maxImageSize="30dp"
+        app:rippleColor="@color/colorTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbt2"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="90dp"
         android:background="@color/colorTransparent"
         android:backgroundTint="@color/colorTransparent"
-        android:src="@drawable/ic_video_detail_share_false"
+        android:src="@drawable/ic_video_detail_share_true"
         android:visibility="gone"
         app:borderWidth="0dp"
-        app:elevation="0dp"
+        app:elevation="2dp"
+        android:outlineProvider="none"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/colorTransparent"
-        app:fabCustomSize="30dp"
-        app:maxImageSize="30dp" />
+        app:maxImageSize="30dp"
+        app:rippleColor="@color/colorTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbt3"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="130dp"
         android:background="@color/colorTransparent"
         android:backgroundTint="@color/colorTransparent"
         android:src="@drawable/ic_video_detail_dislike_false"
         android:visibility="gone"
         app:borderWidth="0dp"
-        app:elevation="0dp"
+        app:elevation="2dp"
+        android:outlineProvider="none"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/colorTransparent"
-        app:fabCustomSize="30dp"
-        app:maxImageSize="30dp" />
+        app:maxImageSize="30dp"
+        app:rippleColor="@color/colorTransparent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbt4"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="190dp"
+        android:layout_marginBottom="170dp"
         android:background="@color/colorTransparent"
         android:backgroundTint="@color/colorTransparent"
         android:src="@drawable/ic_video_detail_like_false"
         android:visibility="gone"
         app:borderWidth="0dp"
-        app:elevation="0dp"
+        app:elevation="2dp"
+        android:outlineProvider="none"
+        app:fabCustomSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/colorTransparent"
-        app:fabCustomSize="30dp"
-        app:maxImageSize="30dp" />
+        app:maxImageSize="30dp"
+        app:rippleColor="@color/colorTransparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
