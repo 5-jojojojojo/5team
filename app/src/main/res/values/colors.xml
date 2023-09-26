@@ -7,4 +7,5 @@
     <color name="colorPrimaryDark">#ffb2ba</color>
     <color name="colorAccent">#912DF5</color>
     <color name="colorGradationStart">#FC57FF</color>
+    <color name="colorTransparent">#00000000</color>
 </resources>
