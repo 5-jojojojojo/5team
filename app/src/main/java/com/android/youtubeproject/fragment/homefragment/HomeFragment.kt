@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
             adapter = homeadapter.apply {
                 itemClick = object : ItemClick {
                     override fun onClick(view: View, position: Int) {
-//                        startActivity(Intent(requireContext(),VideoDetail::class.java))
+                        startActivity(Intent(requireContext(), VideoDetail::class.java))
                     }
 
                 }

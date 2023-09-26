@@ -3,7 +3,7 @@ package com.android.youtubeproject
 object Constants {
     val YoutubeUrl = "https://www.googleapis.com/youtube/v3/"
 
-    const val Authorization = "AIzaSyASayaHfplCfhOBrFuzoe-wQ5BbhUzWfmc"
+    const val Authorization = ""
 
     var FAVORITES_TYPE = 0
 
