@@ -1,4 +1,4 @@
-package com.android.youtubeproject.SPF
+package com.android.youtubeproject.spf
 
 data class SearchData(
     val title : String

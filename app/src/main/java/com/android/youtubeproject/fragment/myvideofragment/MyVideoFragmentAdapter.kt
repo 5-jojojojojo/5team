@@ -1,4 +1,4 @@
-package com.android.youtubeproject.Fragment.MyVideoFragment
+package com.android.youtubeproject.fragment.myvideofragment
 
 import VideoSnippet
 import android.content.Context
@@ -20,7 +20,7 @@ class MyVideoFragmentAdapter(var mContext: Context) : RecyclerView.Adapter<Recyc
     var itemClick: ItemClick? = null
     private val items = mutableListOf<VideoSnippet>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-       val binding = LayoutMyvideoItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = LayoutMyvideoItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ItemViewHolder(binding)
     }
 
@@ -38,12 +38,12 @@ class MyVideoFragmentAdapter(var mContext: Context) : RecyclerView.Adapter<Recyc
 //항목 클릭 이벤트
         holder.cv_item.setOnClickListener{
             itemClick?.onClick(position)
-            }
+        }
         holder.cv_item.setOnLongClickListener{
             itemClick?.onLongClick(position)
             true
         }
-        }
+    }
 
 
     inner class ItemViewHolder(binding: LayoutMyvideoItemBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -1,13 +1,10 @@
-package com.android.youtubeproject.API
-
-data class ChannelData(
+data class FavoritesData(
     val kind: String,
     val etag: String,
-    val items: ArrayList<ChannelItems>,
-    val pageInfo: PageInfo
+    val items: ArrayList<VideoItems>,
 )
 
-data class ChannelItems(
+data class VideoItems(
     val kind: String,
     val etag: String,
     val id: String,
@@ -19,13 +16,21 @@ data class VideoSnippet(
     val channelId: String,
     val title: String,
     val description: String,
-    val thumbnails: Map<String, VideoThumbnail>,
+    val thumbnails: VideoThumbnails,
     val channelTitle: String,
     val tags: ArrayList<String>,
     val categoryId: String,
     val liveBroadcastContent: String,
-    val localized: VideoLocalization,
+    val localized: VideoLocalized,
     val defaultAudioLanguage: String
+)
+
+data class VideoThumbnails(
+    val default: VideoThumbnail,
+    val medium: VideoThumbnail,
+    val high: VideoThumbnail,
+    val standard: VideoThumbnail,
+    val maxres: VideoThumbnail
 )
 
 data class VideoThumbnail(
@@ -34,12 +39,7 @@ data class VideoThumbnail(
     val height: Int
 )
 
-data class VideoLocalization(
+data class VideoLocalized(
     val title: String,
     val description: String
-)
-
-data class PageInfo(
-    val totalResults: Int,
-    val resultsPerPage: Int
 )

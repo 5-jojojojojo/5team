@@ -3,7 +3,7 @@ package com.android.youtubeproject
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
-import com.android.youtubeproject.ViewPager2Adapter.ViewPager2Adapter
+import com.android.youtubeproject.viewpager2adapter.ViewPager2Adapter
 import com.android.youtubeproject.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
