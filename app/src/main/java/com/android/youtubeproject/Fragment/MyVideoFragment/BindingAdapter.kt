@@ -1,4 +1,4 @@
-package com.android.youtubeproject.Fragment.HomeFragment
+package com.android.youtubeproject.Fragment.MyVideoFragment
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
