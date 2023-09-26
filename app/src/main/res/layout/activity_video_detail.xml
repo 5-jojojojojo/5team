@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradiant"
-    tools:context=".Fragment.VideoDetailFragment.VideoDetail">
+    tools:context=".fragment.videodetailfragment.VideoDetail">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/video_detail_fbtmain"

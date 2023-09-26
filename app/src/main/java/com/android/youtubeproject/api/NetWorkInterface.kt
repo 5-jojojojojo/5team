@@ -1,11 +1,10 @@
-package com.android.youtubeproject.API
+package com.android.youtubeproject.api
 
 
 import FavoritesData
 import com.android.youtubeproject.Constants
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface NetWorkInterface {
@@ -17,13 +16,12 @@ interface NetWorkInterface {
         @Query("videoCategoryId") videoCategoryId: String?
     ): Call<FavoritesData?>?
 
-    @GET("videos?key=${Constants.Authorization}")
-    suspend fun getNation(
+    @GET("videoCategories?key=${Constants.Authorization}")
+    suspend fun getCategory(
         @Query("part") part: String,
-        @Query("chart") chart: String,
-        @Query("maxResults") maxResults: Int,
-        @Query("id") id: String
-    )
+        @Query("regionCode") chart: String
+    ) : CategoryData
+    //snippet, KR
 
     @GET("videos?key=${Constants.Authorization}")
     suspend fun getChannel(

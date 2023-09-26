@@ -1,5 +1,6 @@
 package com.android.youtubeproject.HomeFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.youtubeproject.API.NetWorkClient
-import com.android.youtubeproject.Fragment.HomeFragment.HomeFavoritesAdapter
-import com.android.youtubeproject.ViewModel.Home.HomeViewModel
-import com.android.youtubeproject.ViewModel.Home.HomeViewModelFactory
+import com.android.youtubeproject.ViewModel.home.HomeViewModel
+import com.android.youtubeproject.ViewModel.home.HomeViewModelFactory
+import com.android.youtubeproject.api.NetWorkClient
+import com.android.youtubeproject.fragment.homefragment.HomeFavoritesAdapter
 import com.android.youtubeproject.databinding.FragmentHomeBinding
+import com.android.youtubeproject.`interface`.ItemClick
 
 
 class HomeFragment : Fragment() {
@@ -26,7 +28,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View{
 
-        setupView()
+        FavoritesView()
         setupListeners()
 
         return binding.root
@@ -48,12 +50,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupView() {
+    private fun FavoritesView() {
         homeLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
         homeadapter= HomeFavoritesAdapter(requireContext())
         binding.homeRecyclerView1.apply {
             layoutManager = homeLayoutManager
-            adapter = homeadapter
+            adapter = homeadapter.apply {
+                itemClick = object : ItemClick {
+                    override fun onClick(view: View, position: Int) {
+//                        startActivity(Intent(requireContext(),))
+                    }
+
+                }
+            }
             setHasFixedSize(true)
         }
 

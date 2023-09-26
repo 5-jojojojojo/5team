@@ -1,4 +1,4 @@
-package com.android.youtubeproject.API
+package com.android.youtubeproject.api
 
 data class ChannelData(
     val kind: String,

@@ -1,4 +1,4 @@
-package com.android.youtubeproject.ViewPager2Adapter
+package com.android.youtubeproject.viewpager2adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

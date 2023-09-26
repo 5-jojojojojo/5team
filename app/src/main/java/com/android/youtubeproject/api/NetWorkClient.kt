@@ -1,4 +1,4 @@
-package com.android.youtubeproject.API
+package com.android.youtubeproject.api
 
 import com.android.youtubeproject.Constants
 import com.google.gson.GsonBuilder

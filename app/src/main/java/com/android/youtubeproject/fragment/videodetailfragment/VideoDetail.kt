@@ -1,4 +1,4 @@
-package com.android.youtubeproject.Fragment.VideoDetailFragment
+package com.android.youtubeproject.fragment.videodetailfragment
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
