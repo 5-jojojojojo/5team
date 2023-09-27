@@ -1,9 +1,12 @@
 package com.android.youtubeproject.fragment.videodetailfragment
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.android.youtubeproject.R
@@ -48,9 +51,22 @@ class VideoDetail : AppCompatActivity() {
         val gson = Gson()
         val type = object : TypeToken<YoutubeModel>() {}.type
         data2 = gson.fromJson(data,type)
-        Glide.with(this)
-            .load(data2.url2)
-            .into(binding.videoDetailImage)
+        val webView: WebView = findViewById(R.id.webview)
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        webView.setBackgroundColor(Color.WHITE)
+
+        val videoId = data2.videoid
+        val html = """
+    <html>
+    <body style="margin:0;padding:0;background:white">
+        <div style="display:flex;justify-content:center;align-items:center;height:100%">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/$videoId" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </body>
+    </html>
+"""
+        webView.loadData(html, "text/html", "utf-8")
     }
 
     fun ButtonAction(buttontype: String) {
@@ -109,7 +125,7 @@ class VideoDetail : AppCompatActivity() {
 
             "share" -> {
                 /*
-                더미 url을 생성하고,
+                초기에 받아온 데이터 객체에서 영상의 id를 뽑아서, 유튜브 와치 주소와 합쳐준다.
                 인텐트 인스턴스를 생성하고, 각 속성을 정해준다.
                 Intent().action은 인텐트의 목적을 정의한다. 우리가 설정한 값은 사용자가 선택한 정보를 제공하는 목적이다.
                 Intent().putExtra(Intext.EXTRA_TEXT,"")는 어떤 정보를 제공할 지 데이터를 첨부한다. EXTRA_TEXT는 일반 텍스트 데이터를 의미한다.
@@ -119,13 +135,12 @@ class VideoDetail : AppCompatActivity() {
                 shareIntent.resolveActivity(packageManager)는, shareIntent를 처리할 수 있는 어플이 있는지 확인하고, 하나도 없으면 null을 반환한다.
                 즉 처리할 수 있는어플이 하나라도 있으면, 데이터를 처리할 수 있는 여러 앱 중 하나를 선택하도록 하는 대화 상자(선택 창)를 StartActvitiy 하게 된다.
                  */
-                val dummyvideourl = "https://www.youtube.com/shorts/PCqAEHipf9s"
                 val shareIntent = Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, dummyvideourl)
+                    putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=" + data2.videoid)
                     type = "text/plain"
-
                 }
+                Log.d("YouTubeProjects ","공유한 주소 : https://www.youtube.com/watch?v=" + "${data2.videoid}")
                 val chooser = Intent.createChooser(shareIntent, "공유할 앱을 골라주세요.")
                 if (shareIntent.resolveActivity(packageManager) != null) {
                     startActivity(chooser)
