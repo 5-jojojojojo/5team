@@ -3,9 +3,9 @@ package com.android.youtubeproject.viewpager2adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.android.youtubeproject.HomeFragment.HomeFragment
-import com.android.youtubeproject.MyVideoFragment.MyVideoFragment
-import com.android.youtubeproject.SearchFragment.SearchFragment
+import com.android.youtubeproject.fragment.homefragment.HomeFragment
+import com.android.youtubeproject.fragment.myvideofragment.MyVideoFragment
+import com.android.youtubeproject.fragment.searchfragment.SearchFragment
 
 class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity){
     override fun getItemCount(): Int = 3
