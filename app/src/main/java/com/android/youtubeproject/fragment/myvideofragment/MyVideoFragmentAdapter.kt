@@ -1,4 +1,4 @@
-package com.android.youtubeproject.Fragment.MyVideoFragment
+package com.android.youtubeproject.fragment.myvideofragment
 
 import VideoSnippet
 import android.content.Context
