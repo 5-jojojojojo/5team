@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.youtubeproject.api.YoutubeModel
+import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FavoritesitemsBinding
 import com.android.youtubeproject.`interface`.ItemClick
 import com.bumptech.glide.Glide
@@ -18,7 +18,7 @@ class HomeFavoritesAdapter(private val context: Context) : RecyclerView.Adapter<
 
     inner class FavoritesViewHolder(private val binding: FavoritesitemsBinding) : RecyclerView
     .ViewHolder(binding.root){
-        fun bind(item:YoutubeModel){
+        fun bind(item: YoutubeModel){
             binding.apply {
                 Log.d("YouTubeProjects", "어댑터 데이터 : ${item.url}")
                 homeTitle.text = item.title

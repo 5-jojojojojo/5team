@@ -1,6 +1,6 @@
 package com.android.youtubeproject.fragment.myvideofragment
 
-import VideoSnippet
+import com.android.youtubeproject.api.serverdata.VideoSnippet
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup

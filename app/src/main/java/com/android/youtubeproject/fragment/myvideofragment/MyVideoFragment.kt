@@ -1,4 +1,4 @@
-package com.android.youtubeproject.MyVideoFragment
+package com.android.youtubeproject.fragment.myvideofragment
 
 import android.content.Context
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.android.youtubeproject.fragment.myvideofragment.MyVideoFragmentAdapter
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
 
 
