@@ -19,7 +19,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
 
     fun FavoritesResults() {
-        apiService.getFavorites("mostPopular", "snippet", 5, "0")
+        apiService.getFavorites("snippet", "mostPopular", 5, "0")
             ?.enqueue(object : Callback<FavoritesData?> {
                 override fun onResponse(
                     call: Call<FavoritesData?>,
