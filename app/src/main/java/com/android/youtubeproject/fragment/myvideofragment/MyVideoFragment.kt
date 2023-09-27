@@ -40,7 +40,7 @@ class MyVideoFragment : Fragment() {
             rvMyvideo.adapter = adapter
         }
 
-        adapter.addItems(MyPageFunc.loadVideos(requireContext()), true)
+        adapter.addItems(MyPageFunc.loadVideos(), true)
 
         binding.ivDialog.setOnClickListener {
             CustomDialog(onSave = { item: UserData ->
