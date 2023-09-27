@@ -7,7 +7,12 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.android.youtubeproject.R
+import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.ActivityVideoDetailBinding
+import com.android.youtubeproject.databinding.DialogVideoDetailInformationBinding
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -16,10 +21,11 @@ class VideoDetail : AppCompatActivity() {
     var btmstate = false
     var bt3state = false
     var bt4state = false
+    lateinit var data2:YoutubeModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
+        initialize()
         binding.videoDetailFbtmain.setOnClickListener {
             ButtonAction("main")
         }
@@ -35,6 +41,16 @@ class VideoDetail : AppCompatActivity() {
         binding.videoDetailFbt4.setOnClickListener {
             ButtonAction("like")
         }
+    }
+    fun initialize(){
+        overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
+        val data = intent.getStringExtra("itemdata")
+        val gson = Gson()
+        val type = object : TypeToken<YoutubeModel>() {}.type
+        data2 = gson.fromJson(data,type)
+        Glide.with(this)
+            .load(data2.url2)
+            .into(binding.videoDetailImage)
     }
 
     fun ButtonAction(buttontype: String) {
@@ -79,12 +95,15 @@ class VideoDetail : AppCompatActivity() {
 
             "infomation" -> {
                 val builder = AlertDialog.Builder(this)
-                val binding_dialog = layoutInflater.inflate(R.layout.dialog_video_detail_information,null)
-                builder.setView(binding_dialog)
-                /*
-                이 사이에 다이어로그를 구현할 코드를 채우면 된다. 그냥 binding변수선언하고, 인플레이트하고, setView()하는거까지 똑같은데,
-                show()라는 빌더 클래스의 메서드를 호출해야 다이어로그가 보여진다.
-                 */
+                val binding_dialog = DialogVideoDetailInformationBinding.inflate(layoutInflater)
+                builder.setView(binding_dialog.root)
+                binding_dialog.videoDetailDialogTextTitle.text = "영상 제목 : " + data2.title
+                binding_dialog.videoDetailDialogTextDate.text = "게시 날짜 : " + data2.date.substring(0, 10).replace("-", "/")
+                binding_dialog.videoDetailDialogTextChannelname.text = "채널 명 : " + data2.channelname
+                binding_dialog.videoDetailDialogTextContent.text = "영상 설명 : " + data2.description
+                Glide.with(this)
+                    .load(data2.url2)
+                    .into(binding_dialog.videoDetailDialogImage)
                 builder.show()
             }
 
