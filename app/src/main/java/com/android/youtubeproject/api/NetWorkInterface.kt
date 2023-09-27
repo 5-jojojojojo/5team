@@ -17,6 +17,15 @@ interface NetWorkInterface {
         @Query("videoCategoryId") videoCategoryId: String?
     ): Call<FavoritesData?>?
 
+    @GET("videos?key=${Constants.Authorization}")
+    fun getNations(
+        @Query("part") part: String,
+        @Query("chart") chart: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("regionCode") regionCode:String,
+        @Query("videoCategoryId") videoCategoryId: String?
+    ): Call<FavoritesData?>?
+
     @GET("videoCategories?key=${Constants.Authorization}")
     fun getCategory(
         @Query("part") part: String,
