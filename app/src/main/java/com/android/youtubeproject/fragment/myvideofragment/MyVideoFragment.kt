@@ -1,5 +1,6 @@
 package com.android.youtubeproject.fragment.myvideofragment
 
+import CustomDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +9,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
+import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
+import com.android.youtubeproject.fragment.myvideofragment.db.UserDao
+import com.android.youtubeproject.fragment.myvideofragment.db.UserData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MyVideoFragment : Fragment() {
     private lateinit var mContext: Context
 
 
-    private var binding: FragmentMyVideoBinding? = null
+    private lateinit var binding: FragmentMyVideoBinding
     private lateinit var adapter: MyVideoFragmentAdapter
+    private lateinit var mDao: UserDao
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,12 +40,44 @@ class MyVideoFragment : Fragment() {
             rvMyvideo.adapter = adapter
         }
 
-        return binding?.root
+        adapter.addItems(MyPageFunc.loadVideos(requireContext()), true)
+
+        binding.ivDialog.setOnClickListener {
+            CustomDialog(onSave = { item: UserData ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    //저장밖에 기능이 없어서 여기서 구현
+                    mDao.insert(item)
+                }
+
+
+                //화면 갱신
+                updateUser(item.id)
+
+            }).show(requireFragmentManager(), "")
+
+        }
+
+        mDao = MyDatabase.getDatabase().getUser()
+
+        return binding.root
     }
+
+    private fun updateUser(id: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var data = mDao.getUserById(id)
+
+            requireActivity().runOnUiThread {
+                data?.let {
+                    binding.ivUser.setImageURI(it.picture)
+                    binding.tvNickname.text = it.nickname
+                    binding.tvUserId.text = it.id
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        // 메모리 누수를 방지하기 위해 뷰가 파괴될 때 바인딩 객체를 null로 설정
-        binding = null
     }
 
 }

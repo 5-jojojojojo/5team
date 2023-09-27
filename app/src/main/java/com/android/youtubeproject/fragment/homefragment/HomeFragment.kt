@@ -21,6 +21,8 @@ import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
 import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModel
 import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModelFactory
+import com.google.gson.GsonBuilder
+
 
 
 class HomeFragment : Fragment() {
@@ -34,9 +36,8 @@ class HomeFragment : Fragment() {
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
     private val nationViewModel: NationViewModel by viewModels {
         NationViewModelFactory(
-            apiServiceInstance
-        )
-    }
+
+ 
     var categoryItems = ArrayList<CategoryModel>()
 
 
@@ -44,8 +45,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
         FavoritesView()
         setupListeners()
 
@@ -102,6 +101,7 @@ class HomeFragment : Fragment() {
 
     private fun FavoritesView() {
         homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
         nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
         homeadapter = HomeFavoritesAdapter(requireContext())
         nationadapter = HomeNationAdapter(requireContext())
@@ -111,9 +111,12 @@ class HomeFragment : Fragment() {
                 adapter = homeadapter.apply {
                     itemClick = object : ItemClick {
                         override fun onClick(view: View, position: Int) {
-                            startActivity(Intent(requireContext(), VideoDetail::class.java))
+                        val intent = Intent(requireContext(), VideoDetail::class.java)
+                        val gson = GsonBuilder().create()
+                        val data = gson.toJson(homeadapter.items[position])
+                        intent.putExtra("itemdata", data)
+                        startActivity(intent)
                         }
-
                     }
                 }
                 setHasFixedSize(true)
