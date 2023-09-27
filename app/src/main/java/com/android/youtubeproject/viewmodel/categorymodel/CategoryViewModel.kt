@@ -18,6 +18,7 @@ class CategoryViewModel(private val apiService:NetWorkInterface): ViewModel() {
     val categoryResults : LiveData<List<CategoryModel>> get() = _categoryResults
 
     var categoryItems : ArrayList<CategoryModel> = ArrayList()
+//    var categoryId : ArrayList<CategoryModel> = ArrayList()
 
      fun categoryServerResults(){
         apiService.getCategory("snippet","KR")?.enqueue(object : Callback<CategoryData?>{
@@ -25,7 +26,8 @@ class CategoryViewModel(private val apiService:NetWorkInterface): ViewModel() {
                 response.body()?.let {
                     for(category in response.body()!!.items){
                         val title = category.snippet.title
-                        categoryItems.add(CategoryModel(Constants.NATION_TYPE,title))
+                        val id = category.id
+                        categoryItems.add(CategoryModel(Constants.NATION_TYPE,id,title))
                     }
                 }
                 categoryDataResults()
