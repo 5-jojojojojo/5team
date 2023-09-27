@@ -3,6 +3,7 @@ package com.android.youtubeproject.fragment.myvideofragment
 
 import android.content.Context
 import android.widget.Toast
+import com.android.youtubeproject.App
 import com.android.youtubeproject.api.serverdata.VideoItems
 import com.android.youtubeproject.spf.SharedPref
 import com.google.gson.GsonBuilder
@@ -10,6 +11,10 @@ import java.lang.Exception
 
 object MyPageFunc {
     private const val MY_FAVORITE = "MY_FAVORITE"
+
+    fun testDummy(dataList: MutableList<VideoItems>) {
+        SharedPref.setString(App.instance.applicationContext, MY_FAVORITE, convertToString(dataList))
+    }
 
     fun testDummy(context: Context, dataList: MutableList<VideoItems>) {
         SharedPref.setString(context, MY_FAVORITE, convertToString(dataList))
