@@ -1,8 +1,9 @@
 package com.android.youtubeproject.fragment.myvideofragment
 
-import VideoItems
+
 import android.content.Context
 import android.widget.Toast
+import com.android.youtubeproject.api.serverdata.VideoItems
 import com.android.youtubeproject.spf.SharedPref
 import com.google.gson.GsonBuilder
 import java.lang.Exception

@@ -1,4 +1,4 @@
-package com.android.youtubeproject.HomeFragment
+package com.android.youtubeproject.fragment.homefragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.youtubeproject.ViewModel.home.HomeViewModel
-import com.android.youtubeproject.ViewModel.home.HomeViewModelFactory
+import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
+import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
-import com.android.youtubeproject.fragment.homefragment.HomeFavoritesAdapter
+import com.android.youtubeproject.api.model.CategoryModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
+import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
+import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
 
 
 class HomeFragment : Fragment() {
@@ -24,6 +26,9 @@ class HomeFragment : Fragment() {
     private lateinit var homeLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
+    private val categoryViewModel : CategoryViewModel by viewModels { CategoryViewModelFactory(apiServiceInstance) }
+    var categoryItems = ArrayList<CategoryModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +54,19 @@ class HomeFragment : Fragment() {
 
             } else Log.d("YouTubeProjects", "어댑터 널값?")
         }
+        categoryViewModel.categoryResults.observe(viewLifecycleOwner){
+            Log.d("YouTubeProjects", "스니펫 데이터 : ${it}")
+            categoryItems.addAll(it)
+            val items = ArrayList<String>()
+            categoryItems.forEach {
+                if(it.category != null){
+                    items.add(it.category)
+                }
+                binding.homeSpinner.setItems(items)
+            }
+
+        }
+
     }
 
     private fun FavoritesView() {
@@ -70,5 +88,6 @@ class HomeFragment : Fragment() {
     }
     private fun setupListeners() {
         homeViewModel.FavoritesResults()
+        categoryViewModel.categoryServerResults()
     }
 }

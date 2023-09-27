@@ -1,4 +1,4 @@
-package com.android.youtubeproject.VideoDetailFragment
+package com.android.youtubeproject.fragment.videodetailfragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
