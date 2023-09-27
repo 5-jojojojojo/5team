@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.android.youtubeproject.api.serverdata.VideoItems
+import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.LayoutMyvideoItemBinding
 import com.bumptech.glide.Glide
 
@@ -20,7 +20,7 @@ class MyVideoFragmentAdapter(var mContext: Context) :
 
     }
     var itemClick: ItemClick? = null
-    private val items = mutableListOf<VideoItems>()
+    private val items = mutableListOf<YoutubeModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
        val binding = LayoutMyvideoItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ItemViewHolder(binding)
@@ -36,11 +36,11 @@ class MyVideoFragmentAdapter(var mContext: Context) :
 //        (holder as ItemViewHolder).bind(item)
 
         Glide.with(mContext)
-            .load(items[position].snippet.thumbnails.default.url)
+            .load(items[position].url)
             .into((holder as ItemViewHolder).iv_image)
 
-        holder.tv_title.text = items[position].snippet.title
-        holder.tv_channelId.text = items[position].snippet.channelId
+        holder.tv_title.text = items[position].title
+        holder.tv_channelId.text = items[position].channelname
         //항목 클릭 이벤트
         holder.cv_item.setOnClickListener {
             itemClick?.onClick(position)
@@ -51,7 +51,7 @@ class MyVideoFragmentAdapter(var mContext: Context) :
         }
     }
 
-    fun addItems(datas: MutableList<VideoItems>, isClear: Boolean) {
+    fun addItems(datas: MutableList<YoutubeModel>, isClear: Boolean) {
         if (isClear) items.clear()
 
         items.addAll(datas)
