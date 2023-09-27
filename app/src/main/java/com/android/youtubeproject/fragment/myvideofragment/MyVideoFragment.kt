@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
+import com.android.youtubeproject.fragment.myvideofragment.MyVideoFragmentAdapter
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
 
 
@@ -31,6 +33,8 @@ class MyVideoFragment : Fragment() {
             rvMyvideo.layoutManager = GridLayoutManager(mContext, 3, GridLayoutManager.VERTICAL, false)
             rvMyvideo.adapter = adapter
         }
+
+        adapter.addItems(MyPageFunc.loadVideos(requireContext()), true)
 
         return binding?.root
     }
