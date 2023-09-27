@@ -15,17 +15,35 @@ import retrofit2.Response
 class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     private val _homeReselts = MutableLiveData<List<YoutubeModel>>()
     val homeResult: LiveData<List<YoutubeModel>> get() = _homeReselts
-    var youtubeItems : ArrayList<YoutubeModel> = ArrayList()
+    var youtubeItems: ArrayList<YoutubeModel> = ArrayList()
 
-    fun FavoritesResults(){
-        apiService.getFavorites("snippet","mostPopular",30,"0")
+
+    fun FavoritesResults() {
+        apiService.getFavorites("mostPopular", "snippet", 5, "0")
             ?.enqueue(object : Callback<FavoritesData?> {
-                override fun onResponse(call: Call<FavoritesData?>, response: Response<FavoritesData?>) {
+                override fun onResponse(
+                    call: Call<FavoritesData?>,
+                    response: Response<FavoritesData?>
+                ) {
                     response.body()?.let {
-                        for(favorites in response.body()!!.items){
+                        for (favorites in response.body()!!.items) {
                             val title = favorites.snippet.title
                             val url = favorites.snippet.thumbnails.default.url
-                            youtubeItems.add(YoutubeModel(Constants.FAVORITES_TYPE,title,url))
+                            val url2 = favorites.snippet.thumbnails.maxres.url
+                            val date = favorites.snippet.publishedAt
+                            val description = favorites.snippet.localized.description
+                            val channelname = favorites.snippet.channelTitle
+                            youtubeItems.add(
+                                YoutubeModel(
+                                    Constants.FAVORITES_TYPE,
+                                    title,
+                                    url,
+                                    url2,
+                                    date,
+                                    description,
+                                    channelname
+                                )
+                            ) // 동규 추가3. 추가한 데이터에 맞춰서 여러가지 항목들을 추가하였습니다.
                             Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
                         }
                     }
@@ -36,8 +54,11 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                     Log.e("YouTubeProjects", "에러 : ${t.message}")
                 }
             })
+
     }
-    private fun HomeResult(){
+
+    private fun HomeResult() {
         _homeReselts.value = youtubeItems
     }
+
 }

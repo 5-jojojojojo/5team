@@ -18,6 +18,7 @@ import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
+import com.google.gson.GsonBuilder
 
 
 class HomeFragment : Fragment() {
@@ -26,27 +27,33 @@ class HomeFragment : Fragment() {
     private lateinit var homeLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
-    private val categoryViewModel : CategoryViewModel by viewModels { CategoryViewModelFactory(apiServiceInstance) }
+    private val categoryViewModel: CategoryViewModel by viewModels {
+        CategoryViewModelFactory(
+            apiServiceInstance
+        )
+    }
     var categoryItems = ArrayList<CategoryModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
+    ): View {
 
         FavoritesView()
         setupListeners()
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
     }
-    private fun observeViewModel(){
-        homeViewModel.homeResult.observe(viewLifecycleOwner){
+
+    private fun observeViewModel() {
+        homeViewModel.homeResult.observe(viewLifecycleOwner) {
             Log.d("YouTubeProjects", "프래그먼트 데이터 : ${it}")
-            if(homeadapter !=null){
+            if (homeadapter != null) {
                 Log.d("YouTubeProjects", "어댑터 정상작동?")
                 homeadapter.items.addAll(it)
                 Log.d("YouTubeProjects", "adapter.items에 뭐가 찍혀있는데?${homeadapter.items}")
@@ -54,12 +61,12 @@ class HomeFragment : Fragment() {
 
             } else Log.d("YouTubeProjects", "어댑터 널값?")
         }
-        categoryViewModel.categoryResults.observe(viewLifecycleOwner){
+        categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             Log.d("YouTubeProjects", "스니펫 데이터 : ${it}")
             categoryItems.addAll(it)
             val items = ArrayList<String>()
             categoryItems.forEach {
-                if(it.category != null){
+                if (it.category != null) {
                     items.add(it.category)
                 }
                 binding.homeSpinner.setItems(items)
@@ -70,15 +77,20 @@ class HomeFragment : Fragment() {
     }
 
     private fun FavoritesView() {
-        homeLayoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
-        homeadapter= HomeFavoritesAdapter(requireContext())
+        homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        homeadapter = HomeFavoritesAdapter(requireContext())
         binding.homeRecyclerView1.apply {
             layoutManager = homeLayoutManager
             adapter = homeadapter.apply {
                 itemClick = object : ItemClick {
                     override fun onClick(view: View, position: Int) {
-                        startActivity(Intent(requireContext(), VideoDetail::class.java))
+                        val intent = Intent(requireContext(), VideoDetail::class.java)
+                        val gson = GsonBuilder().create()
+                        val data = gson.toJson(homeadapter.items[position])
+                        intent.putExtra("itemdata", data)
+                        startActivity(intent)
                     }
+                // 동규 추가 2. 클릭 리스너 구현하였습니다.
 
                 }
             }
@@ -86,6 +98,7 @@ class HomeFragment : Fragment() {
         }
 
     }
+
     private fun setupListeners() {
         homeViewModel.FavoritesResults()
         categoryViewModel.categoryServerResults()
