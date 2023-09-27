@@ -1,4 +1,4 @@
-package com.android.youtubeproject.api
+package com.android.youtubeproject.api.serverdata
 
 data class CategoryData(
     val kind: String,
