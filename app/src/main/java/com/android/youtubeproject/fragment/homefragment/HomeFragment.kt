@@ -13,34 +13,52 @@ import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
 import com.android.youtubeproject.api.model.CategoryModel
+import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
+import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModel
+import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModelFactory
 import com.google.gson.GsonBuilder
+
 
 
 class HomeFragment : Fragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var homeadapter: HomeFavoritesAdapter
+    private lateinit var nationadapter: HomeNationAdapter
     private lateinit var homeLayoutManager: LinearLayoutManager
+    private lateinit var nationLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
-    private val categoryViewModel: CategoryViewModel by viewModels {
-        CategoryViewModelFactory(
-            apiServiceInstance
-        )
-    }
+    private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
+    private val nationViewModel: NationViewModel by viewModels {
+        NationViewModelFactory(
+
+ 
     var categoryItems = ArrayList<CategoryModel>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         FavoritesView()
         setupListeners()
+
+        binding.homeSpinner.setOnSpinnerItemSelectedListener { oldIndex, oldItem, newIndex, newItem: String ->
+            var id = ""
+            for (item in categoryItems) {
+                if (item.category == newItem) {
+                    id = item.id
+                }
+            }
+            Log.d("YouTubeProjects", "id값 : ${id}")
+            nationViewModel.nationsServerResults(id)
+
+        }
 
         return binding.root
     }
@@ -73,28 +91,41 @@ class HomeFragment : Fragment() {
             }
 
         }
+        nationViewModel.nationResults.observe(viewLifecycleOwner) {
+            nationadapter.items.clear()
+            nationadapter.items.addAll(it)
+            nationadapter.notifyDataSetChanged()
+        }
 
     }
 
     private fun FavoritesView() {
         homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
         homeadapter = HomeFavoritesAdapter(requireContext())
-        binding.homeRecyclerView1.apply {
-            layoutManager = homeLayoutManager
-            adapter = homeadapter.apply {
-                itemClick = object : ItemClick {
-                    override fun onClick(view: View, position: Int) {
+        nationadapter = HomeNationAdapter(requireContext())
+        binding.apply {
+            homeRecyclerView1.apply {
+                layoutManager = homeLayoutManager
+                adapter = homeadapter.apply {
+                    itemClick = object : ItemClick {
+                        override fun onClick(view: View, position: Int) {
                         val intent = Intent(requireContext(), VideoDetail::class.java)
                         val gson = GsonBuilder().create()
                         val data = gson.toJson(homeadapter.items[position])
                         intent.putExtra("itemdata", data)
                         startActivity(intent)
+                        }
                     }
-                // 동규 추가 2. 클릭 리스너 구현하였습니다.
-
                 }
+                setHasFixedSize(true)
             }
-            setHasFixedSize(true)
+            homeRecyclerView2.apply {
+                layoutManager = nationLayoutManager
+                adapter = nationadapter
+
+            }
         }
 
     }
@@ -102,5 +133,7 @@ class HomeFragment : Fragment() {
     private fun setupListeners() {
         homeViewModel.FavoritesResults()
         categoryViewModel.categoryServerResults()
+//        nationViewModel.nationsServerResults(categoryViewModel.categoryId.toString())
+//        Log.d("YouTubeProjects", "두번째 탭 데이터 : ${categoryViewModel.categoryId}")
     }
 }
