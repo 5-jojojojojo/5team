@@ -1,4 +1,4 @@
-package com.android.youtubeproject.fragment.searchfragment
+package com.android.youtubeproject.SearchFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
