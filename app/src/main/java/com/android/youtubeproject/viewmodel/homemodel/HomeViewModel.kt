@@ -33,6 +33,12 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                             val date = favorites.snippet.publishedAt
                             val description = favorites.snippet.localized.description
                             val channelname = favorites.snippet.channelTitle
+                            val tags:List<String> = favorites.snippet.tags
+                            val localtitle = favorites.snippet.localized.title
+                            val localdescription = favorites.snippet.localized.description
+                            val videoid = favorites.id
+                            val like = false
+                            val dislike = false
                             youtubeItems.add(
                                 YoutubeModel(
                                     Constants.FAVORITES_TYPE,
@@ -41,9 +47,15 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                     url2,
                                     date,
                                     description,
-                                    channelname
+                                    channelname,
+                                    tags,
+                                    localtitle,
+                                    localdescription,
+                                    videoid,
+                                    like,
+                                    dislike
                                 )
-                            ) // 동규 추가3. 추가한 데이터에 맞춰서 여러가지 항목들을 추가하였습니다.
+                            )
                             Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
                         }
                     }
