@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.NetWorkInterface
+import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.api.serverdata.FavoritesData
 import retrofit2.Call
@@ -16,10 +17,10 @@ import retrofit2.Response
 
 class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
-    private val _nationResults = MutableLiveData<List<YoutubeModel>>()
-    val nationResults: LiveData<List<YoutubeModel>> get() = _nationResults
+    private val _nationResults = MutableLiveData<List<NationModel>>()
+    val nationResults: LiveData<List<NationModel>> get() = _nationResults
 
-    var nationItems: ArrayList<YoutubeModel> = ArrayList()
+    var nationItems: ArrayList<NationModel> = ArrayList()
     var isFirst = true
 
     fun nationsServerResults(videoCategoryId: String) {
@@ -36,7 +37,7 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                         for (items in response.body()!!.items) {
                             val title = items.snippet.title
                             val url = items.snippet.thumbnails.default.url
-                            nationItems.add(YoutubeModel(Constants.NATION_TYPE, title, url))
+                            nationItems.add(NationModel(Constants.NATION_TYPE, title, url))
                         }
                     }
 
