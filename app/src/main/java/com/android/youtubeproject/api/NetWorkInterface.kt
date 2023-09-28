@@ -4,6 +4,7 @@ package com.android.youtubeproject.api
 import com.android.youtubeproject.api.serverdata.FavoritesData
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.serverdata.CategoryData
+import com.android.youtubeproject.api.serverdata.ChannelData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,9 +22,7 @@ interface NetWorkInterface {
     ) : Call<CategoryData?>?
 
     @GET("channels?key=${Constants.Authorization}")
-    suspend fun getChannel(
-        @Query("part") part: String,
-        @QueryMap idQueryMap: Map<String, String>,
-        @Query("maxResults") maxResults: Int
-    )
+    fun getChannel(
+        @QueryMap idQueryMap: HashMap<String, String>
+    ): Call<ChannelData?>?
 }

@@ -22,8 +22,10 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     val nationResults: LiveData<List<NationModel>> get() = _nationResults
 
     var nationItems: ArrayList<NationModel> = ArrayList()
+    var channelId: ArrayList<String> = ArrayList()
     fun nationsServerResults(videoCategoryId: String) {
         nationItems.clear()
+        channelId.clear()
 
         val nationKey = hashMapOf(
             "part" to "snippet",
@@ -43,8 +45,12 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                             val title = items.snippet.title
                             val url = items.snippet.thumbnails.default.url
                             val id = items.snippet.channelId
-                            nationItems.add(NationModel(Constants.NATION_TYPE, title, url))
+                            nationItems.add(NationModel(Constants.NATION_TYPE, title, url,id))
                         }
+                        for (item in nationItems) {
+                            channelId.add(item.id)
+                        }
+                        Log.d("YouTubeProjects", "channelId(nationViewModel) : ${channelId}")
                     }
                     nationDataResults()
                 }
