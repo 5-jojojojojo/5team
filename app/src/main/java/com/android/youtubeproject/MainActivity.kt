@@ -2,6 +2,7 @@ package com.android.youtubeproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.android.youtubeproject.viewpager2adapter.ViewPager2Adapter
 import com.android.youtubeproject.databinding.ActivityMainBinding
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
             tab.text = tabList[position]
+            when (position) {
+                0 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_home_24)
+                1 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_notifications_none_24)
+                2 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_video_library_24)
+            }
         }.attach()
 
         binding.viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
