@@ -13,16 +13,18 @@ import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
 import com.android.youtubeproject.api.model.CategoryModel
+import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
+import com.android.youtubeproject.viewmodel.channelmodel.ChannelViewModel
+import com.android.youtubeproject.viewmodel.channelmodel.ChannelViewModelFactory
 import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModel
 import com.android.youtubeproject.viewmodel.nationviewmodel.NationViewModelFactory
 import com.google.gson.GsonBuilder
-
 
 
 class HomeFragment : Fragment() {
@@ -35,9 +37,8 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
     private val nationViewModel: NationViewModel by viewModels {NationViewModelFactory(apiServiceInstance)}
+    private val channelViewModel:ChannelViewModel by viewModels {ChannelViewModelFactory(apiServiceInstance)}
     var categoryItems = ArrayList<CategoryModel>()
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,14 +49,15 @@ class HomeFragment : Fragment() {
         setupListeners()
 
         binding.homeSpinner.setOnSpinnerItemSelectedListener { oldIndex, oldItem, newIndex, newItem: String ->
-            var id = "1"
+            var id = ""
             for (item in categoryItems) {
                 if (item.category == newItem) {
                     id = item.id
                 }
             }
-            Log.d("YouTubeProjects", "id값 : ${id}")
+
             nationViewModel.nationsServerResults(id)
+
         }
 
         return binding.root
@@ -92,6 +94,8 @@ class HomeFragment : Fragment() {
         nationViewModel.nationResults.observe(viewLifecycleOwner) {
             nationadapter.items.clear()
             nationadapter.items.addAll(it)
+            channelViewModel.channelServerResults(nationViewModel.channelId)
+            Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelId}")
             nationadapter.notifyDataSetChanged()
         }
 
@@ -99,7 +103,7 @@ class HomeFragment : Fragment() {
 
     private fun FavoritesView() {
         homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
+        nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         homeadapter = HomeFavoritesAdapter(requireContext())
         nationadapter = HomeNationAdapter(requireContext())
         binding.apply {
