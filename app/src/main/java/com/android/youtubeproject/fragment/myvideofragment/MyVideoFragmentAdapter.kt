@@ -19,7 +19,12 @@ class MyVideoFragmentAdapter(var mContext: Context) :
         fun onLongClick(position: Int)
 
     }
+    interface DataChangeListener {
+        fun onDataChanged(isEmpty: Boolean)
+    }
     var itemClick: ItemClick? = null
+    var dataChangeListener: DataChangeListener? = null
+
     private val items = mutableListOf<YoutubeModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
        val binding = LayoutMyvideoItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -56,6 +61,8 @@ class MyVideoFragmentAdapter(var mContext: Context) :
 
         items.addAll(datas)
         notifyDataSetChanged()
+
+        dataChangeListener?.onDataChanged(items.isEmpty())
     }
 
     inner class ItemViewHolder(val binding: LayoutMyvideoItemBinding) :

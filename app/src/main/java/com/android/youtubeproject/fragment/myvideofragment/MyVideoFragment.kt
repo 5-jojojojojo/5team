@@ -40,6 +40,22 @@ class MyVideoFragment : Fragment() {
             rvMyvideo.adapter = adapter
         }
 
+
+        adapter.dataChangeListener = object : MyVideoFragmentAdapter.DataChangeListener {
+            override fun onDataChanged(isEmpty: Boolean) {
+                // 데이터가 로드되었을 때 (또는 데이터 상태 변경 시):
+                val recyclerView = binding.rvMyvideo
+                val defaultImage = binding.defaultImage
+                if (isEmpty) {
+                    defaultImage.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                } else {
+                    defaultImage.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                }
+            }
+        }
+
         adapter.addItems(MyPageFunc.loadVideos(), true)
 
         binding.ivDialog.setOnClickListener {
