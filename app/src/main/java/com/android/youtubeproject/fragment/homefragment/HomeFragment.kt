@@ -31,8 +31,10 @@ class HomeFragment : Fragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var homeadapter: HomeFavoritesAdapter
     private lateinit var nationadapter: HomeNationAdapter
+    private lateinit var channeladapter: HomeChannelAdapter
     private lateinit var homeLayoutManager: LinearLayoutManager
     private lateinit var nationLayoutManager: LinearLayoutManager
+    private lateinit var channelLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
@@ -98,14 +100,21 @@ class HomeFragment : Fragment() {
             Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelId}")
             nationadapter.notifyDataSetChanged()
         }
+        channelViewModel.channelResults.observe(viewLifecycleOwner){
+            channeladapter.items.clear()
+            channeladapter.items.addAll(it)
+            channeladapter.notifyDataSetChanged()
+        }
 
     }
 
     private fun FavoritesView() {
         homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        channelLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         homeadapter = HomeFavoritesAdapter(requireContext())
         nationadapter = HomeNationAdapter(requireContext())
+        channeladapter = HomeChannelAdapter(requireActivity())
         binding.apply {
             homeRecyclerView1.apply {
                 layoutManager = homeLayoutManager
@@ -127,6 +136,10 @@ class HomeFragment : Fragment() {
                 layoutManager = nationLayoutManager
                 adapter = nationadapter
 
+            }
+            homeRecyclerView3.apply {
+                layoutManager = channelLayoutManager
+                adapter = channeladapter
             }
         }
 
