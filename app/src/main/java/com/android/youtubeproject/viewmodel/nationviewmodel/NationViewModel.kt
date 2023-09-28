@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.youtubeproject.Constants
+import com.android.youtubeproject.api.HashMapData
 import com.android.youtubeproject.api.NetWorkInterface
 import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.model.YoutubeModel
@@ -21,26 +22,30 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     val nationResults: LiveData<List<NationModel>> get() = _nationResults
 
     var nationItems: ArrayList<NationModel> = ArrayList()
-    var isFirst = true
-
     fun nationsServerResults(videoCategoryId: String) {
         nationItems.clear()
-        apiService.getNations("snippet", "mostPopular", 20, "KR", videoCategoryId)
+
+        val nationKey = hashMapOf(
+            "part" to "snippet",
+            "chart" to "mostPopular",
+            "maxResults" to "30",
+            "regionCode" to "KR",
+            "videoCategoryId" to videoCategoryId
+        )
+        apiService.getFavorites(nationKey)
             ?.enqueue(object : Callback<FavoritesData?> {
                 override fun onResponse(
                     call: Call<FavoritesData?>,
                     response: Response<FavoritesData?>
                 ) {
-
                     response.body()?.let {
-
                         for (items in response.body()!!.items) {
                             val title = items.snippet.title
                             val url = items.snippet.thumbnails.default.url
+                            val id = items.snippet.channelId
                             nationItems.add(NationModel(Constants.NATION_TYPE, title, url))
                         }
                     }
-
                     nationDataResults()
                 }
 

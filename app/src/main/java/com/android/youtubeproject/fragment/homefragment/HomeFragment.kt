@@ -34,11 +34,7 @@ class HomeFragment : Fragment() {
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
-    private val nationViewModel: NationViewModel by viewModels {
-        NationViewModelFactory(
-            apiServiceInstance
-        )
-    }
+    private val nationViewModel: NationViewModel by viewModels {NationViewModelFactory(apiServiceInstance)}
     var categoryItems = ArrayList<CategoryModel>()
 
 
@@ -52,7 +48,7 @@ class HomeFragment : Fragment() {
         setupListeners()
 
         binding.homeSpinner.setOnSpinnerItemSelectedListener { oldIndex, oldItem, newIndex, newItem: String ->
-            var id = ""
+            var id = "1"
             for (item in categoryItems) {
                 if (item.category == newItem) {
                     id = item.id
@@ -60,7 +56,6 @@ class HomeFragment : Fragment() {
             }
             Log.d("YouTubeProjects", "id값 : ${id}")
             nationViewModel.nationsServerResults(id)
-
         }
 
         return binding.root
