@@ -8,7 +8,7 @@ class YoutubeModel(
     var date: String,
     var description: String,
     var channelname: String,
-    var tags: List<String>,
+    var tags: List<String>?,
     var localtitle: String,
     var localdescription:String,
     var videoid:String,

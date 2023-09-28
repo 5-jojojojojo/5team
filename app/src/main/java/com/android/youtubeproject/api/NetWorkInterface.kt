@@ -7,36 +7,23 @@ import com.android.youtubeproject.api.serverdata.CategoryData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface NetWorkInterface {
     @GET("videos?key=${Constants.Authorization}")
     fun getFavorites(
-        @Query("part") part: String,
-        @Query("chart") chart: String,
-        @Query("maxResults") maxResults: Int,
-        @Query("videoCategoryId") videoCategoryId: String?
+        @QueryMap queryMap: HashMap<String, String>
     ): Call<FavoritesData?>?
-
-    @GET("videos?key=${Constants.Authorization}")
-    fun getNations(
-        @Query("part") part: String,
-        @Query("chart") chart: String,
-        @Query("maxResults") maxResults: Int,
-        @Query("regionCode") regionCode:String,
-        @Query("videoCategoryId") videoCategoryId: String?
-    ): Call<FavoritesData?>?
-
     @GET("videoCategories?key=${Constants.Authorization}")
     fun getCategory(
         @Query("part") part: String,
         @Query("regionCode") chart: String
     ) : Call<CategoryData?>?
 
-
-    @GET("videos?key=${Constants.Authorization}")
+    @GET("channels?key=${Constants.Authorization}")
     suspend fun getChannel(
         @Query("part") part: String,
-        @Query("id") id: String,
+        @QueryMap idQueryMap: Map<String, String>,
         @Query("maxResults") maxResults: Int
     )
 }

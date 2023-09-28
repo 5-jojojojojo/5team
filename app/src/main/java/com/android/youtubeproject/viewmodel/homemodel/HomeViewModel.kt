@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.youtubeproject.Constants
+import com.android.youtubeproject.api.HashMapData
 import com.android.youtubeproject.api.NetWorkInterface
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.api.serverdata.FavoritesData
@@ -19,7 +20,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
 
     fun FavoritesResults() {
-        apiService.getFavorites("snippet", "mostPopular", 5, "0")
+        apiService.getFavorites(HashMapData.favoritesKey)
             ?.enqueue(object : Callback<FavoritesData?> {
                 override fun onResponse(
                     call: Call<FavoritesData?>,
@@ -33,7 +34,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                             val date = favorites.snippet.publishedAt
                             val description = favorites.snippet.localized.description
                             val channelname = favorites.snippet.channelTitle
-                            val tags:List<String> = favorites.snippet.tags
+                            val tags: List<String> = favorites.snippet.tags
                             val localtitle = favorites.snippet.localized.title
                             val localdescription = favorites.snippet.localized.description
                             val videoid = favorites.id
