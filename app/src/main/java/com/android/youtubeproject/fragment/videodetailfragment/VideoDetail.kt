@@ -118,7 +118,7 @@ class VideoDetail : AppCompatActivity() {
                 binding_dialog.videoDetailDialogTextChannelname.text = "채널 명 : " + data2.channelname
                 binding_dialog.videoDetailDialogTextContent.text = "영상 설명 : " + data2.description
                 Glide.with(this)
-                    .load(data2.url2)
+                    .load(data2.url)
                     .into(binding_dialog.videoDetailDialogImage)
                 builder.show()
             }

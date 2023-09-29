@@ -27,37 +27,37 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                     response: Response<FavoritesData?>
                 ) {
                     response.body()?.let {
-                        for (favorites in response.body()!!.items) {
-                            val title = favorites.snippet.title
-                            val url = favorites.snippet.thumbnails.default.url
-                            val url2 = favorites.snippet.thumbnails.maxres.url
-                            val date = favorites.snippet.publishedAt
-                            val description = favorites.snippet.localized.description
-                            val channelname = favorites.snippet.channelTitle
-                            val tags: List<String> = favorites.snippet.tags
-                            val localtitle = favorites.snippet.localized.title
-                            val localdescription = favorites.snippet.localized.description
-                            val videoid = favorites.id
-                            val like = false
-                            val dislike = false
-                            youtubeItems.add(
-                                YoutubeModel(
-                                    Constants.FAVORITES_TYPE,
-                                    title,
-                                    url,
-                                    url2,
-                                    date,
-                                    description,
-                                    channelname,
-                                    tags,
-                                    localtitle,
-                                    localdescription,
-                                    videoid,
-                                    like,
-                                    dislike
+                        if(!it.items.isNullOrEmpty()){
+                            for (favorites in it.items) {
+                                val title = favorites.snippet.title
+                                val url = favorites.snippet.thumbnails.medium.url
+                                val date = favorites.snippet.publishedAt
+                                val description = favorites.snippet.localized.description
+                                val channelname = favorites.snippet.channelTitle
+                                val tags: List<String> = favorites.snippet.tags
+                                val localtitle = favorites.snippet.localized.title
+                                val localdescription = favorites.snippet.localized.description
+                                val videoid = favorites.id
+                                val like = false
+                                val dislike = false
+                                youtubeItems.add(
+                                    YoutubeModel(
+                                        Constants.FAVORITES_TYPE,
+                                        title,
+                                        url,
+                                        date,
+                                        description,
+                                        channelname,
+                                        tags,
+                                        localtitle,
+                                        localdescription,
+                                        videoid,
+                                        like,
+                                        dislike
+                                    )
                                 )
-                            )
-                            Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
+                                Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
+                            }
                         }
                     }
                     HomeResult()

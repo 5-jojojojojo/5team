@@ -32,9 +32,6 @@ class HomeFragment : Fragment() {
     private lateinit var homeadapter: HomeFavoritesAdapter
     private lateinit var nationadapter: HomeNationAdapter
     private lateinit var channeladapter: HomeChannelAdapter
-    private lateinit var homeLayoutManager: LinearLayoutManager
-    private lateinit var nationLayoutManager: LinearLayoutManager
-    private lateinit var channelLayoutManager: LinearLayoutManager
     private val apiServiceInstance = NetWorkClient.apiService
     private val homeViewModel: HomeViewModel by viewModels { HomeViewModelFactory(apiServiceInstance) }
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
@@ -109,15 +106,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun FavoritesView() {
-        homeLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        nationLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        channelLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
         homeadapter = HomeFavoritesAdapter(requireContext())
         nationadapter = HomeNationAdapter(requireContext())
         channeladapter = HomeChannelAdapter(requireActivity())
+
         binding.apply {
             homeRecyclerView1.apply {
-                layoutManager = homeLayoutManager
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = homeadapter.apply {
                     itemClick = object : ItemClick {
                         override fun onClick(view: View, position: Int) {
@@ -133,13 +129,14 @@ class HomeFragment : Fragment() {
                 setHasFixedSize(true)
             }
             homeRecyclerView2.apply {
-                layoutManager = nationLayoutManager
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = nationadapter
-
+                setHasFixedSize(true)
             }
             homeRecyclerView3.apply {
-                layoutManager = channelLayoutManager
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = channeladapter
+                setHasFixedSize(true)
             }
         }
 
@@ -148,7 +145,5 @@ class HomeFragment : Fragment() {
     private fun setupListeners() {
         homeViewModel.FavoritesResults()
         categoryViewModel.categoryServerResults()
-//        nationViewModel.nationsServerResults(categoryViewModel.categoryId.toString())
-//        Log.d("YouTubeProjects", "두번째 탭 데이터 : ${categoryViewModel.categoryId}")
     }
 }

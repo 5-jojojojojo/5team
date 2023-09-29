@@ -43,7 +43,7 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                     response.body()?.let {
                         for (items in response.body()!!.items) {
                             val title = items.snippet.title
-                            val url = items.snippet.thumbnails.default.url
+                            val url = items.snippet.thumbnails.medium.url
                             val id = items.snippet.channelId
                             nationItems.add(NationModel(Constants.NATION_TYPE, title, url,id))
                         }

@@ -10,4 +10,6 @@ object Constants {
     var NATION_TYPE = 1
 
     var CHANNEL_TYPE = 2
+
+    var EMPTY_TYPE = 3
 }
