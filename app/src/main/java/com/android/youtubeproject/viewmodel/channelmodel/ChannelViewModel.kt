@@ -26,6 +26,9 @@ class ChannelViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     fun channelServerResults(idQueryMap:ArrayList<String>) {
 //       Log.d("YouTubeProjects", "channelServerResults에서 받아온 ID: ${idQueryMap}")
         channelItems.clear()
+
+        _isLoading.value = true
+
         val channelKey = hashMapOf(
             "part" to "snippet",
             "id" to idQueryMap.joinToString(",")
@@ -51,11 +54,13 @@ class ChannelViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
             override fun onFailure(call: Call<ChannelData?>, t: Throwable) {
                 Log.e("YouTubeProjects", "에러 : ${t.message}")
+                _isLoading.value = false
             }
 
         })
     }
     private fun channelDataResults() {
         _channelResults.value = channelItems
+        _isLoading.value = false
     }
 }

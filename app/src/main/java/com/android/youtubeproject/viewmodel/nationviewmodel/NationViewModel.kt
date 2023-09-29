@@ -23,9 +23,14 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
     var nationItems: ArrayList<NationModel> = ArrayList()
     var channelId: ArrayList<String> = ArrayList()
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
     fun nationsServerResults(videoCategoryId: String) {
         nationItems.clear()
         channelId.clear()
+
+        _isLoading.value = true
 
         val nationKey = hashMapOf(
             "part" to "snippet",
@@ -56,6 +61,7 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<FavoritesData?>, t: Throwable) {
+                    _isLoading.value = false
                     Log.e("YouTubeProjects", "에러 : ${t.message}")
                 }
             })
@@ -63,5 +69,6 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
     private fun nationDataResults() {
         _nationResults.value = nationItems
+        _isLoading.value = false
     }
 }
