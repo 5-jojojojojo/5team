@@ -4,7 +4,6 @@ class YoutubeModel(
     var type: Int,
     var title: String,
     var url: String,
-    var url2: String,
     var date: String,
     var description: String,
     var channelname: String,

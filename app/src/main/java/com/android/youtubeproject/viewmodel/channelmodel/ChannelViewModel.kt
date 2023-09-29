@@ -37,11 +37,13 @@ class ChannelViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                 response: Response<ChannelData?>
             ) {
                 response.body()?.let { channelData ->
-                    for (items in response.body()!!.items){
-                        val title = items.snippet.title
-                        val url = items.snippet.thumbnails.high.url
-                        channelItems.add(ChannelModel(Constants.CHANNEL_TYPE,title,url))
-                        Log.d("YouTubeProjects","ChannelViewModel Data : ${channelItems}")
+                    if (!channelData.items.isNullOrEmpty()){
+                        for (items in channelData.items){
+                            val title = items.snippet.title
+                            val url = items.snippet.thumbnails.high.url
+                            channelItems.add(ChannelModel(Constants.CHANNEL_TYPE,title,url))
+                            Log.d("YouTubeProjects","ChannelViewModel Data : ${channelItems}")
+                        }
                     }
                 }
                 channelDataResults()
