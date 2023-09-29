@@ -38,6 +38,8 @@ class HomeFragment : Fragment() {
     private val nationViewModel: NationViewModel by viewModels {NationViewModelFactory(apiServiceInstance)}
     private val channelViewModel:ChannelViewModel by viewModels {ChannelViewModelFactory(apiServiceInstance)}
     var categoryItems = ArrayList<CategoryModel>()
+    private var nation_loading = true
+    private var channel_loading = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,17 +92,29 @@ class HomeFragment : Fragment() {
             }
 
         }
-        nationViewModel.nationResults.observe(viewLifecycleOwner) {
-            nationadapter.items.clear()
-            nationadapter.items.addAll(it)
-            channelViewModel.channelServerResults(nationViewModel.channelId)
-            Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelId}")
-            nationadapter.notifyDataSetChanged()
+        nationViewModel.apply {
+            nationResults.observe(viewLifecycleOwner) {
+                nationadapter.items.clear()
+                nationadapter.items.addAll(it)
+                channelViewModel.channelServerResults(nationViewModel.channelId)
+                Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelId}")
+                nationadapter.notifyDataSetChanged()
+            }
+            isLoading.observe(viewLifecycleOwner){ isLoading ->
+                binding.nationLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
+                nation_loading = !isLoading
+            }
         }
-        channelViewModel.channelResults.observe(viewLifecycleOwner){
-            channeladapter.items.clear()
-            channeladapter.items.addAll(it)
-            channeladapter.notifyDataSetChanged()
+        channelViewModel.apply {
+            channelResults.observe(viewLifecycleOwner){
+                channeladapter.items.clear()
+                channeladapter.items.addAll(it)
+                channeladapter.notifyDataSetChanged()
+            }
+            isLoading.observe(viewLifecycleOwner){isLoading ->
+                binding.channelLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
+                channel_loading = !isLoading
+            }
         }
 
     }
