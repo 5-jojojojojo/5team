@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.viewPager2.adapter = ViewPager2Adapter(this)
-
+        binding.viewPager2.setUserInputEnabled(false)
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->
             tab.text = tabList[position]
             when (position) {
