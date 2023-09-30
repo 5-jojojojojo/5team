@@ -45,7 +45,7 @@ class MyVideoFragment : Fragment() {
             override fun onDataChanged(isEmpty: Boolean) {
                 // 데이터가 로드되었을 때 (또는 데이터 상태 변경 시):
                 val recyclerView = binding.rvMyvideo
-                val defaultImage = binding.defaultImage
+                val defaultImage = binding.btNewplaylist
                 if (isEmpty) {
                     defaultImage.visibility = View.VISIBLE
                     recyclerView.visibility = View.GONE
@@ -55,6 +55,7 @@ class MyVideoFragment : Fragment() {
                 }
             }
         }
+
 
         adapter.addItems(MyPageFunc.loadVideos(), true)
 
@@ -76,6 +77,10 @@ class MyVideoFragment : Fragment() {
         mDao = MyDatabase.getDatabase().getUser()
 
         return binding.root
+
+        binding.btNewplaylist.setOnClickListener {
+
+        }
     }
 
     private fun updateUser(id: String) {
