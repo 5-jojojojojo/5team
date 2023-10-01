@@ -23,8 +23,7 @@ class VideoDetail : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
     var btmstate = false
     var bt3state = false
-    var bt4state = false
-    lateinit var data2:YoutubeModel
+    lateinit var data2: YoutubeModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -39,18 +38,16 @@ class VideoDetail : AppCompatActivity() {
             ButtonAction("share")
         }
         binding.videoDetailFbt3.setOnClickListener {
-            ButtonAction("dislike")
-        }
-        binding.videoDetailFbt4.setOnClickListener {
             ButtonAction("like")
         }
     }
-    fun initialize(){
+
+    fun initialize() {
         overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
         val data = intent.getStringExtra("itemdata")
         val gson = Gson()
         val type = object : TypeToken<YoutubeModel>() {}.type
-        data2 = gson.fromJson(data,type)
+        data2 = gson.fromJson(data, type)
         val webView: WebView = findViewById(R.id.webview)
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
@@ -90,8 +87,6 @@ class VideoDetail : AppCompatActivity() {
                         delay(delaytime)
                         binding.videoDetailFbt3.show()
                         delay(delaytime)
-                        binding.videoDetailFbt4.show()
-                        delay(delaytime)
                         binding.videoDetailFbtmain.show()
                     } else {
                         binding.videoDetailFbtmain.hide()
@@ -100,8 +95,6 @@ class VideoDetail : AppCompatActivity() {
                         binding.videoDetailFbt2.hide()
                         delay(delaytime)
                         binding.videoDetailFbt3.hide()
-                        delay(delaytime)
-                        binding.videoDetailFbt4.hide()
                         delay(delaytime)
                         binding.videoDetailFbtmain.show()
                     }
@@ -114,7 +107,8 @@ class VideoDetail : AppCompatActivity() {
                 val binding_dialog = DialogVideoDetailInformationBinding.inflate(layoutInflater)
                 builder.setView(binding_dialog.root)
                 binding_dialog.videoDetailDialogTextTitle.text = "영상 제목 : " + data2.title
-                binding_dialog.videoDetailDialogTextDate.text = "게시 날짜 : " + data2.date.substring(0, 10).replace("-", "/")
+                binding_dialog.videoDetailDialogTextDate.text =
+                    "게시 날짜 : " + data2.date.substring(0, 10).replace("-", "/")
                 binding_dialog.videoDetailDialogTextChannelname.text = "채널 명 : " + data2.channelname
                 binding_dialog.videoDetailDialogTextContent.text = "영상 설명 : " + data2.description
                 Glide.with(this)
@@ -140,32 +134,26 @@ class VideoDetail : AppCompatActivity() {
                     putExtra(Intent.EXTRA_TEXT, "https://www.youtube.com/watch?v=" + data2.videoid)
                     type = "text/plain"
                 }
-                Log.d("YouTubeProjects ","공유한 주소 : https://www.youtube.com/watch?v=" + "${data2.videoid}")
+                Log.d(
+                    "YouTubeProjects ",
+                    "공유한 주소 : https://www.youtube.com/watch?v=" + "${data2.videoid}"
+                )
                 val chooser = Intent.createChooser(shareIntent, "공유할 앱을 골라주세요.")
                 if (shareIntent.resolveActivity(packageManager) != null) {
                     startActivity(chooser)
                 }
             }
 
-            "dislike" -> {
+            "like" -> {
                 bt3state = !bt3state
                 if (!bt3state) {
-                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_dislike_false)
+                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_disliked)
                 } else if (bt3state) {
-                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_dislike_true)
+                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_liked)
                 }
 
             }
 
-            "like" -> {
-                bt4state = !bt4state
-                if (!bt4state) {
-                    binding.videoDetailFbt4.setImageResource(R.drawable.ic_video_detail_like_false)
-                } else if (bt4state) {
-                    binding.videoDetailFbt4.setImageResource(R.drawable.ic_video_detail_like_true)
-                }
-
-            }
         }
     }
 }
