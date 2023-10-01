@@ -6,10 +6,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.android.youtubeproject.App
 
-@Database(entities = [MyFavoriteVideo::class, UserData::class], exportSchema = false, version = 1)
+@Database(entities = [UserData::class], exportSchema = false, version = 1)
 @TypeConverters(UriConverter::class)
 abstract class MyDatabase : RoomDatabase() {
-    abstract fun getMyVideoDao() : MyVideoDAO
     abstract fun getUser() : UserDao
 
     companion object {

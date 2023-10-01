@@ -29,6 +29,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                     response.body()?.let {
                         if(!it.items.isNullOrEmpty()){
                             for (favorites in it.items) {
+                                val id = favorites.id
                                 val title = favorites.snippet.title
                                 val url = favorites.snippet.thumbnails.medium.url
                                 val date = favorites.snippet.publishedAt
@@ -42,6 +43,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                 val dislike = false
                                 youtubeItems.add(
                                     YoutubeModel(
+                                        id,
                                         Constants.FAVORITES_TYPE,
                                         title,
                                         url,
