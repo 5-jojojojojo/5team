@@ -58,9 +58,6 @@ class MyVideoFragment : Fragment() {
             }
         }
 
-
-        adapter.addItems(MyPageFunc.loadVideos(), true)
-
         binding.ivDialog.setOnClickListener {
             CustomDialog(onSave = { item: UserData ->
                 viewModel.insertUser(item)
@@ -77,6 +74,11 @@ class MyVideoFragment : Fragment() {
         binding.btNewplaylist.setOnClickListener {
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.addItems(MyPageFunc.loadVideos(), true)
     }
 
 //    private fun saveIdInSpf(id: String) {
