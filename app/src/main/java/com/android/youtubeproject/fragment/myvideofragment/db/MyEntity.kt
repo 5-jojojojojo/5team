@@ -7,12 +7,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 
-@Entity(tableName = "my_video_table")
-data class MyFavoriteVideo (
-    @PrimaryKey @ColumnInfo(name = "id")
-    val id: Int,
-    val test: String
-)
 
 @Entity(tableName = "user_table")
 data class UserData(
