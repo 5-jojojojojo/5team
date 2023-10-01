@@ -13,6 +13,7 @@ import com.android.youtubeproject.R
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.ActivityVideoDetailBinding
 import com.android.youtubeproject.databinding.DialogVideoDetailInformationBinding
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -48,6 +49,8 @@ class VideoDetail : AppCompatActivity() {
         val gson = Gson()
         val type = object : TypeToken<YoutubeModel>() {}.type
         data2 = gson.fromJson(data, type)
+        bt3state = MyPageFunc.isExist(data2)
+
         val webView: WebView = findViewById(R.id.webview)
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
@@ -85,7 +88,11 @@ class VideoDetail : AppCompatActivity() {
                         delay(delaytime)
                         binding.videoDetailFbt2.show()
                         delay(delaytime)
-                        binding.videoDetailFbt3.show()
+                        binding.videoDetailFbt3.run {
+                            if(bt3state) setImageResource(R.drawable.ic_video_detail_liked)
+                            else setImageResource(R.drawable.ic_video_detail_disliked)
+                            show()
+                        }
                         delay(delaytime)
                         binding.videoDetailFbtmain.show()
                     } else {
@@ -146,10 +153,12 @@ class VideoDetail : AppCompatActivity() {
 
             "like" -> {
                 bt3state = !bt3state
-                if (!bt3state) {
-                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_disliked)
-                } else if (bt3state) {
+                if (bt3state) {
+                    MyPageFunc.saveVideo(data2)
                     binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_liked)
+                } else {
+                    MyPageFunc.deleteVideo(data2)
+                    binding.videoDetailFbt3.setImageResource(R.drawable.ic_video_detail_disliked)
                 }
 
             }

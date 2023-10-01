@@ -10,8 +10,7 @@ import com.android.youtubeproject.databinding.LayoutMyvideoItemBinding
 class MyVideoFragmentAdapter(var mContext: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     interface ItemClick {
-        fun onClick(position: Int)
-        fun onLongClick(position: Int)
+        fun onClick(position: Int, item: YoutubeModel)
 
     }
     interface DataChangeListener {
@@ -37,11 +36,7 @@ class MyVideoFragmentAdapter(var mContext: Context) :
 
         //항목 클릭 이벤트
         holder.binding.cvItem.setOnClickListener {
-            itemClick?.onClick(position)
-        }
-        holder.binding.cvItem.setOnLongClickListener {
-            itemClick?.onLongClick(position)
-            true
+            itemClick?.onClick(position, item)
         }
     }
 

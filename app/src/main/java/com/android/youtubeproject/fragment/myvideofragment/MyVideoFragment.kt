@@ -2,6 +2,7 @@ package com.android.youtubeproject.fragment.myvideofragment
 
 import CustomDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
 import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
-import com.android.youtubeproject.fragment.myvideofragment.db.UserDao
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
 import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
+import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
+import com.google.gson.GsonBuilder
 
 
 class MyVideoFragment : Fragment() {
@@ -65,15 +68,26 @@ class MyVideoFragment : Fragment() {
             }).show(requireFragmentManager(), "")
         }
 
+        binding.btNewplaylist.setOnClickListener {
+
+        }
+
+        //리스트아이템 클릭 시, 상세화면 표시
+        adapter.itemClick = object : MyVideoFragmentAdapter.ItemClick{
+            override fun onClick(position: Int, item: YoutubeModel) {
+                val intent = Intent(requireContext(), VideoDetail::class.java)
+                val gson = GsonBuilder().create()
+                val data = gson.toJson(item)
+                intent.putExtra("itemdata", data)
+                startActivity(intent)
+            }
+        }
+
         // Fragment가 생성될 때 한 번만 관찰자를 등록
         observeUserUpdates()
 //        requestUpdateUser(SharedPref.getString(requireContext(), "userId", ""))
 
         return binding.root
-
-        binding.btNewplaylist.setOnClickListener {
-
-        }
     }
 
     override fun onResume() {
