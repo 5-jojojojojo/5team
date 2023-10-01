@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.youtubeproject.MainActivity
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
@@ -151,6 +152,10 @@ class HomeFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = channeladapter
                 setHasFixedSize(true)
+            }
+            //myVideo이동
+            ivMyVideo.setOnClickListener {
+                (requireActivity() as MainActivity).onMyPageClicked()
             }
         }
 

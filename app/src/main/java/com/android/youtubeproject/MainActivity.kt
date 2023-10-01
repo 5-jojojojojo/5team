@@ -8,7 +8,7 @@ import com.android.youtubeproject.viewpager2adapter.ViewPager2Adapter
 import com.android.youtubeproject.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentActionListener {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val tabList = listOf("Home","Search", "Mypage")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,5 +51,9 @@ class MainActivity : AppCompatActivity() {
                 super.onPageScrollStateChanged(state)
             }
         })
+    }
+
+    override fun onMyPageClicked() {
+        binding.viewPager2.setCurrentItem(2, true)
     }
 }
