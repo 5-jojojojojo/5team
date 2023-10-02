@@ -64,4 +64,14 @@ object SharedPref {
         val sp = context.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE)
         return sp.getString(key, defaultVal) ?: ""
     }
+    fun saveIndex(context:Context,newIndex:Int){
+        val editor =context.getSharedPreferences("spf",Context.MODE_PRIVATE).edit()
+        editor.putInt("newIndex",newIndex)
+        editor.apply()
+    }
+    fun getIndex(context:Context):Int{
+        val sharedPreferences =context.getSharedPreferences("spf",Context.MODE_PRIVATE)
+
+        return sharedPreferences.getInt("newIndex",0)
+    }
 }

@@ -19,6 +19,7 @@ import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
+import com.android.youtubeproject.spf.SharedPref
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
 import com.android.youtubeproject.viewmodel.channelmodel.ChannelViewModel
@@ -46,7 +47,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         FavoritesView()
         setupListeners()
 
@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
             }
 
             nationViewModel.nationsServerResults(id)
-
+            SharedPref.saveIndex(requireContext(),newIndex)
         }
 
         return binding.root
@@ -91,7 +91,8 @@ class HomeFragment : Fragment() {
                 }
                 binding.homeSpinner.setItems(items)
             }
-
+            val getIndex = SharedPref.getIndex(requireContext())
+            binding.homeSpinner.selectItemByIndex(getIndex)
         }
         nationViewModel.apply {
             nationResults.observe(viewLifecycleOwner) {
