@@ -23,10 +23,11 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
     var nationItems: ArrayList<NationModel> = ArrayList()
     var channelId: ArrayList<String> = ArrayList()
+    var currentResults = 6
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-    fun nationsServerResults(videoCategoryId: String) {
+    fun nationsServerResults(videoCategoryId: Int,maxResults:Int) {
         nationItems.clear()
         channelId.clear()
 
@@ -35,9 +36,9 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
         val nationKey = hashMapOf(
             "part" to "snippet",
             "chart" to "mostPopular",
-            "maxResults" to "30",
+            "maxResults" to maxResults.toString(),
             "regionCode" to "KR",
-            "videoCategoryId" to videoCategoryId
+            "videoCategoryId" to videoCategoryId.toString()
         )
         apiService.getFavorites(nationKey)
             ?.enqueue(object : Callback<FavoritesData?> {

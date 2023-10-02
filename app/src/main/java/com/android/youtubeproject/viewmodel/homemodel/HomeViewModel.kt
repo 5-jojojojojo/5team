@@ -16,64 +16,89 @@ import retrofit2.Response
 class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     private val _homeReselts = MutableLiveData<List<YoutubeModel>>()
     val homeResult: LiveData<List<YoutubeModel>> get() = _homeReselts
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading : LiveData<Boolean> get() = _isLoading
     var youtubeItems: ArrayList<YoutubeModel> = ArrayList()
+    var currentResults = 6
 
 
-    fun FavoritesResults() {
-        apiService.getFavorites(HashMapData.favoritesKey)
+    fun FavoritesResults(maxResults:Int) {
+        youtubeItems.clear()
+        _isLoading.value = true
+
+        val favoritesKey = hashMapOf(
+            "part" to "snippet,statistics,contentDetails",
+            "chart" to "mostPopular",
+            "maxResults" to maxResults.toString(),
+            "videoCategoryId" to "0"
+        )
+        apiService.getFavorites(favoritesKey)
             ?.enqueue(object : Callback<FavoritesData?> {
                 override fun onResponse(
                     call: Call<FavoritesData?>,
                     response: Response<FavoritesData?>
                 ) {
-                    response.body()?.let {
-                        if(!it.items.isNullOrEmpty()){
-                            for (favorites in it.items) {
-                                val id = favorites.id
-                                val title = favorites.snippet.title
-                                val url = favorites.snippet.thumbnails.medium.url
-                                val date = favorites.snippet.publishedAt
-                                val description = favorites.snippet.localized.description
-                                val channelname = favorites.snippet.channelTitle
-                                val tags: List<String> = favorites.snippet.tags
-                                val localtitle = favorites.snippet.localized.title
-                                val localdescription = favorites.snippet.localized.description
-                                val videoid = favorites.id
-                                val like = false
-                                val dislike = false
-                                youtubeItems.add(
-                                    YoutubeModel(
-                                        id,
-                                        Constants.FAVORITES_TYPE,
-                                        title,
-                                        url,
-                                        date,
-                                        description,
-                                        channelname,
-                                        tags,
-                                        localtitle,
-                                        localdescription,
-                                        videoid,
-                                        like,
-                                        dislike
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            if(!it.items.isNullOrEmpty()){
+                                for (favorites in it.items) {
+                                    val id = favorites.id
+                                    val title = favorites.snippet.title
+                                    val url = favorites.snippet.thumbnails.medium.url
+                                    val date = favorites.snippet.publishedAt
+                                    val description = favorites.snippet.localized.description
+                                    val channelname = favorites.snippet.channelTitle
+                                    val tags: List<String> = favorites.snippet.tags
+                                    val localtitle = favorites.snippet.localized.title
+                                    val localdescription = favorites.snippet.localized.description
+                                    val videoid = favorites.id
+                                    val viewCount = favorites.statistics.viewCount
+                                    val likeCount = favorites.statistics.likeCount
+                                    val favoriteCount = favorites.statistics.favoriteCount
+                                    val commentCount = favorites.statistics.commentCount
+                                    val definition = favorites.contentDetails.definition
+                                    youtubeItems.add(
+                                        YoutubeModel(
+                                            id,
+                                            Constants.FAVORITES_TYPE,
+                                            title,
+                                            url,
+                                            date,
+                                            description,
+                                            channelname,
+                                            tags,
+                                            localtitle,
+                                            localdescription,
+                                            videoid,
+                                            viewCount,
+                                            likeCount,
+                                            favoriteCount,
+                                            commentCount,
+                                            definition
+                                        )
                                     )
-                                )
-                                Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
+                                    Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
+                                        .definition}")
+                                }
                             }
                         }
+                        HomeResult()
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("YouTubeProjects", "API 에러: $errorBody")
                     }
-                    HomeResult()
                 }
-
                 override fun onFailure(call: Call<FavoritesData?>, t: Throwable) {
+                    _isLoading.value = false
                     Log.e("YouTubeProjects", "에러 : ${t.message}")
                 }
             })
-
     }
 
     private fun HomeResult() {
         _homeReselts.value = youtubeItems
+        _isLoading.value = false
     }
 
 }
