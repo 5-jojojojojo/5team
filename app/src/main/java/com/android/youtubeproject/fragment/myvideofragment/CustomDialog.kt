@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 
 @SuppressLint("MissingInflatedId")
 class CustomDialog(
+    private val userData: UserData?,
     //리스트에 추가해 줄 생성자
     val onSave: (item: UserData) -> Unit
 
@@ -27,7 +28,7 @@ class CustomDialog(
 ) : DialogFragment() {
     //    private val dialog = Dialog(context)
     private lateinit var binding: DialogLayoutBinding
-    private val PICK_IMAGE_REQUEST = 1
+    private val REQUEST_CODE_DOCUMENT_IMAGE = 1
     private var imgUri: Uri = getUri(R.drawable.ic_baseline_add_photo_alternate_24)
 
 
@@ -49,6 +50,12 @@ class CustomDialog(
         var dialogId = binding.etDialogId
         var dialogImg = binding.ivDialog
 
+        userData?.run {
+            dialogName.setText(nickname)
+            dialogId.setText(id)
+            imgUri = picture
+            dialogImg.setImageURI(imgUri)
+        }
 
         var dialogNameError = binding.tvDialogNameError
         var dialogIdError = binding.tvDialogIdError
@@ -73,7 +80,7 @@ class CustomDialog(
                 Toast.makeText(requireContext(), "완료!", Toast.LENGTH_SHORT).show()
 
                 //사진가져오는 기능이 필요
-                val user = UserData(dialogId.text.toString(), dialogName.text.toString(), imgUri)
+                val user = UserData(0, dialogId.text.toString(), dialogName.text.toString(), imgUri)
 
                 onSave(user)
                 dismiss()
@@ -87,9 +94,11 @@ class CustomDialog(
     }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
+        startActivityForResult(intent, REQUEST_CODE_DOCUMENT_IMAGE)
     }
 
     fun getUri(resid: Int): Uri = Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + resid)
@@ -97,15 +106,15 @@ class CustomDialog(
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            val selectedImageUri = data.data
-            selectedImageUri?.let {
-                imgUri = it
-                binding.ivDialog.setImageURI(it)
+        if (requestCode == REQUEST_CODE_DOCUMENT_IMAGE && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                requireActivity().contentResolver.takePersistableUriPermission(uri, takeFlags)
+
+                imgUri = uri
+                binding.ivDialog.setImageURI(uri)
             }
-
-
-            // Now you can use the selectedImageUri to display the image or do further processing
         }
     }
 

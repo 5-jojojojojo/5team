@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.youtubeproject.MainActivity
@@ -17,6 +18,8 @@ import com.android.youtubeproject.api.model.CategoryModel
 import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.spf.SharedPref
@@ -39,6 +42,8 @@ class HomeFragment : Fragment() {
     private val categoryViewModel: CategoryViewModel by viewModels {CategoryViewModelFactory(apiServiceInstance)}
     private val nationViewModel: NationViewModel by viewModels {NationViewModelFactory(apiServiceInstance)}
     private val channelViewModel:ChannelViewModel by viewModels {ChannelViewModelFactory(apiServiceInstance)}
+    private val profileViewModel: MyVideoViewModel by activityViewModels()
+
     var categoryItems = ArrayList<CategoryModel>()
     private var nation_loading = true
     private var channel_loading = true
@@ -116,6 +121,17 @@ class HomeFragment : Fragment() {
             isLoading.observe(viewLifecycleOwner){isLoading ->
                 binding.channelLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
                 channel_loading = !isLoading
+            }
+        }
+
+        //유저정보가 갱신되면 앱바 프로필도 함께 갱신
+        profileViewModel.getUserByIndex(0)
+        profileViewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
+            userData?.let {
+                //해당 컨텐츠의 영구 권한 체크
+                if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
+                    binding.ivMyVideo.setImageURI(it.picture)
+                }
             }
         }
 

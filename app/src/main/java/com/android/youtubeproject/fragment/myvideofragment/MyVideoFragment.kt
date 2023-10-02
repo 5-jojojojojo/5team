@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
-import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
-import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
-import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.google.gson.GsonBuilder
 
@@ -26,10 +25,8 @@ class MyVideoFragment : Fragment() {
 
     private lateinit var binding: FragmentMyVideoBinding
     private lateinit var adapter: MyVideoFragmentAdapter
-
-    private val viewModel: MyVideoViewModel by viewModels {
-        MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
-    }
+    private val profileViewModel: MyVideoViewModel by activityViewModels()
+    private var dataForDialog: UserData? = null
 
 
     override fun onAttach(context: Context) {
@@ -62,9 +59,10 @@ class MyVideoFragment : Fragment() {
         }
 
         binding.ivDialog.setOnClickListener {
-            CustomDialog(onSave = { item: UserData ->
-                viewModel.insertUser(item)
-                requestUpdateUser(item.id)
+            CustomDialog(dataForDialog, onSave = { item: UserData ->
+                profileViewModel.insertUser(item).invokeOnCompletion {
+                    requestUpdateUser(0)
+                }
             }).show(requireFragmentManager(), "")
         }
 
@@ -85,7 +83,7 @@ class MyVideoFragment : Fragment() {
 
         // Fragment가 생성될 때 한 번만 관찰자를 등록
         observeUserUpdates()
-//        requestUpdateUser(SharedPref.getString(requireContext(), "userId", ""))
+        requestUpdateUser(0)
 
         return binding.root
     }
@@ -95,22 +93,24 @@ class MyVideoFragment : Fragment() {
         adapter.addItems(MyPageFunc.loadVideos(), true)
     }
 
-//    private fun saveIdInSpf(id: String) {
-//        SharedPref.setString(requireContext(), "userId", id)
-//    }
-
     // 사용자 정보를 요청하는 함수
-    private fun requestUpdateUser(id: String) {
-        viewModel.getUserById(id)
+    private fun requestUpdateUser(index: Int) {
+        profileViewModel.getUserByIndex(index)
     }
 
     // 사용자 정보가 변경될 때 UI를 업데이트하는 함수
     private fun observeUserUpdates() {
-        viewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
+        profileViewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
             userData?.let {
-                binding.ivUser.setImageURI(it.picture)
+                //해당 컨텐츠의 영구 권한 체크
+                if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
+                    binding.ivUser.setImageURI(it.picture)
+                }
+
                 binding.tvNickname.text = it.nickname
                 binding.tvUserId.text = it.id
+
+                dataForDialog = it  //다이얼로그에도 반영된 정보를 기준으로 편집하도록
             }
         }
     }
