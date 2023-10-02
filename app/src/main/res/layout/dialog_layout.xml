@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/iv_dialog"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/ic_baseline_add_photo_alternate_24"
         app:layout_constraintEnd_toEndOf="parent"
