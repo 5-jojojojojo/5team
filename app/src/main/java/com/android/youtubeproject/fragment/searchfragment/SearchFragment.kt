@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.youtubeproject.R
 import com.android.youtubeproject.api.NetWorkClient
@@ -66,7 +67,7 @@ class SearchFragment : Fragment() {
         searchAdapter = SearchFragmentAdapter(requireContext())
 
         binding.searchRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = GridLayoutManager(requireContext(),2)
             adapter = searchAdapter
             setHasFixedSize(true)
         }
