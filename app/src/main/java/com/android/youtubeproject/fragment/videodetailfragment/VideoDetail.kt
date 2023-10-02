@@ -151,7 +151,7 @@ class VideoDetail : AppCompatActivity() {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                viewModel.item.value!!.videoid
+                viewModel.item.value!!.id
             )
             type = "text/plain"
         }

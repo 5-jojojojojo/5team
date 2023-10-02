@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.Constants
-import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.EmptyViewBinding
 import com.android.youtubeproject.databinding.FavoritesitemsBinding
@@ -15,12 +14,12 @@ import com.bumptech.glide.Glide
 
 class HomeNationAdapter(private val context: Context):RecyclerView.Adapter<RecyclerView
 .ViewHolder>() {
-    var items = ArrayList<NationModel>()
+    var items = ArrayList<YoutubeModel>()
     var itemClick: ItemClick? = null
 
     inner class nationViewHolder(private val binding:FavoritesitemsBinding):RecyclerView.ViewHolder
         (binding.root){
-            fun bind(item: NationModel){
+            fun bind(item: YoutubeModel){
                 binding.apply {
                     Log.d("YouTubeProjects", "어댑터 데이터 : ${items}")
                     homeTitle.text = item.title
