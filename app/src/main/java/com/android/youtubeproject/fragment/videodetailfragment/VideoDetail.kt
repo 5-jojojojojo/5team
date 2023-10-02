@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android.youtubeproject.R
 import com.android.youtubeproject.api.model.YoutubeModel
@@ -21,57 +22,50 @@ import kotlinx.coroutines.launch
 
 class VideoDetail : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDetailBinding.inflate(layoutInflater) }
-    private val videoRepository by lazy {VideoRepository()}
-    private val viewModel: VideoDetailViewModel by viewModels { VideoDetailViewModelFactory(data2,videoRepository) }
-    private val webView: WebView by lazy {findViewById(R.id.webview)}
-    lateinit var data2: YoutubeModel
+    private val videoRepository by lazy { VideoRepository() }
+    private val gson by lazy { Gson() }
+    private val itemData: YoutubeModel by lazy {
+        val dataString = intent.getStringExtra("itemdata")
+        gson.fromJson(dataString, YoutubeModel::class.java)
+    }
+    private val viewModel: VideoDetailViewModel by viewModels {
+        VideoDetailViewModelFactory(itemData, videoRepository)
+    }
+    private val webView: WebView by lazy { findViewById(R.id.webview) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
         binding.videoDetailFbtmain.setOnClickListener {
-            ButtonAction("main")
+            viewModel.toggleButtonState("m")
         }
         binding.videoDetailFbt1.setOnClickListener {
-            ButtonAction("infomation")
+            viewModel.toggleButtonState("1")
         }
         binding.videoDetailFbt2.setOnClickListener {
-            ButtonAction("share")
+            viewModel.toggleButtonState("2")
         }
         binding.videoDetailFbt3.setOnClickListener {
-            ButtonAction("like")
-        }
-    }
-
-    fun ButtonAction(buttontype: String) {
-        when (buttontype) {
-            "main" -> {
-                viewModel.toggleButtonmState()
-            }
-
-            "infomation" -> {
-                showDialog()
-            }
-
-            "share" -> {
-                shareVideoUrl()
-            }
-
-            "like" -> {
-                viewModel.toggleButton3State()
-                viewModel.handleLikeAction(data2)
-            }
+            viewModel.toggleButtonState("3")
         }
     }
 
     fun initialize() {
         overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
-        jsonToModel()
-        viewModel.item.observe(this) { item ->
-            viewModel.addData(data2)
+        viewModel.formatVideoData()
+        viewModel.item.observe(this) {
+            viewModel.addData(viewModel.item.value!!)
         }
         viewModel.btmState.observe(this) { btmState ->
             animateButtons(btmState)
+        }
+        viewModel.bt1State.observe(this) {
+            showDialog()
+        }
+
+        viewModel.bt2State.observe(this) {
+            shareVideoUrl()
         }
         viewModel.bt3State.observe(this) { bt3State ->
             binding.videoDetailFbt3.run {
@@ -80,20 +74,14 @@ class VideoDetail : AppCompatActivity() {
             }
         }
         viewModel.videoId.observe(this) { videoId ->
-            val html = viewModel.getHtmlForVideo(videoId)
+            val html = viewModel.getHtml(videoId)
             webView.loadData(html, "text/html", "utf-8")
         }
-
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
         webView.setBackgroundColor(Color.WHITE)
     }
-    fun jsonToModel() {
-        val data = intent.getStringExtra("itemdata")
-        val gson = Gson()
-        val type = object : TypeToken<YoutubeModel>() {}.type
-        data2 = gson.fromJson(data, type)
-    }
+
 
     fun animateButtons(btmState: Boolean) {
         lifecycleScope.launch {
@@ -124,13 +112,12 @@ class VideoDetail : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         val binding_dialog = DialogVideoDetailInformationBinding.inflate(layoutInflater)
         builder.setView(binding_dialog.root)
-        binding_dialog.videoDetailDialogTextTitle.text = "영상 제목 : " + data2.title
-        binding_dialog.videoDetailDialogTextDate.text =
-            "게시 날짜 : " + data2.date.substring(0, 10).replace("-", "/")
-        binding_dialog.videoDetailDialogTextChannelname.text = "채널 명 : " + data2.channelname
-        binding_dialog.videoDetailDialogTextContent.text = "영상 설명 : " + data2.description
+        binding_dialog.videoDetailDialogTextTitle.text = viewModel.title
+        binding_dialog.videoDetailDialogTextDate.text = viewModel.date
+        binding_dialog.videoDetailDialogTextChannelname.text = viewModel.channelname
+        binding_dialog.videoDetailDialogTextContent.text = viewModel.description
         Glide.with(this)
-            .load(data2.url)
+            .load(viewModel.url)
             .into(binding_dialog.videoDetailDialogImage)
         builder.show()
     }
@@ -140,7 +127,7 @@ class VideoDetail : AppCompatActivity() {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                "https://www.youtube.com/watch?v=" + data2.videoid
+                viewModel.item.value!!.videoid
             )
             type = "text/plain"
         }
@@ -149,10 +136,11 @@ class VideoDetail : AppCompatActivity() {
             startActivity(chooser)
         }
     }
-
 }
 /*
 [해야될 일]
-1. MVVM패턴 적용하기 : Observe와 LiveData는 이해하고 코드를 돌아가게 만들수는 있으나, MVVM패턴이 맞는지 모르겠다.
+1. MVVM패턴 적용하기 : Observe와 LiveData는 이해하고 코드를 돌아가게 만들수는 있으나, MVVM패턴이 맞는지 모르겠다.(적당히 하고 스킵)
 2. 다이어로그 디자인하기 : 각 타이틀에 로고를 달아준다던지, 내용 뒤에 카드뷰를 넣어준다던지 등등 생각해보기.
+3. 스플래쉬 화면 만들기
+4. 두번째 목록에 있는것도 클릭하면 상세페이지로 넘어가게끔 하기
  */
