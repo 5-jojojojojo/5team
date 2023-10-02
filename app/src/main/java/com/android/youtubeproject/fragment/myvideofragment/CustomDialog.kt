@@ -57,7 +57,7 @@ class CustomDialog(
             dialogImg.setImageURI(imgUri)
         }
 
-        var dialogNameError = binding.tvDialogNameError
+        var dialogNameError = binding.tvNicknameError
         var dialogIdError = binding.tvDialogIdError
 
         dialogImg.setOnClickListener {
@@ -65,7 +65,7 @@ class CustomDialog(
         }
 
         // 순서 - 닉네임, 아이디
-        dialogName.addTextChangedListener(createNameTextWatcher(dialogName))
+        dialogName.addTextChangedListener(createNickNameTextWatcher(dialogName))
         dialogId.addTextChangedListener(createIdTextWatcher(dialogId))
         // Save 버튼
         binding.dialogSave.setOnClickListener {
@@ -118,8 +118,8 @@ class CustomDialog(
         }
     }
 
-    //dialog_name
-    private fun createNameTextWatcher(editText: EditText): TextWatcher {
+    //닉네임 유효성 : 3자 이상, 15자 이하의 영문 대/소문자, 숫자, 밑줄(_)만 허용, 특수 문자X
+    private fun createNickNameTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
@@ -136,13 +136,16 @@ class CustomDialog(
                 count: Int
             ) =
                 with(binding) {
-//                    val id = s.toString()
-//                    val regexPattern = Regex("\\b[가-힣]{2,}\\b")
-//                    if (id.isNotEmpty() && regexPattern.matches(id)) {
-//                        tvDialogNameError.visibility = View.INVISIBLE
-//                    } else {
-//                        tvDialogIdError.visibility = View.VISIBLE
-//                    }
+                    val nickname = s.toString()
+                    val regexPattern = Regex("^[a-zA-Z0-9_]{3,15}$")
+
+                    if (nickname.isNotEmpty() && regexPattern.matches(nickname)) {
+                        // 닉네임이 유효한 경우
+                        tvNicknameError.visibility = View.INVISIBLE
+                    } else {
+                        // 닉네임이 유효하지 않은 경우
+                        tvNicknameError.visibility = View.VISIBLE
+                    }
                 }
 
             override fun afterTextChanged(s: Editable?) {
@@ -150,6 +153,7 @@ class CustomDialog(
         }
     }
 
+    //ID 유효성 : 4자 이상, 16자 이하의 영문 대/소문자, 숫자, 밑줄(_)만 허용, 공백X
     private fun createIdTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(
@@ -167,13 +171,16 @@ class CustomDialog(
                 count: Int
             ) =
                 with(binding) {
-//                    val id = s.toString()
-//                    val regexPattern = Regex("\\b[가-힣]{2,}\\b")
-//                    if (id.isNotEmpty() && regexPattern.matches(id)) {
-//                        tvDialogNameError.visibility = View.INVISIBLE
-//                    } else {
-//                        tvDialogIdError.visibility = View.VISIBLE
-//                    }
+                    val id = s.toString()
+                    val regexPattern = Regex("^[a-zA-Z0-9_]{4,16}$")
+
+                    if (id.isNotEmpty() && regexPattern.matches(id)) {
+                        // ID가 유효한 경우
+                        tvDialogIdError.visibility = View.INVISIBLE // 오류 메시지를 숨깁니다.
+                    } else {
+                        // ID가 유효하지 않은 경우
+                        tvDialogIdError.visibility = View.VISIBLE // 오류 메시지를 표시합니다.
+                    }
                 }
 
             override fun afterTextChanged(s: Editable?) {
