@@ -12,4 +12,6 @@ object Constants {
     var CHANNEL_TYPE = 2
 
     var EMPTY_TYPE = 3
+
+    var SEARCH_TYPE = 4
 }
