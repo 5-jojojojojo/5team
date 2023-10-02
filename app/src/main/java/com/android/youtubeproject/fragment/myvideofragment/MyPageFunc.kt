@@ -15,17 +15,32 @@ import java.lang.Exception
 object MyPageFunc {
     private const val MY_VIDEO = "MY_VIDEO"         //실제 상세 내용
 
-    // YoutubeModel 목록을 SharedPreferences에 저장하는 메서드
+    /**
+     * 상세 연동 없이 마이비디오에 테스트 데이터 입력하는 함수
+     *
+     * @param dataList YoutubeModel 상세에서 사용하는 데이타
+     */
     fun testDummy(dataList: ArrayList<YoutubeModel>) {
         SharedPref.setString(App.instance.applicationContext, MY_VIDEO, convertToString(dataList.toMutableList()))
     }
 
-    // YoutubeModel 목록을 SharedPreferences에 저장하는 메서드 (Context를 직접 지정할 수 있음)
+
+    /**
+     * 상세 연동 없이 마이비디오에 테스트 데이터 입력하는 함수
+     *
+     * @param context 컨텍스트
+     * @param dataList YoutubeModel 상세에서 사용하는 데이타
+     */
     fun testDummy(context: Context, dataList: MutableList<YoutubeModel>) {
         SharedPref.setString(context, MY_VIDEO, convertToString(dataList))
     }
 
-    // YoutubeModel을 내 보관함에 저장하는 메서드
+    /**
+     * SharedPreference에 마이비디오를 저장하는 함수
+     * 저장 상태여부에 따라 토스트 발생
+     *
+     * @param data YoutubeModel
+     */
     fun saveVideo(data: YoutubeModel) {
         val context = App.instance.applicationContext
         val prevSaveList = SharedPref.getString(context, MY_VIDEO, "")
@@ -52,7 +67,11 @@ object MyPageFunc {
 
     }
 
-    // YoutubeModel을 내 보관함에서 삭제하는 메서드
+    /**
+     * SharedPreference에서 마이비디오를 삭제하는 함수
+     * 삭제 여부에 따라 토스트 발생
+     * @param data YoutubeModel
+     */
     fun deleteVideo(data: YoutubeModel) {
         val context = App.instance.applicationContext
         val prevSaveList = SharedPref.getString(context, MY_VIDEO, "")
@@ -66,10 +85,20 @@ object MyPageFunc {
         }
     }
 
-    // 특정 ID를 가진 YoutubeModel이 내 보관함에 존재하는지 확인하는 메서드
+    /**
+     * SharedPreference에 해당 비디오가 저장되어 있는지 체크하는 함수
+     *
+     * @param data YoutubeModel
+     * @return true 존재함
+     */
     fun isExist(data: YoutubeModel): Boolean = isExist(data.id)
 
-    // 특정 ID를 가진 YoutubeModel이 내 보관함에 존재하는지 확인하는 메서드
+    /**
+     * SharedPreference에 해당비디오가 존재하는지 체크하는 함수
+     *
+     * @param id 비디오 아이디
+     * @return true 존재함
+     */
     fun isExist(id: String): Boolean {
         val context = App.instance.applicationContext
         val prevSaveList = SharedPref.getString(context, MY_VIDEO, "")
@@ -78,7 +107,11 @@ object MyPageFunc {
         return prevList.any { it.id == id }
     }
 
-    // SharedPreferences에서 저장된 YoutubeModel 목록을 불러오는 메서드
+    /**
+     * SharedPreference에서 비디오 목록을 로드
+     *
+     * @return MutableList<YoutubeModel>
+     */
     fun loadVideos(): MutableList<YoutubeModel> {
         val context = App.instance.applicationContext
         val prevSaveList = SharedPref.getString(context, MY_VIDEO, "")
@@ -86,7 +119,12 @@ object MyPageFunc {
         return convertToObject(prevSaveList)
     }
 
-    // YoutubeModel 목록을 JSON 문자열로 변환하는 메서드
+    /**
+     * MutableList<YoutubeModel>를 입력받아서 String으로 전환하는 함수
+     *
+     * @param dataList MutableList<YoutubeModel>
+     * @return JsonString
+     */
     private fun convertToString(dataList: MutableList<YoutubeModel>): String {
         return GsonBuilder()
             .disableHtmlEscaping()
@@ -94,7 +132,12 @@ object MyPageFunc {
             .toJson(dataList)
     }
 
-    // JSON 문자열을 YoutubeModel 목록으로 변환하는 메서드
+    /**
+     * jsonString을 입력 받아서 MutableList<YoutubeModel>객체로 전환
+     *
+     * @param jsonStr jsonString
+     * @return MutableList<YoutubeModel>
+     */
     private fun convertToObject(jsonStr: String): MutableList<YoutubeModel> {
         return try {
             GsonBuilder().create().fromJson(jsonStr, Array<YoutubeModel>::class.java).toMutableList()
@@ -103,7 +146,14 @@ object MyPageFunc {
         }
     }
 
-    // 주어진 Uri에 대한 지속적인 권한이 있는지 확인하는 메서드
+    /**
+     * 입력받은 uri에 대한 읽기 권한이 영구적인지 체크하는 함수
+     * 권한이 영구적이지 않으면 토스트 발생
+     *
+     * @param activity FragmentActivity
+     * @param pictureUri uri
+     * @return true 영구적인 권한을 취득한 상태
+     */
     fun hasPersistedUriPermissions(activity: FragmentActivity, pictureUri: Uri): Boolean {
         val persistedUriPermissions = activity.contentResolver.persistedUriPermissions
         val hasPermission = persistedUriPermissions.any { uriPermission ->
