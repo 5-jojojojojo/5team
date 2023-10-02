@@ -28,7 +28,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
         _isLoading.value = true
 
         val favoritesKey = hashMapOf(
-            "part" to "snippet",
+            "part" to "snippet,statistics,contentDetails",
             "chart" to "mostPopular",
             "maxResults" to maxResults.toString(),
             "videoCategoryId" to "0"
@@ -53,8 +53,11 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                     val localtitle = favorites.snippet.localized.title
                                     val localdescription = favorites.snippet.localized.description
                                     val videoid = favorites.id
-                                    val like = false
-                                    val dislike = false
+                                    val viewCount = favorites.statistics.viewCount
+                                    val likeCount = favorites.statistics.likeCount
+                                    val favoriteCount = favorites.statistics.favoriteCount
+                                    val commentCount = favorites.statistics.commentCount
+                                    val definition = favorites.contentDetails.definition
                                     youtubeItems.add(
                                         YoutubeModel(
                                             id,
@@ -68,11 +71,15 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                             localtitle,
                                             localdescription,
                                             videoid,
-                                            like,
-                                            dislike
+                                            viewCount,
+                                            likeCount,
+                                            favoriteCount,
+                                            commentCount,
+                                            definition
                                         )
                                     )
-                                    Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems}")
+                                    Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
+                                        .definition}")
                                 }
                             }
                         }
