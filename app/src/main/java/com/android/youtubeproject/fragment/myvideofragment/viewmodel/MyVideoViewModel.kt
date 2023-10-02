@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
 import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
@@ -24,11 +25,11 @@ class MyVideoViewModel(private val repository: MyVideoRepository) : ViewModel() 
     private val _selectedUser = MutableLiveData<UserData?>()
     val selectedUser: LiveData<UserData?> get() = _selectedUser
 
-    fun getUserById(id: String) = viewModelScope.launch {
-        _selectedUser.value = repository.getUserById(id)
+    fun getUserByIndex(index: Int) = viewModelScope.launch {
+        _selectedUser.value = repository.getUserByIndex(index)
     }
 
-    fun insertUser(user: UserData) = viewModelScope.launch {
+    fun insertUser(user: UserData): Job = viewModelScope.launch {
         repository.insertUser(user)
     }
 

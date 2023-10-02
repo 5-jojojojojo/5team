@@ -5,8 +5,8 @@ import com.android.youtubeproject.fragment.myvideofragment.db.UserData
 
 class MyVideoRepository(private val userDao: UserDao) {
 
-    suspend fun getUserById(id: String): UserData? {
-        return userDao.getUserById(id)
+    suspend fun getUserByIndex(index: Int): UserData? {
+        return userDao.getUserByIndex(index)
     }
 
     suspend fun insertUser(user: UserData) {

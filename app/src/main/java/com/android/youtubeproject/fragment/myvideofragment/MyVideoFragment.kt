@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -63,8 +64,9 @@ class MyVideoFragment : Fragment() {
 
         binding.ivDialog.setOnClickListener {
             CustomDialog(onSave = { item: UserData ->
-                viewModel.insertUser(item)
-                requestUpdateUser(item.id)
+                viewModel.insertUser(item).invokeOnCompletion {
+                    requestUpdateUser(0)
+                }
             }).show(requireFragmentManager(), "")
         }
 
@@ -85,7 +87,7 @@ class MyVideoFragment : Fragment() {
 
         // Fragment가 생성될 때 한 번만 관찰자를 등록
         observeUserUpdates()
-//        requestUpdateUser(SharedPref.getString(requireContext(), "userId", ""))
+        requestUpdateUser(0)
 
         return binding.root
     }
@@ -95,20 +97,27 @@ class MyVideoFragment : Fragment() {
         adapter.addItems(MyPageFunc.loadVideos(), true)
     }
 
-//    private fun saveIdInSpf(id: String) {
-//        SharedPref.setString(requireContext(), "userId", id)
-//    }
-
     // 사용자 정보를 요청하는 함수
-    private fun requestUpdateUser(id: String) {
-        viewModel.getUserById(id)
+    private fun requestUpdateUser(index: Int) {
+        viewModel.getUserByIndex(index)
     }
 
     // 사용자 정보가 변경될 때 UI를 업데이트하는 함수
     private fun observeUserUpdates() {
         viewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
             userData?.let {
-                binding.ivUser.setImageURI(it.picture)
+                //영구 권한 체크
+                val persistedUriPermissions = requireActivity().contentResolver.persistedUriPermissions
+                val hasPermission = persistedUriPermissions.any { uriPermission ->
+                    uriPermission.uri == it.picture
+                }
+                if (hasPermission) {
+                    binding.ivUser.setImageURI(it.picture)
+                }
+                else {
+                    Toast.makeText(requireContext(), "해당이미지를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                }
+
                 binding.tvNickname.text = it.nickname
                 binding.tvUserId.text = it.id
             }

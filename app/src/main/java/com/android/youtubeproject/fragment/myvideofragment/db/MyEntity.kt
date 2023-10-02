@@ -10,7 +10,8 @@ import androidx.room.TypeConverters
 
 @Entity(tableName = "user_table")
 data class UserData(
-    @PrimaryKey val id: String,
+    @PrimaryKey val index: Int,
+    val id: String,
     val nickname: String,
     @TypeConverters(UriConverter::class)
     val picture: Uri
