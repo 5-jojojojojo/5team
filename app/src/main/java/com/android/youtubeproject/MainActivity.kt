@@ -66,4 +66,9 @@ class MainActivity : AppCompatActivity(), FragmentActionListener {
     override fun onMyPageClicked() {
         binding.viewPager2.setCurrentItem(2, true)
     }
+
+    override fun onSearchPageClicked() {
+        binding.viewPager2.setCurrentItem(1, true)
+    }
+
 }

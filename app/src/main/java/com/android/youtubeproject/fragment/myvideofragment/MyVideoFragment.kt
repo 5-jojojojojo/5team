@@ -10,12 +10,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.android.youtubeproject.MainActivity
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
+import com.android.youtubeproject.fragment.searchfragment.SearchFragment
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.google.gson.GsonBuilder
 
@@ -67,7 +70,7 @@ class MyVideoFragment : Fragment() {
         }
 
         binding.btNewplaylist.setOnClickListener {
-
+            (requireActivity() as MainActivity).onSearchPageClicked()
         }
 
         //리스트아이템 클릭 시, 상세화면 표시
