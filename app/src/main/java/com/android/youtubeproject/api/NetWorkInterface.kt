@@ -5,6 +5,7 @@ import com.android.youtubeproject.api.serverdata.FavoritesData
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.serverdata.CategoryData
 import com.android.youtubeproject.api.serverdata.ChannelData
+import com.android.youtubeproject.api.serverdata.SearchData
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,4 +26,9 @@ interface NetWorkInterface {
     fun getChannel(
         @QueryMap idQueryMap: HashMap<String, String>
     ): Call<ChannelData?>?
+
+    @GET("search?key=${Constants.Authorization}")
+    fun getSearch(
+        @QueryMap queryMap: HashMap<String, String>
+    ): Call<SearchData?>?
 }
