@@ -24,11 +24,11 @@ data class Snippet(
     val description: String,
     val customUrl: String,
     val publishedAt: String,
-    val thumbnails: Thumbnails,
-    val localized: Localized
+    val thumbnails: SearchThumbnails,
+    val localized: SearchLocalized
 )
 
-data class Thumbnails(
+data class SearchThumbnails(
     val default: Thumbnail,
     val medium: Thumbnail,
     val high: Thumbnail
@@ -40,7 +40,7 @@ data class Thumbnail(
     val height: Int
 )
 
-data class Localized(
+data class SearchLocalized(
     val title: String,
     val description: String
 )
