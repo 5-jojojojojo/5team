@@ -82,16 +82,24 @@
 
             <com.skydoves.powerspinner.PowerSpinnerView
                 android:id="@+id/home_spinner"
-                android:layout_width="0dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:background="@color/RedA200"
+                android:textColor="@color/white"
                 android:hint="Category"
                 android:padding="10dp"
-                android:textColorHint="@color/brouwn100"
+                android:layout_marginStart="15dp"
+                android:textColorHint="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/view2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_recyclerView1"
+                app:spinner_divider_show="true"
+                app:spinner_divider_color="@color/white"
+                app:spinner_popup_animation="fade"
+                app:spinner_popup_background="@color/Red200"
+                app:spinner_popup_elevation="10dp"
                 tools:ignore="HardcodedText,UnusedAttribute" />
 
             <View
