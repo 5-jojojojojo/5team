@@ -28,7 +28,7 @@
                     android:id="@+id/iv_user"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="60dp"
                     android:src="@drawable/ic_baseline_person_outline_24"
                     app:civ_circle_background_color="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -50,8 +50,6 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="닉네임"
-                    android:textSize="20sp"
-                    android:textColor="@color/white"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,11 +62,18 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     android:text="아이디"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
+
+                <!--                    <ImageButton-->
+                <!--                        android:layout_width="30dp"-->
+                <!--                        android:layout_height="30dp"-->
+                <!--                        android:layout_marginLeft="10dp"-->
+                <!--                        android:src="@drawable/ic_baseline_content_copy_24"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="@+id/tv_userId"-->
+                <!--                        app:layout_constraintStart_toEndOf="@id/tv_userId"-->
+                <!--                        app:layout_constraintTop_toTopOf="@+id/tv_userId" />-->
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
