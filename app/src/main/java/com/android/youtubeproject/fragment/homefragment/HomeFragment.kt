@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.MainActivity
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
@@ -21,6 +22,8 @@ import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
+import com.android.youtubeproject.infinityscroll.FavoritesScrollListener
+import com.android.youtubeproject.infinityscroll.NationScrollListener
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.spf.SharedPref
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
@@ -45,6 +48,7 @@ class HomeFragment : Fragment() {
     private val profileViewModel: MyVideoViewModel by activityViewModels()
 
     var categoryItems = ArrayList<CategoryModel>()
+    private var favorites_loading = true
     private var nation_loading = true
     private var channel_loading = true
     override fun onCreateView(
@@ -56,14 +60,14 @@ class HomeFragment : Fragment() {
         setupListeners()
 
         binding.homeSpinner.setOnSpinnerItemSelectedListener { oldIndex, oldItem, newIndex, newItem: String ->
-            var id = ""
+            var id = 0
             for (item in categoryItems) {
                 if (item.category == newItem) {
-                    id = item.id
+                    id = item.id.toInt()
                 }
             }
 
-            nationViewModel.nationsServerResults(id)
+            nationViewModel.nationsServerResults(id, nationViewModel.currentResults)
             SharedPref.saveIndex(requireContext(),newIndex)
         }
 
@@ -76,16 +80,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.homeResult.observe(viewLifecycleOwner) {
-            Log.d("YouTubeProjects", "프래그먼트 데이터 : ${it}")
-            if (homeadapter != null) {
-                Log.d("YouTubeProjects", "어댑터 정상작동?")
+        homeViewModel.apply {
+            homeResult.observe(viewLifecycleOwner) {
+                homeadapter.items.clear()
                 homeadapter.items.addAll(it)
                 Log.d("YouTubeProjects", "adapter.items에 뭐가 찍혀있는데?${homeadapter.items}")
                 homeadapter.notifyDataSetChanged()
-
-            } else Log.d("YouTubeProjects", "어댑터 널값?")
+                isLoading.observe(viewLifecycleOwner){isLoading ->
+                    binding.favoritesLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
+                    favorites_loading = !isLoading
+                }
         }
+    }
         categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             Log.d("YouTubeProjects", "스니펫 데이터 : ${it}")
             categoryItems.addAll(it)
@@ -158,11 +164,13 @@ class HomeFragment : Fragment() {
 
                     }
                 }
+                addOnScrollListener(FavoritesScrollListener(homeViewModel))
                 setHasFixedSize(true)
             }
             homeRecyclerView2.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = nationadapter
+                addOnScrollListener(NationScrollListener(nationViewModel))
                 setHasFixedSize(true)
             }
             homeRecyclerView3.apply {
@@ -179,7 +187,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        homeViewModel.FavoritesResults()
+        homeViewModel.FavoritesResults(homeViewModel.currentResults)
         categoryViewModel.categoryServerResults()
     }
 }
