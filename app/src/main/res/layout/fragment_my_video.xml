@@ -26,8 +26,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_user"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
                     android:layout_marginTop="60dp"
                     android:src="@drawable/ic_baseline_person_outline_24"
                     app:civ_circle_background_color="@color/white"

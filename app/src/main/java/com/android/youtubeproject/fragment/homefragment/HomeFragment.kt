@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -46,6 +49,7 @@ class HomeFragment : Fragment() {
     private val nationViewModel: NationViewModel by viewModels {NationViewModelFactory(apiServiceInstance)}
     private val channelViewModel:ChannelViewModel by viewModels {ChannelViewModelFactory(apiServiceInstance)}
     private val profileViewModel: MyVideoViewModel by activityViewModels()
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     var categoryItems = ArrayList<CategoryModel>()
     private var favorites_loading = true
@@ -159,7 +163,7 @@ class HomeFragment : Fragment() {
                             val gson = GsonBuilder().create()
                             val data = gson.toJson(homeadapter.items[position])
                             intent.putExtra("itemdata", data)
-                            startActivity(intent)
+                            resultLauncher.launch(intent)
                         }
 
                     }
@@ -180,6 +184,15 @@ class HomeFragment : Fragment() {
             }
             //myVideo이동
             ivMyVideo.setOnClickListener {
+                (requireActivity() as MainActivity).onMyPageClicked()
+            }
+        }
+
+        resultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                //마이비디오로 이동
                 (requireActivity() as MainActivity).onMyPageClicked()
             }
         }

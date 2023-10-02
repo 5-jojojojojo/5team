@@ -14,6 +14,11 @@ import com.android.youtubeproject.R
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.ActivityVideoDetailBinding
 import com.android.youtubeproject.databinding.DialogVideoDetailInformationBinding
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
+import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
+import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -32,6 +37,9 @@ class VideoDetail : AppCompatActivity() {
         VideoDetailViewModelFactory(itemData, videoRepository)
     }
     private val webView: WebView by lazy { findViewById(R.id.webview) }
+    private val profileViewModel: MyVideoViewModel by viewModels {
+        MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +56,11 @@ class VideoDetail : AppCompatActivity() {
         }
         binding.videoDetailFbt3.setOnClickListener {
             viewModel.toggleButtonState("3")
+        }
+        //myVideo이동
+        binding.ivMyVideo.setOnClickListener {
+            setResult(RESULT_OK)
+            finish()
         }
     }
 
@@ -80,6 +93,17 @@ class VideoDetail : AppCompatActivity() {
         webView.webViewClient = WebViewClient()
         webView.settings.javaScriptEnabled = true
         webView.setBackgroundColor(Color.WHITE)
+
+        //유저정보가 갱신되면 앱바 프로필도 함께 갱신
+        profileViewModel.getUserByIndex(0)
+        profileViewModel.selectedUser.observe(this) { userData ->
+            userData?.let {
+                //해당 컨텐츠의 영구 권한 체크
+                if (MyPageFunc.hasPersistedUriPermissions(this, it.picture)) {
+                    binding.ivMyVideo.setImageURI(it.picture)
+                }
+            }
+        }
     }
 
 
