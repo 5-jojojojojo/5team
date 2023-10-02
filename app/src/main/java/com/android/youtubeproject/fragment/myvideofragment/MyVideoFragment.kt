@@ -26,7 +26,7 @@ class MyVideoFragment : Fragment() {
     private lateinit var binding: FragmentMyVideoBinding
     private lateinit var adapter: MyVideoFragmentAdapter
     private val profileViewModel: MyVideoViewModel by activityViewModels()
-
+    private var dataForDialog: UserData? = null
 
 
     override fun onAttach(context: Context) {
@@ -59,7 +59,7 @@ class MyVideoFragment : Fragment() {
         }
 
         binding.ivDialog.setOnClickListener {
-            CustomDialog(onSave = { item: UserData ->
+            CustomDialog(dataForDialog, onSave = { item: UserData ->
                 profileViewModel.insertUser(item).invokeOnCompletion {
                     requestUpdateUser(0)
                 }
@@ -109,6 +109,8 @@ class MyVideoFragment : Fragment() {
 
                 binding.tvNickname.text = it.nickname
                 binding.tvUserId.text = it.id
+
+                dataForDialog = it  //다이얼로그에도 반영된 정보를 기준으로 편집하도록
             }
         }
     }

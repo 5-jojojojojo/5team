@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 
 @SuppressLint("MissingInflatedId")
 class CustomDialog(
+    private val userData: UserData?,
     //리스트에 추가해 줄 생성자
     val onSave: (item: UserData) -> Unit
 
@@ -49,6 +50,12 @@ class CustomDialog(
         var dialogId = binding.etDialogId
         var dialogImg = binding.ivDialog
 
+        userData?.run {
+            dialogName.setText(nickname)
+            dialogId.setText(id)
+            imgUri = picture
+            dialogImg.setImageURI(imgUri)
+        }
 
         var dialogNameError = binding.tvDialogNameError
         var dialogIdError = binding.tvDialogIdError
