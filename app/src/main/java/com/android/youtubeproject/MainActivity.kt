@@ -2,18 +2,28 @@ package com.android.youtubeproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.android.youtubeproject.viewpager2adapter.ViewPager2Adapter
 import com.android.youtubeproject.databinding.ActivityMainBinding
+import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
+import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity(), FragmentActionListener {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val tabList = listOf("Home","Search", "Mypage")
+    private val profileViewModel: MyVideoViewModel by viewModels {
+        MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        profileViewModel //강제 초기화가 필요
         binding.viewPager2.adapter = ViewPager2Adapter(this)
         binding.viewPager2.setUserInputEnabled(false)
         TabLayoutMediator(binding.tabLayout, binding.viewPager2) { tab, position ->

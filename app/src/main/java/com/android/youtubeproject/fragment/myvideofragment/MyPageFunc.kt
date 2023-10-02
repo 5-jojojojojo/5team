@@ -2,8 +2,11 @@ package com.android.youtubeproject.fragment.myvideofragment
 
 
 import android.content.Context
+import android.net.Uri
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import com.android.youtubeproject.App
+import com.android.youtubeproject.R
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.spf.SharedPref
 import com.google.gson.GsonBuilder
@@ -85,5 +88,17 @@ object MyPageFunc {
         } catch (e: Exception) {
             mutableListOf()
         }
+    }
+
+    fun hasPersistedUriPermissions(activity: FragmentActivity, pictureUri: Uri): Boolean {
+        val persistedUriPermissions = activity.contentResolver.persistedUriPermissions
+        val hasPermission = persistedUriPermissions.any { uriPermission ->
+            uriPermission.uri == pictureUri
+        }
+
+        if(!hasPermission) {
+            Toast.makeText(activity, R.string.has_not_permission_dont_profile_img, Toast.LENGTH_SHORT).show()
+        }
+        return hasPermission
     }
 }

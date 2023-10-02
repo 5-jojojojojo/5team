@@ -9,15 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentMyVideoBinding
-import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
-import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
-import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
 import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
 import com.google.gson.GsonBuilder
 
@@ -27,10 +25,8 @@ class MyVideoFragment : Fragment() {
 
     private lateinit var binding: FragmentMyVideoBinding
     private lateinit var adapter: MyVideoFragmentAdapter
+    private val profileViewModel: MyVideoViewModel by activityViewModels()
 
-    private val viewModel: MyVideoViewModel by viewModels {
-        MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
-    }
 
 
     override fun onAttach(context: Context) {
@@ -64,7 +60,7 @@ class MyVideoFragment : Fragment() {
 
         binding.ivDialog.setOnClickListener {
             CustomDialog(onSave = { item: UserData ->
-                viewModel.insertUser(item).invokeOnCompletion {
+                profileViewModel.insertUser(item).invokeOnCompletion {
                     requestUpdateUser(0)
                 }
             }).show(requireFragmentManager(), "")
@@ -99,23 +95,16 @@ class MyVideoFragment : Fragment() {
 
     // 사용자 정보를 요청하는 함수
     private fun requestUpdateUser(index: Int) {
-        viewModel.getUserByIndex(index)
+        profileViewModel.getUserByIndex(index)
     }
 
     // 사용자 정보가 변경될 때 UI를 업데이트하는 함수
     private fun observeUserUpdates() {
-        viewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
+        profileViewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
             userData?.let {
-                //영구 권한 체크
-                val persistedUriPermissions = requireActivity().contentResolver.persistedUriPermissions
-                val hasPermission = persistedUriPermissions.any { uriPermission ->
-                    uriPermission.uri == it.picture
-                }
-                if (hasPermission) {
+                //해당 컨텐츠의 영구 권한 체크
+                if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
                     binding.ivUser.setImageURI(it.picture)
-                }
-                else {
-                    Toast.makeText(requireContext(), "해당이미지를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
 
                 binding.tvNickname.text = it.nickname
