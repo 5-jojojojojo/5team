@@ -60,7 +60,10 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                             val favoriteCount = items.statistics.favoriteCount
                             val commentCount = items.statistics.commentCount
                             val definition = items.contentDetails.definition
-                            nationItems.add(YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition))
+                            val videolength = items.contentDetails.duration
+                            val videoPublishedDatetime = items.snippet.publishedAt
+                            val channeltitle = items.snippet.channelTitle
+                            nationItems.add(YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition,videolength,videoPublishedDatetime,channeltitle))
                         }
                         for (item in nationItems) {
                             channelIdList.add(item.channelId)

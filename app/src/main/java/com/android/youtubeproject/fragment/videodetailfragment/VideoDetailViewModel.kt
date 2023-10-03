@@ -7,15 +7,15 @@ import com.android.youtubeproject.api.model.YoutubeModel
 
 class VideoDetailViewModel(Item: YoutubeModel, private val repository: VideoRepository) :
     ViewModel() {
-    private val _btmState = MutableLiveData<Boolean>().apply { value = true }
-    val btmState: LiveData<Boolean> get() = _btmState
+    private val _moreButton = MutableLiveData<Boolean>().apply { value = true }
+    val moreButton: LiveData<Boolean> get() = _moreButton
 
-    private val _bt1State = MutableLiveData<Boolean>()
-    val bt1State: LiveData<Boolean> get() = _bt1State
-    private val _bt2State = MutableLiveData<Boolean>()
-    val bt2State: LiveData<Boolean> get() = _bt2State
-    private val _bt3State = MutableLiveData<Boolean>().apply { value = Item.like }
-    val bt3State: LiveData<Boolean> get() = _bt3State
+    private val _infoButton = MutableLiveData<Boolean>()
+    val infoButton: LiveData<Boolean> get() = _infoButton
+    private val _shareButton = MutableLiveData<Boolean>()
+    val shareButton: LiveData<Boolean> get() = _shareButton
+    private val _likeButton = MutableLiveData<Boolean>().apply { value = Item.like }
+    val likeButton: LiveData<Boolean> get() = _likeButton
 
     private val _item = MutableLiveData<YoutubeModel>().apply { value = Item }
     val item: LiveData<YoutubeModel> get() = _item
@@ -40,42 +40,42 @@ class VideoDetailViewModel(Item: YoutubeModel, private val repository: VideoRepo
     }
     fun toggleButtonState(buttonType: String) {
         when (buttonType) {
-            "m" -> {
-                _btmState.value = _btmState.value?.let {
+            "more" -> {
+                _moreButton.value = _moreButton.value?.let {
                     !it
                 }
             }
 
-            "1" -> {
-                _bt1State.value = _bt1State.value?.let {
+            "info" -> {
+                _infoButton.value = _infoButton.value?.let {
                     !it
                 } ?: true
             }
 
-            "2" -> {
-                _bt2State.value = _bt2State.value?.let {
+            "share" -> {
+                _shareButton.value = _shareButton.value?.let {
                     !it
                 } ?: true
             }
 
-            "3" -> {
-                _bt3State.value = !_bt3State.value!!
+            "like" -> {
+                _likeButton.value = !_likeButton.value!!
                 updatemyvideo(_item.value!!)
             }
         }
     }
 
     fun addData(data2: YoutubeModel) {
-        _bt3State.value = repository.isExist(data2)
+        _likeButton.value = repository.isExist(data2)
     }
 
     fun getHtml(videoId: String): String {
         return repository.getHtmlForVideo(videoId)
     }
     fun updatemyvideo(video:YoutubeModel){
-        if (!_bt3State.value!!) {
+        if (!_likeButton.value!!) {
             repository.deleteVideo(video)
-        } else if(_bt3State.value!!){
+        } else if(_likeButton.value!!){
             repository.saveVideo(video)
         }
     }

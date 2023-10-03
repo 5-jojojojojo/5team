@@ -172,6 +172,11 @@ class HomeFragment : Fragment() {
                 adapter = nationadapter.apply {
                     itemClick = object : ItemClick{
                         override fun onClick(view: View, position: Int) {
+                            val intent = Intent(requireContext(), VideoDetail::class.java)
+                            val gson = GsonBuilder().create()
+                            val data = gson.toJson(nationadapter.items[position])
+                            intent.putExtra("itemdata", data)
+                            resultLauncher.launch(intent)
                         }
                     }
                 }
