@@ -20,11 +20,14 @@ class SearchViewModel(private val apiService:NetWorkInterface): ViewModel() {
     val isLoading:LiveData<Boolean> get() = _isLoading
 
     var searchItems : ArrayList<ChannelModel> = ArrayList()
+    var currentResults = 6
 
-    fun SearchServerResults(q:String,videoCategoryId:String){
+    fun SearchServerResults(q:String,videoCategoryId:String,maxResults:Int){
+        _isLoading.value = true
+        searchItems.clear()
         val searchKey = hashMapOf(
             "part" to "snippet",
-            "maxResults" to "10",
+            "maxResults" to maxResults.toString(),
             "q" to q,
             "type" to "video",
             "videoCategoryId" to videoCategoryId
@@ -40,17 +43,19 @@ class SearchViewModel(private val apiService:NetWorkInterface): ViewModel() {
                         val url = items.snippet.thumbnails.medium.url
                         searchItems.add(ChannelModel(Constants.SEARCH_TYPE,title,url))
                     }
-                    Log.d("YouTubeProjects", "검색 데이터 : ${searchItems}")
+                    Log.d("YouTubeProjects", "검색 데이터1 : ${searchItems}")
                 }
                 searchDataResults()
             }
 
             override fun onFailure(call: retrofit2.Call<SearchData?>, t: Throwable) {
-                TODO("Not yet implemented")
+                _isLoading.value = false
+                Log.e("YouTubeProjects", "에러 : ${t.message}")
             }
         })
     }
     private fun searchDataResults(){
         _searchResults.value = searchItems
+        _isLoading.value = false
     }
 }
