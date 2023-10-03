@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
 
     var categoryItems = ArrayList<CategoryModel>()
     private var favorites_loading = true
-    private var nation_loading = true
+    var nation_loading = false
     private var channel_loading = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -175,7 +175,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-                addOnScrollListener(NationScrollListener(nationViewModel))
+                addOnScrollListener(NationScrollListener(nationViewModel,this@HomeFragment))
                 setHasFixedSize(true)
             }
             homeRecyclerView3.apply {
