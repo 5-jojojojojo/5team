@@ -8,7 +8,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.android.youtubeproject.R
 import com.android.youtubeproject.api.model.YoutubeModel
@@ -21,7 +20,6 @@ import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoView
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -45,17 +43,17 @@ class VideoDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initialize()
-        binding.videoDetailFbtmain.setOnClickListener {
-            viewModel.toggleButtonState("m")
+        binding.videoDetailButtonMore.setOnClickListener {
+            viewModel.toggleButtonState("more")
         }
-        binding.videoDetailFbt1.setOnClickListener {
-            viewModel.toggleButtonState("1")
+        binding.videoDetailButtonInfo.setOnClickListener {
+            viewModel.toggleButtonState("info")
         }
-        binding.videoDetailFbt2.setOnClickListener {
-            viewModel.toggleButtonState("2")
+        binding.videoDetailButtonShare.setOnClickListener {
+            viewModel.toggleButtonState("share")
         }
-        binding.videoDetailFbt3.setOnClickListener {
-            viewModel.toggleButtonState("3")
+        binding.videoDetailButtonLike.setOnClickListener {
+            viewModel.toggleButtonState("like")
         }
         //myVideo이동
         binding.ivMyVideo.setOnClickListener {
@@ -70,18 +68,18 @@ class VideoDetail : AppCompatActivity() {
         viewModel.item.observe(this) {
             viewModel.addData(viewModel.item.value!!)
         }
-        viewModel.btmState.observe(this) { btmState ->
+        viewModel.moreButton.observe(this) { btmState ->
             animateButtons(btmState)
         }
-        viewModel.bt1State.observe(this) {
+        viewModel.infoButton.observe(this) {
             showDialog()
         }
 
-        viewModel.bt2State.observe(this) {
+        viewModel.shareButton.observe(this) {
             shareVideoUrl()
         }
-        viewModel.bt3State.observe(this) { bt3State ->
-            binding.videoDetailFbt3.run {
+        viewModel.likeButton.observe(this) { bt3State ->
+            binding.videoDetailButtonLike.run {
                 if (bt3State) setImageResource(R.drawable.ic_video_detail_liked)
                 else if (!bt3State) setImageResource(R.drawable.ic_video_detail_disliked)
             }
@@ -111,23 +109,23 @@ class VideoDetail : AppCompatActivity() {
         lifecycleScope.launch {
             val delaytime = 50L
             if (!btmState) {
-                binding.videoDetailFbtmain.hide()
-                binding.videoDetailFbt1.show()
+                binding.videoDetailButtonMore.hide()
+                binding.videoDetailButtonInfo.show()
                 delay(delaytime)
-                binding.videoDetailFbt2.show()
+                binding.videoDetailButtonShare.show()
                 delay(delaytime)
-                binding.videoDetailFbt3.show()
+                binding.videoDetailButtonLike.show()
                 delay(delaytime)
-                binding.videoDetailFbtmain.show()
+                binding.videoDetailButtonMore.show()
             } else if (btmState) {
-                binding.videoDetailFbtmain.hide()
-                binding.videoDetailFbt1.hide()
+                binding.videoDetailButtonMore.hide()
+                binding.videoDetailButtonInfo.hide()
                 delay(delaytime)
-                binding.videoDetailFbt2.hide()
+                binding.videoDetailButtonShare.hide()
                 delay(delaytime)
-                binding.videoDetailFbt3.hide()
+                binding.videoDetailButtonLike.hide()
                 delay(delaytime)
-                binding.videoDetailFbtmain.show()
+                binding.videoDetailButtonMore.show()
             }
         }
     }
@@ -165,6 +163,10 @@ class VideoDetail : AppCompatActivity() {
 [해야될 일]
 1. MVVM패턴 적용하기 : Observe와 LiveData는 이해하고 코드를 돌아가게 만들수는 있으나, MVVM패턴이 맞는지 모르겠다.(적당히 하고 스킵)
 2. 다이어로그 디자인하기 : 각 타이틀에 로고를 달아준다던지, 내용 뒤에 카드뷰를 넣어준다던지 등등 생각해보기.
-3. 스플래쉬 화면 만들기
+
 4. 두번째 목록에 있는것도 클릭하면 상세페이지로 넘어가게끔 하기
+5. 변수명 딱 보면 좋아요 버튼, 더보기 버튼, 정보 버튼, 공유 버튼 이런식으로 수정하기.
+   나중에는 남이한 코드를 내가 하게되고, 내가 한 코드를 남이 보게 되는데 그럴때 잘 이해되도록 작성해야한다.
+   주석같은거도 꼼꼼히 달아보고
+
  */
