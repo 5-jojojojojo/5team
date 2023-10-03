@@ -42,42 +42,23 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             if(!it.items.isNullOrEmpty()){
-                                for (favorites in it.items) {
-                                    val id = favorites.id
-                                    val title = favorites.snippet.title
-                                    val url = favorites.snippet.thumbnails.medium.url
-                                    val date = favorites.snippet.publishedAt
-                                    val description = favorites.snippet.localized.description
-                                    val channelname = favorites.snippet.channelTitle
-                                    val tags: List<String> = favorites.snippet.tags
-                                    val localtitle = favorites.snippet.localized.title
-                                    val localdescription = favorites.snippet.localized.description
-                                    val videoid = favorites.id
-                                    val viewCount = favorites.statistics.viewCount
-                                    val likeCount = favorites.statistics.likeCount
-                                    val favoriteCount = favorites.statistics.favoriteCount
-                                    val commentCount = favorites.statistics.commentCount
-                                    val definition = favorites.contentDetails.definition
+                                for (items in it.items) {
+                                    val id = items.id
+                                    val channelId = items.snippet.channelId
+                                    val title = items.snippet.title
+                                    val url = items.snippet.thumbnails.medium.url
+                                    val date = items.snippet.publishedAt
+                                    val description = items.snippet.localized.description
+                                    val channelname = items.snippet.channelTitle
+                                    val tags: List<String> = items.snippet.tags
+                                    val localtitle = items.snippet.localized.title
+                                    val viewCount = items.statistics.viewCount
+                                    val likeCount = items.statistics.likeCount
+                                    val favoriteCount = items.statistics.favoriteCount
+                                    val commentCount = items.statistics.commentCount
+                                    val definition = items.contentDetails.definition
                                     youtubeItems.add(
-                                        YoutubeModel(
-                                            id,
-                                            Constants.FAVORITES_TYPE,
-                                            title,
-                                            url,
-                                            date,
-                                            description,
-                                            channelname,
-                                            tags,
-                                            localtitle,
-                                            localdescription,
-                                            videoid,
-                                            viewCount,
-                                            likeCount,
-                                            favoriteCount,
-                                            commentCount,
-                                            definition
-                                        )
-                                    )
+                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition))
                                     Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
                                         .definition}")
                                 }

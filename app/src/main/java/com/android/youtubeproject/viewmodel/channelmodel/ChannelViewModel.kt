@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.NetWorkInterface
 import com.android.youtubeproject.api.model.ChannelModel
-import com.android.youtubeproject.api.model.NationModel
 import com.android.youtubeproject.api.serverdata.ChannelData
-import com.android.youtubeproject.api.serverdata.FavoritesData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

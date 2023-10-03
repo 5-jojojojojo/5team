@@ -13,14 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.MainActivity
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModel
 import com.android.youtubeproject.viewmodel.homemodel.HomeViewModelFactory
 import com.android.youtubeproject.api.NetWorkClient
 import com.android.youtubeproject.api.model.CategoryModel
-import com.android.youtubeproject.api.model.NationModel
-import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.FragmentHomeBinding
 import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
@@ -60,7 +57,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        FavoritesView()
+        setUpView()
         setupListeners()
 
         binding.homeSpinner.setOnSpinnerItemSelectedListener { oldIndex, oldItem, newIndex, newItem: String ->
@@ -70,7 +67,6 @@ class HomeFragment : Fragment() {
                     id = item.id.toInt()
                 }
             }
-
             nationViewModel.nationsServerResults(id, nationViewModel.currentResults)
             SharedPref.saveIndex(requireContext(),newIndex)
         }
@@ -113,8 +109,8 @@ class HomeFragment : Fragment() {
             nationResults.observe(viewLifecycleOwner) {
                 nationadapter.items.clear()
                 nationadapter.items.addAll(it)
-                channelViewModel.channelServerResults(nationViewModel.channelId)
-                Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelId}")
+                channelViewModel.channelServerResults(nationViewModel.channelIdList)
+                Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelIdList}")
                 nationadapter.notifyDataSetChanged()
             }
             isLoading.observe(viewLifecycleOwner){ isLoading ->
@@ -147,7 +143,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun FavoritesView() {
+    private fun setUpView() {
 
         homeadapter = HomeFavoritesAdapter(requireContext())
         nationadapter = HomeNationAdapter(requireContext())
@@ -173,7 +169,12 @@ class HomeFragment : Fragment() {
             }
             homeRecyclerView2.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = nationadapter
+                adapter = nationadapter.apply {
+                    itemClick = object : ItemClick{
+                        override fun onClick(view: View, position: Int) {
+                        }
+                    }
+                }
                 addOnScrollListener(NationScrollListener(nationViewModel))
                 setHasFixedSize(true)
             }

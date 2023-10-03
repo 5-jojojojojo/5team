@@ -1,8 +1,9 @@
 package com.android.youtubeproject.api.model
 
 class YoutubeModel(
-    val id: String,
     var type: Int,
+    val id: String,
+    val channelId:String,
     var title: String,
     var url: String,
     var date: String,
@@ -10,10 +11,8 @@ class YoutubeModel(
     var channelname: String,
     var tags: List<String>?,
     var localtitle: String,
-    var localdescription:String,
-    var videoid:String,
     var viewCount: String,
-    var likeCount: String,
+    var likeCount: String?,
     var favoriteCount: String,
     var commentCount: String,
     var definition : String,

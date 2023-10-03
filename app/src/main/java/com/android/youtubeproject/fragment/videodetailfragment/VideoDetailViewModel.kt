@@ -20,7 +20,7 @@ class VideoDetailViewModel(Item: YoutubeModel, private val repository: VideoRepo
     private val _item = MutableLiveData<YoutubeModel>().apply { value = Item }
     val item: LiveData<YoutubeModel> get() = _item
 
-    private val _videoId = MutableLiveData<String>().apply { value = Item.videoid }
+    private val _videoId = MutableLiveData<String>().apply { value = Item.id }
     val videoId: LiveData<String> get() = _videoId
 
     lateinit var title:String
@@ -35,7 +35,7 @@ class VideoDetailViewModel(Item: YoutubeModel, private val repository: VideoRepo
         date = "게시 날짜 : " + videoData?.date?.substring(0, 10)?.replace("-", "/")
         channelname ="채널 명 : " + videoData?.channelname
         description = "영상 설명 : " + videoData?.description
-        videoid = "https://www.youtube.com/watch?v=" + videoData?.videoid
+        videoid = "https://www.youtube.com/watch?v=" + videoData?.id
         url = item.value!!.url
     }
     fun toggleButtonState(buttonType: String) {
