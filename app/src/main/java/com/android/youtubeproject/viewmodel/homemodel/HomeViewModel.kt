@@ -57,8 +57,11 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                     val favoriteCount = items.statistics.favoriteCount
                                     val commentCount = items.statistics.commentCount
                                     val definition = items.contentDetails.definition
+                                    val videolength = items.contentDetails.duration
+                                    val videoPublishedDatetime = items.snippet.publishedAt
+                                    val channeltitle = items.snippet.channelTitle
                                     youtubeItems.add(
-                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition))
+                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition,videolength,videoPublishedDatetime,channeltitle))
                                     Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
                                         .definition}")
                                 }
