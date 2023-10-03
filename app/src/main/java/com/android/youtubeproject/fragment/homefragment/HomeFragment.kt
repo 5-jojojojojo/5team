@@ -49,7 +49,6 @@ class HomeFragment : Fragment() {
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     var categoryItems = ArrayList<CategoryModel>()
-    private var favorites_loading = true
     var nation_loading = false
     private var channel_loading = true
     override fun onCreateView(
@@ -88,7 +87,6 @@ class HomeFragment : Fragment() {
                 homeadapter.notifyDataSetChanged()
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.favoritesLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
-                    favorites_loading = !isLoading
                 }
         }
     }
@@ -104,6 +102,8 @@ class HomeFragment : Fragment() {
             }
             val getIndex = SharedPref.getIndex(requireContext())
             binding.homeSpinner.selectItemByIndex(getIndex)
+            nationadapter.notifyDataSetChanged()
+            channeladapter.notifyDataSetChanged()
         }
         nationViewModel.apply {
             nationResults.observe(viewLifecycleOwner) {
