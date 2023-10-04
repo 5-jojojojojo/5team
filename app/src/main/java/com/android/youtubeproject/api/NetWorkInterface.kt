@@ -5,6 +5,9 @@ import com.android.youtubeproject.api.serverdata.FavoritesData
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.serverdata.CategoryData
 import com.android.youtubeproject.api.serverdata.ChannelData
+//import com.android.youtubeproject.api.serverdata.CommentThreadListResponse
+//import com.android.youtubeproject.api.serverdata.CommentThreadResponse
+import com.android.youtubeproject.api.serverdata.DetailChannelData
 import com.android.youtubeproject.api.serverdata.SearchData
 import retrofit2.Call
 import retrofit2.http.GET
@@ -31,4 +34,24 @@ interface NetWorkInterface {
     fun getSearch(
         @QueryMap queryMap: HashMap<String, String>
     ): Call<SearchData?>?
+
+    @GET("channels")
+    fun getChanneldetailactivity(
+        @Query("key") key:String,
+        @Query("part") part:String,
+        @Query("id") id:String,
+        @Query("maxResults") maxResults:Int
+    ): Call<DetailChannelData?>?
+    @GET("videos")
+    fun getFavoritessearchfragment(
+        @Query("key") key:String,
+        @Query("part") part:String,
+        @Query("id") id:String,
+        @Query("maxResults") maxResults:Int
+    ): Call<FavoritesData?>?
+//    @GET("commentThreads")
+//    fun getComments(
+//        @Query("videoId") videoId: String,
+//        @Query("part") part: String
+//    ): Call<CommentThreadListResponse?>?
 }

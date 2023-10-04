@@ -12,7 +12,8 @@ data class VideoItems(
     val id: String,
     val snippet: VideoSnippet,
     val contentDetails: VideoContentDetails,
-    val statistics: VideoStatistics
+    val statistics: VideoStatistics,
+    val player: Player
 )
 
 data class VideoSnippet(
@@ -132,4 +133,9 @@ data class VideoStatistics(
     val likeCount: String,
     val favoriteCount: String,
     val commentCount: String
+)
+data class Player(
+    val embedHtml: String,
+    val embedHeight: Long,
+    val embedWidth: Long
 )
