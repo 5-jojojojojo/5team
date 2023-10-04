@@ -1,5 +1,6 @@
 package com.android.youtubeproject.fragment.searchfragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,18 +8,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.android.youtubeproject.MainActivity
 import com.android.youtubeproject.R
 import com.android.youtubeproject.api.NetWorkClient
 import com.android.youtubeproject.api.model.CategoryModel
 import com.android.youtubeproject.api.model.ChannelModel
 import com.android.youtubeproject.databinding.FragmentSearchBinding
 import com.android.youtubeproject.fragment.homefragment.HomeFragment
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
+import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
 import com.android.youtubeproject.infinityscroll.SearchScrollListener
 import com.android.youtubeproject.method.shortToast
 import com.android.youtubeproject.spf.SharedPref
@@ -38,11 +45,23 @@ class SearchFragment : Fragment() {
     private val apiServiceInstance = NetWorkClient.apiService
     private val searchViewModel : SearchViewModel by viewModels{SearchViewModelFactory(apiServiceInstance)}
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private val profileViewModel: MyVideoViewModel by activityViewModels()
 
     var searchQuery:String? = null
     var videoCategoryId:String? = null
     var videoCategory = ArrayList<CategoryModel>()
     var search_loading = false
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                //마이비디오로 이동
+                (requireActivity() as MainActivity).onMyPageClicked()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,7 +125,18 @@ class SearchFragment : Fragment() {
             val gson = GsonBuilder().create()
             val data = gson.toJson(it)
             intent.putExtra("itemdata", data)
-            startActivity(intent)
+            resultLauncher.launch(intent)
+        }
+
+        //유저정보가 갱신되면 앱바 프로필도 함께 갱신
+        profileViewModel.getUserByIndex(0)
+        profileViewModel.selectedUser.observe(viewLifecycleOwner) { userData ->
+            userData?.let {
+                //해당 컨텐츠의 영구 권한 체크
+                if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
+                    binding.ivMyVideoForSearch.setImageURI(it.picture)
+                }
+            }
         }
     }
 
@@ -126,6 +156,10 @@ class SearchFragment : Fragment() {
             }
             addOnScrollListener(SearchScrollListener(searchViewModel,this@SearchFragment,requireContext()))
             setHasFixedSize(true)
+        }
+
+        binding.ivMyVideoForSearch.setOnClickListener {
+            (requireActivity() as MainActivity).onMyPageClicked()
         }
     }
 
