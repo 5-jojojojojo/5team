@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.android.youtubeproject.R
 import com.android.youtubeproject.databinding.DialogLayoutBinding
+import com.android.youtubeproject.fragment.myvideofragment.MyPageFunc
 import com.android.youtubeproject.fragment.myvideofragment.db.UserData
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,7 +30,7 @@ class CustomDialog(
     //    private val dialog = Dialog(context)
     private lateinit var binding: DialogLayoutBinding
     private val REQUEST_CODE_DOCUMENT_IMAGE = 1
-    private var imgUri: Uri = getUri(R.drawable.ic_baseline_add_photo_alternate_24)
+    private var imgUri: Uri = MyPageFunc.getUri(R.drawable.ic_baseline_person_outline_24)
 
 
     override fun onCreateView(
@@ -88,8 +89,13 @@ class CustomDialog(
             } else {
                 Snackbar.make(binding.root, "입력 값을 확인해주세요.", Snackbar.LENGTH_SHORT).show()
             }
-
         }
+
+        binding.dialogImgDefault.setOnClickListener {
+            imgUri = MyPageFunc.getUri(R.drawable.ic_baseline_person_outline_24)
+            binding.ivDialog.setImageURI(imgUri)
+        }
+
         return binding.root
     }
 
@@ -100,8 +106,6 @@ class CustomDialog(
         }
         startActivityForResult(intent, REQUEST_CODE_DOCUMENT_IMAGE)
     }
-
-    fun getUri(resid: Int): Uri = Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + resid)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

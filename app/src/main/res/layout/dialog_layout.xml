@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
-        android:text="4글자 이상 입력하세요."
+        android:text="3글자 이상 입력하세요."
         android:textSize="15sp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@id/et_dialog_name"
@@ -100,5 +100,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialog_cancel"
         app:layout_constraintTop_toBottomOf="@+id/et_dialog_id" />
+
+    <TextView
+        android:id="@+id/dialogImgDefault"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:text="X"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:background="@drawable/text_button_bg"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
