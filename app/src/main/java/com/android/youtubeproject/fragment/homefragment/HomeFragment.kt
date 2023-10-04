@@ -151,6 +151,8 @@ class HomeFragment : Fragment() {
                 if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
                     binding.ivMyVideo.setImageURI(it.picture)
                 }
+                binding.tvWelcome.text = it.nickname + "님 환영합니다!"
+
             }
         }
 

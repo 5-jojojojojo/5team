@@ -136,6 +136,8 @@ class SearchFragment : Fragment() {
                 if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
                     binding.ivMyVideoForSearch.setImageURI(it.picture)
                 }
+                binding.tvWelcome.text = it.nickname + "님 환영합니다!"
+
             }
         }
     }

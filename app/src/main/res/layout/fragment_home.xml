@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="170dp"
             android:layout_height="80dp"
             android:layout_marginTop="16dp"
@@ -24,6 +25,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center|right"
+            android:maxLines="2"
+            android:text="환영합니다!"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toStartOf="@id/ivMyVideo"
+            app:layout_constraintTop_toTopOf="@id/ivMyVideo"
+            app:layout_constraintBottom_toBottomOf="@id/ivMyVideo"
+            android:layout_marginRight="5dp"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivMyVideo"
