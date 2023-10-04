@@ -26,6 +26,7 @@ import com.android.youtubeproject.infinityscroll.FavoritesScrollListener
 import com.android.youtubeproject.infinityscroll.NationScrollListener
 import com.android.youtubeproject.`interface`.ItemClick
 import com.android.youtubeproject.spf.SharedPref
+import com.android.youtubeproject.spf.SharedPref.saveCategory
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModel
 import com.android.youtubeproject.viewmodel.categorymodel.CategoryViewModelFactory
 import com.android.youtubeproject.viewmodel.channelmodel.ChannelViewModel
@@ -47,6 +48,7 @@ class HomeFragment : Fragment() {
     private val channelViewModel:ChannelViewModel by viewModels {ChannelViewModelFactory(apiServiceInstance)}
     private val profileViewModel: MyVideoViewModel by activityViewModels()
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
 
     var categoryItems = ArrayList<CategoryModel>()
     var nation_loading = false
@@ -83,7 +85,6 @@ class HomeFragment : Fragment() {
             homeResult.observe(viewLifecycleOwner) {
                 homeadapter.items.clear()
                 homeadapter.items.addAll(it)
-                Log.d("YouTubeProjects", "adapter.items에 뭐가 찍혀있는데?${homeadapter.items}")
                 homeadapter.notifyDataSetChanged()
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.favoritesLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
@@ -93,6 +94,7 @@ class HomeFragment : Fragment() {
         categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
             Log.d("YouTubeProjects", "스니펫 데이터 : ${it}")
             categoryItems.addAll(it)
+            saveCategory(requireContext(), categoryItems)
             val items = ArrayList<String>()
             categoryItems.forEach {
                 if (it.category != null) {

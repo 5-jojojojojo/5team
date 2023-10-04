@@ -1,3 +1,7 @@
 package com.android.youtubeproject.api.model
 
-class CategoryModel(val type:Int, var id:String, val category:String)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+class CategoryModel(val type:Int, var id:String, val category:String) : Parcelable

@@ -1,6 +1,10 @@
 package com.android.youtubeproject.spf
 
 import android.content.Context
+import com.android.youtubeproject.api.model.CategoryModel
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 
 /**
  * Preference Util class
@@ -73,5 +77,23 @@ object SharedPref {
         val sharedPreferences =context.getSharedPreferences("spf",Context.MODE_PRIVATE)
 
         return sharedPreferences.getInt("newIndex",0)
+    }
+    fun saveCategory(context:Context,items :ArrayList<CategoryModel>) {
+        val editor =context.getSharedPreferences("spf",Context.MODE_PRIVATE).edit()
+        val gson = GsonBuilder().create()
+        editor.putString("categoryItems", gson.toJson(items))
+        editor.apply()
+    }
+
+    fun getCategory(context:Context): ArrayList<CategoryModel> {
+        val sharedPreferences =context.getSharedPreferences("spf",Context.MODE_PRIVATE)
+        val savedata = sharedPreferences.getString("categoryItems", "") ?:""
+        val gson = Gson()
+        val type = object : TypeToken<ArrayList<CategoryModel>>() {}.type
+        return  if (savedata.isNotEmpty()) {
+            gson.fromJson(savedata, type)
+        } else {
+            arrayListOf()
+        }
     }
 }

@@ -36,13 +36,35 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.skydoves.powerspinner.PowerSpinnerView
+        android:id="@+id/search_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:hint="Category"
+        android:padding="10dp"
+        android:textColorHint="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
+        app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
+        android:layout_marginTop="2dp"
+        app:spinner_divider_show="true"
+        app:spinner_divider_color="@color/white"
+        app:spinner_popup_animation="fade"
+        app:spinner_popup_background="@color/colorPrimaryDark"
+        app:spinner_popup_elevation="10dp"
+        tools:ignore="HardcodedText,UnusedAttribute" />
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search_spinner"
         app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
         app:queryHint="검색" />
 
@@ -53,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
     <ProgressBar
         android:id="@+id/search_loading"
