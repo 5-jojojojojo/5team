@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Most Popular Videos"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="parent"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_margin="5dp"
-                android:background="@color/white"
+                android:background="@color/brouwn100"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title1" />
@@ -76,10 +76,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView1"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view1" />
+                app:layout_constraintTop_toBottomOf="@+id/view1"
+                android:background="@color/white"/>
 
             <ProgressBar
                 android:id="@+id/favorites_loading"
@@ -94,23 +95,23 @@
 
             <com.skydoves.powerspinner.PowerSpinnerView
                 android:id="@+id/home_spinner"
-                android:layout_width="180dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:background="@color/RedA200"
                 android:textColor="@color/white"
                 android:hint="Category"
-                android:padding="10dp"
-                android:layout_marginStart="15dp"
+                android:padding="8dp"
+                android:layout_margin="5dp"
                 android:textColorHint="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                android:background="@color/colorPrimary"
                 app:layout_constraintBottom_toTopOf="@id/view2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_recyclerView1"
                 app:spinner_divider_show="true"
                 app:spinner_divider_color="@color/white"
                 app:spinner_popup_animation="fade"
-                app:spinner_popup_background="@color/Red200"
+                app:spinner_popup_background="@color/colorPrimaryDark"
                 app:spinner_popup_elevation="10dp"
                 tools:ignore="HardcodedText,UnusedAttribute" />
 
@@ -127,10 +128,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView2"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                app:layout_constraintTop_toBottomOf="@+id/view2"/>
 
             <ProgressBar
                 android:id="@+id/nation_loading"
@@ -149,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Channels by Category"
-                android:textColor="@color/brouwn100"
+                android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="parent"
@@ -169,10 +170,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView3"
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view3" />
+                app:layout_constraintTop_toBottomOf="@+id/view3"/>
 
             <ProgressBar
                 android:id="@+id/channel_loading"
