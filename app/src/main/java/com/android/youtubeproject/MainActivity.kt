@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), FragmentActionListener {
             tab.text = tabList[position]
             when (position) {
                 0 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_home_24)
-                1 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_notifications_none_24)
+                1 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_search_24)
                 2 -> tab.icon = ContextCompat.getDrawable(this, R.drawable.ic_baseline_video_library_24)
             }
         }.attach()

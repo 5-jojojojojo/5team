@@ -1,5 +1,6 @@
 package com.android.youtubeproject.fragment.homefragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -53,6 +54,16 @@ class HomeFragment : Fragment() {
     var categoryItems = ArrayList<CategoryModel>()
     var nation_loading = false
     private var channel_loading = true
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == AppCompatActivity.RESULT_OK) {
+                //마이비디오로 이동
+                (requireActivity() as MainActivity).onMyPageClicked()
+            }
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -140,6 +151,8 @@ class HomeFragment : Fragment() {
                 if (MyPageFunc.hasPersistedUriPermissions(requireActivity(), it.picture)) {
                     binding.ivMyVideo.setImageURI(it.picture)
                 }
+                binding.tvWelcome.text = it.nickname + "님 환영합니다!"
+
             }
         }
 
@@ -195,16 +208,6 @@ class HomeFragment : Fragment() {
                 (requireActivity() as MainActivity).onMyPageClicked()
             }
         }
-
-        resultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == AppCompatActivity.RESULT_OK) {
-                //마이비디오로 이동
-                (requireActivity() as MainActivity).onMyPageClicked()
-            }
-        }
-
     }
 
     private fun setupListeners() {
