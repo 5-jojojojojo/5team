@@ -149,21 +149,24 @@ object MyPageFunc {
     /**
      * 입력받은 uri에 대한 읽기 권한이 영구적인지 체크하는 함수
      * 권한이 영구적이지 않으면 토스트 발생
+     * 디폴트 유저 이미지의 경우 true로 리턴
      *
      * @param activity FragmentActivity
      * @param pictureUri uri
-     * @return true 영구적인 권한을 취득한 상태
+     * @return true 영구적인 권한을 취득한 상태 또는 디폴트 유저 이미지
      */
     fun hasPersistedUriPermissions(activity: FragmentActivity, pictureUri: Uri): Boolean {
+//        Log.d("TEST", "hasPersistedUriPermissions ${++count}")
+        if (pictureUri == getUri(R.drawable.ic_baseline_person_outline_24)) return true
+
         val persistedUriPermissions = activity.contentResolver.persistedUriPermissions
         val hasPermission = persistedUriPermissions.any { uriPermission ->
             uriPermission.uri == pictureUri
         }
 
-        if(!hasPermission) {
-            // 권한이 없을 경우 메시지 표시
-            Toast.makeText(activity, R.string.has_not_permission_dont_profile_img, Toast.LENGTH_SHORT).show()
-        }
         return hasPermission
     }
+
+//    var count = 0
+    fun getUri(resid: Int): Uri = Uri.parse("android.resource://" + R::class.java.`package`?.name + "/" + resid)
 }
