@@ -52,16 +52,19 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                     val channelname = items.snippet.channelTitle
                                     val tags: List<String> = items.snippet.tags
                                     val localtitle = items.snippet.localized.title
-                                    val viewCount = items.statistics.viewCount
-                                    val likeCount = items.statistics.likeCount
+                                    val viewcount = items.statistics.viewCount
+                                    val likecount = items.statistics.likeCount
                                     val favoriteCount = items.statistics.favoriteCount
-                                    val commentCount = items.statistics.commentCount
+                                    val commentcount = items.statistics.commentCount
                                     val definition = items.contentDetails.definition
                                     val videolength = items.contentDetails.duration
                                     val videoPublishedDatetime = items.snippet.publishedAt
                                     val channeltitle = items.snippet.channelTitle
+                                    val videowidth = items.snippet.thumbnails.medium.width
+                                    val videoheight = items.snippet.thumbnails.medium.width
+
                                     youtubeItems.add(
-                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewCount,likeCount,favoriteCount,commentCount,definition,videolength,videoPublishedDatetime,channeltitle))
+                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewcount,likecount,favoriteCount,commentcount,definition,videolength,videoPublishedDatetime,channeltitle,videowidth,videoheight))
                                     Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
                                         .definition}")
                                 }

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.viewModels
@@ -29,6 +31,7 @@ class VideoDetail : AppCompatActivity() {
     private val gson by lazy { Gson() }
     private val itemData: YoutubeModel by lazy {
         val dataString = intent.getStringExtra("itemdata")
+        Log.d("VideoDetail", "Received data: $dataString")
         gson.fromJson(dataString, YoutubeModel::class.java)
     }
     private val viewModel: VideoDetailViewModel by viewModels {
@@ -64,7 +67,7 @@ class VideoDetail : AppCompatActivity() {
 
     fun initialize() {
         overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
-        viewModel.formatVideoData()
+        viewModel.getChannelData()
         viewModel.item.observe(this) {
             viewModel.addData(viewModel.item.value!!)
         }
@@ -84,14 +87,7 @@ class VideoDetail : AppCompatActivity() {
                 else if (!bt3State) setImageResource(R.drawable.ic_video_detail_disliked)
             }
         }
-        viewModel.videoId.observe(this) { videoId ->
-            val html = viewModel.getHtml(videoId)
-            webView.loadData(html, "text/html", "utf-8")
-        }
-        webView.webViewClient = WebViewClient()
-        webView.settings.javaScriptEnabled = true
-        webView.setBackgroundColor(Color.WHITE)
-
+        showWebview()
         //유저정보가 갱신되면 앱바 프로필도 함께 갱신
         profileViewModel.getUserByIndex(0)
         profileViewModel.selectedUser.observe(this) { userData ->
@@ -134,22 +130,38 @@ class VideoDetail : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         val binding_dialog = DialogVideoDetailInformationBinding.inflate(layoutInflater)
         builder.setView(binding_dialog.root)
-        binding_dialog.videoDetailDialogTextTitle.text = viewModel.title
-        binding_dialog.videoDetailDialogTextDate.text = viewModel.date
-        binding_dialog.videoDetailDialogTextChannelname.text = viewModel.channelname
-        binding_dialog.videoDetailDialogTextContent.text = viewModel.description
+        binding_dialog.videoDetailDialogVideotitle.text = viewModel.title
+        binding_dialog.videoDetailDialogVideoUploadDate.text = viewModel.date
+        binding_dialog.videoDetailDialogVideoViewCount2.text = viewModel.videoviewcount
+        binding_dialog.videoDetailDialogVideoCommentCount2.text = viewModel.videocommentcount
+        binding_dialog.videoDetailDialogVideoLikeCount2.text = viewModel.videolikecount
         Glide.with(this)
             .load(viewModel.url)
-            .into(binding_dialog.videoDetailDialogImage)
+            .placeholder(R.drawable.ic_glide_loading)
+            .error(R.drawable.ic_glide_error)
+//            .override(viewModel.videowidth, viewModel.videoheight)
+            .into(binding_dialog.videoDetailDialogVideoimage)
+        Log.d("YouTube",viewModel.url)
+        Glide.with(this)
+            .load(viewModel.channelurl)
+            .placeholder(R.drawable.ic_glide_loading)
+            .error(R.drawable.ic_glide_error)
+//            .override(viewModel.channelwidth, viewModel.channelheight)
+            .into(binding_dialog.videoDetailDialogChannelimage)
+        binding_dialog.videoDetailDialogChanneltitle.text = viewModel.channelTitle
+        binding_dialog.videoDetailDialogChannelsubscribetext2.text = viewModel.channelsubscriberCount
+        binding_dialog.videoDetailDialogChannelviewCounttext2.text = viewModel.channelviewCount
+        binding_dialog.videoDetailDialogChannelvideoCounttext2.text = viewModel.channelvideoCount
+        binding_dialog.videoDetailDialogVideotags2.text = viewModel.videotag
+        binding_dialog.videoDetailDialogVideodescription2.text = viewModel.description
         builder.show()
     }
-
     fun shareVideoUrl() {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                viewModel.item.value!!.id
+                viewModel.videoid
             )
             type = "text/plain"
         }
@@ -158,15 +170,15 @@ class VideoDetail : AppCompatActivity() {
             startActivity(chooser)
         }
     }
+
+    fun showWebview() {
+        webView.webViewClient = WebViewClient()
+        webView.settings.javaScriptEnabled = true
+        webView.setBackgroundColor(Color.WHITE)
+        lifecycleScope.launch {
+            delay(1000)
+            webView.loadData(viewModel.getHtml(viewModel.videoId.value!!), "text/html", "utf-8")
+        }
+    }
+
 }
-/*
-[해야될 일]
-1. MVVM패턴 적용하기 : Observe와 LiveData는 이해하고 코드를 돌아가게 만들수는 있으나, MVVM패턴이 맞는지 모르겠다.(적당히 하고 스킵)
-2. 다이어로그 디자인하기 : 각 타이틀에 로고를 달아준다던지, 내용 뒤에 카드뷰를 넣어준다던지 등등 생각해보기.
-
-4. 두번째 목록에 있는것도 클릭하면 상세페이지로 넘어가게끔 하기
-5. 변수명 딱 보면 좋아요 버튼, 더보기 버튼, 정보 버튼, 공유 버튼 이런식으로 수정하기.
-   나중에는 남이한 코드를 내가 하게되고, 내가 한 코드를 남이 보게 되는데 그럴때 잘 이해되도록 작성해야한다.
-   주석같은거도 꼼꼼히 달아보고
-
- */

@@ -1,14 +1,17 @@
 package com.android.youtubeproject.fragment.searchfragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.android.youtubeproject.R
 import com.android.youtubeproject.api.NetWorkClient
@@ -23,6 +26,10 @@ import com.android.youtubeproject.spf.SharedPref.getCategory
 import com.android.youtubeproject.spf.SharedPref.getIndex
 import com.android.youtubeproject.viewmodel.searchmodel.SearchViewModel
 import com.android.youtubeproject.viewmodel.searchmodel.SearchViewModelFactory
+import com.google.gson.GsonBuilder
+import com.android.youtubeproject.fragment.videodetailfragment.VideoDetail
+import com.android.youtubeproject.infinityscroll.FavoritesScrollListener
+import com.android.youtubeproject.`interface`.ItemClick
 
 
 class SearchFragment : Fragment() {
@@ -30,6 +37,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchAdapter : SearchFragmentAdapter
     private val apiServiceInstance = NetWorkClient.apiService
     private val searchViewModel : SearchViewModel by viewModels{SearchViewModelFactory(apiServiceInstance)}
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     var searchQuery:String? = null
     var videoCategoryId:String? = null
@@ -60,6 +68,7 @@ class SearchFragment : Fragment() {
                 }
 
             })
+
         }
 
         return binding.root
@@ -92,14 +101,29 @@ class SearchFragment : Fragment() {
                 }
         }
         }
+        searchViewModel.youtubeResults.observe(viewLifecycleOwner){
+            val intent = Intent(requireContext(), VideoDetail::class.java)
+            val gson = GsonBuilder().create()
+            val data = gson.toJson(it)
+            intent.putExtra("itemdata", data)
+            startActivity(intent)
+        }
     }
 
     private fun setUpView(){
         searchAdapter = SearchFragmentAdapter(requireContext())
 
         binding.searchRecyclerView.apply {
-            layoutManager = GridLayoutManager(context,2)
-            adapter = searchAdapter
+            layoutManager = GridLayoutManager(requireContext(),2)
+            adapter = searchAdapter.apply {
+                itemClick = object : ItemClick {
+                    override fun onClick(view: View, position: Int) {
+                        Log.d("YouTubeProjects", "Item clicked at position: $position")
+                        searchViewModel.getvideodata(items[position].videoid)
+                    }
+
+                }
+            }
             addOnScrollListener(SearchScrollListener(searchViewModel,this@SearchFragment,requireContext()))
             setHasFixedSize(true)
         }
@@ -108,8 +132,7 @@ class SearchFragment : Fragment() {
     private fun setupListeners(){
         Log.d("YouTubeProjects","검색 호출")
         if(!searchQuery.isNullOrEmpty()&& !videoCategoryId.isNullOrEmpty()){
-            searchViewModel.SearchServerResults(searchQuery!!,videoCategoryId!!,searchViewModel
-                .currentResults)
+            searchViewModel.SearchServerResults(searchQuery!!,videoCategoryId!!,searchViewModel.currentResults)
         } else if(videoCategoryId.isNullOrEmpty()){
             requireContext().shortToast("카테고리를 먼저 선택해 주세요!!")
         }else requireContext().shortToast("검색어를 입력해 주세요!!")

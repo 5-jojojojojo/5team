@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.api.model.ChannelModel
 import com.android.youtubeproject.databinding.SearchitemsBinding
+import com.android.youtubeproject.`interface`.ItemClick
 import com.bumptech.glide.Glide
 
 class SearchFragmentAdapter(private val context:Context):RecyclerView.Adapter<RecyclerView
 .ViewHolder>() {
     var items = ArrayList<ChannelModel>()
+    var itemClick: ItemClick? = null
 
     inner class SearchViewHolder(private val binding:SearchitemsBinding) : RecyclerView
     .ViewHolder(binding.root){
@@ -20,6 +22,9 @@ class SearchFragmentAdapter(private val context:Context):RecyclerView.Adapter<Re
                 Glide.with(context)
                     .load(items.url)
                     .into(SearchProfile)
+                itemView.setOnClickListener{
+                    itemClick?.onClick(it, position)
+                }
             }
         }
     }
