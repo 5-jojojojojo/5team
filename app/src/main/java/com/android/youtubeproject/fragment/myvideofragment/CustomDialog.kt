@@ -118,7 +118,7 @@ class CustomDialog(
         }
     }
 
-    //닉네임 유효성 : 3자 이상, 15자 이하의 영문 대/소문자, 숫자, 밑줄(_)만 허용, 특수 문자X
+    //닉네임 유효성 : 3자 이상, 15자 이하의 한영, 숫자, 밑줄(_)허용, 특수 문자X
     private fun createNickNameTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(
@@ -137,14 +137,18 @@ class CustomDialog(
             ) =
                 with(binding) {
                     val nickname = s.toString()
-                    val regexPattern = Regex("^[a-zA-Z0-9_]{3,15}$")
+                    val regexPattern = Regex("^[a-zA-Z0-9_가-힣ㄱ-ㅎ]{3,15}$")
 
-                    if (nickname.isNotEmpty() && regexPattern.matches(nickname)) {
+                    if (nickname.length < 3) {
+                        // 3글자 이상 입력하지 않은 경우
+                        tvNicknameError.visibility = View.VISIBLE
+                    } else if (!regexPattern.matches(nickname)) {
+                        // 특수문자 또는 공백을 입력한 경우
+                        tvNicknameError.text = "특수문자 또는 공백은 입력할 수 없습니다."
+                        tvNicknameError.visibility = View.VISIBLE
+                    } else {
                         // 닉네임이 유효한 경우
                         tvNicknameError.visibility = View.INVISIBLE
-                    } else {
-                        // 닉네임이 유효하지 않은 경우
-                        tvNicknameError.visibility = View.VISIBLE
                     }
                 }
 
@@ -153,7 +157,7 @@ class CustomDialog(
         }
     }
 
-    //ID 유효성 : 4자 이상, 16자 이하의 영문 대/소문자, 숫자, 밑줄(_)만 허용, 공백X
+    //ID 유효성 : 4자 이상, 16자 이하의 영문 대/소문자, 숫자, 특수문자, 공백X
     private fun createIdTextWatcher(editText: EditText): TextWatcher {
         return object : TextWatcher {
             override fun beforeTextChanged(
@@ -172,14 +176,18 @@ class CustomDialog(
             ) =
                 with(binding) {
                     val id = s.toString()
-                    val regexPattern = Regex("^[a-zA-Z0-9_]{4,16}$")
+                    val regexPattern = Regex("^[a-zA-Z0-9_!@#\$%^&*()-+=<>?/.,;:'\"\\[\\]{}|~]{4,16}$")
 
-                    if (id.isNotEmpty() && regexPattern.matches(id)) {
-                        // ID가 유효한 경우
-                        tvDialogIdError.visibility = View.INVISIBLE // 오류 메시지를 숨깁니다.
+                    if (id.length < 4) {
+                        // 4글자 이상 입력하지 않은 경우
+                        tvDialogIdError.visibility = View.VISIBLE
+                    } else if (!regexPattern.matches(id)) {
+                        // 공백을 입력한 경우
+                        tvDialogIdError.text = "한글 또는 공백은 입력할 수 없습니다."
+                        tvDialogIdError.visibility = View.VISIBLE
                     } else {
-                        // ID가 유효하지 않은 경우
-                        tvDialogIdError.visibility = View.VISIBLE // 오류 메시지를 표시합니다.
+                        // ID 유효한 경우
+                        tvDialogIdError.visibility = View.INVISIBLE
                     }
                 }
 
