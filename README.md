@@ -15,6 +15,6 @@
 
 
 ### HomeFragment : ViewModel,LiveData,ViewBinding, SharedPreferences, powerSpinner, addOnScrollListener,infinity Scroll
-![image](https://github.com/seongssu/ImageUrl/blob/main/home.gif?raw=true)
+![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/home.gif)
 - 
 
