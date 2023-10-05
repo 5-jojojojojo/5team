@@ -196,7 +196,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-                addOnScrollListener(NationScrollListener(nationViewModel,this@HomeFragment))
+                addOnScrollListener(NationScrollListener(nationViewModel,this@HomeFragment,context))
                 setHasFixedSize(true)
             }
             homeRecyclerView3.apply {

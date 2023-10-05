@@ -78,6 +78,7 @@ class SearchFragment : Fragment() {
                         searchQuery = query.trim()
                         Log.d("YouTubeProjects", "검색어 : ${searchQuery}")
                         setupListeners()
+                        search_loading = !search_loading
                     }
                     return false
                 }
@@ -99,7 +100,6 @@ class SearchFragment : Fragment() {
     }
     private fun observeViewModel(){
         videoCategory = getCategory(requireContext())
-//        videoCategoryId = getIndex(requireContext()).toString()
         Log.d("YouTubeProjects","홈에서받아온 카테고리 : ${videoCategory}")
         val items = ArrayList<String>()
         videoCategory.forEach {
@@ -116,7 +116,6 @@ class SearchFragment : Fragment() {
                 searchAdapter.notifyDataSetChanged()
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.searchLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
-                    search_loading = !isLoading
                 }
         }
         }
@@ -176,7 +175,6 @@ class SearchFragment : Fragment() {
 
     private fun selectCategory(){
         binding.searchSpinner.setOnSpinnerItemSelectedListener{ oldIndex, oldItem, newIndex, newItem: String ->
-
             for (item in videoCategory) {
                 if (item.category == newItem) {
                     videoCategoryId = item.id
