@@ -14,7 +14,7 @@
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EA%B8%B0%EB%8A%A5%EA%B5%AC%ED%98%84.png)
 
 
-### :🫀rt:HomeFragment🫀rt:
+### 💖HomeFragment💖
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/home.gif) 
 
 ##### CODE
@@ -36,7 +36,7 @@
 - 내용은 최대 2줄까지 표시되고, 초과되는 내용은 ...으로 대체됩니다.
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
 
-### 🫀SearchFragment🫀:
+### 💖SearchFragment💖
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/search.gif)
 
 ##### CODE
@@ -55,7 +55,7 @@
 - 내용은 최대 2줄까지 표시되고, 초과되는 내용은 ...으로 대체됩니다.
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
 
-### 🫀rt:VideoDetail🫀rt:
+### 💖VideoDetail💖
 ![image]()
 
 ##### CODE
@@ -95,7 +95,7 @@
     - VIdeoDetailCommentAdapter
         - 다이어로그창에서 댓글의 표시에 대한 리사이클러뷰의 어댑터 입니다.
 
-### 🫀rt:MyPage🫀rt:
+### 💖MyPage💖
 ![image]()
 ##### CODE
 - ViewModel&LiveData를 이용해서 데이터를 관리합니다.
