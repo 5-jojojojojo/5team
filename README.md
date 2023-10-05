@@ -12,3 +12,9 @@
 
 ## 기능 구현
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EA%B8%B0%EB%8A%A5%EA%B5%AC%ED%98%84.png)
+
+
+### HomeFragment : ViewModel,LiveData,ViewBinding, SharedPreferences, powerSpinner, addOnScrollListener,infinity Scroll
+![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/home.gif)  
+- 
+
