@@ -46,7 +46,7 @@
 - addOnScrollListener, infinity Scroll을 이용해서 스크롤을 감지하고 추가데이터를 요청하고 응답받습니다.
 - registerForActivityResult를 이용해서 아이템을 클릭했을때 VideoDetail페이지로 이동되고, 데이터를 넘겨줍니다.
 
-#### 설명
+##### 설명
 - 카테고리를 선택하지 않고 검색어를 입력하면 "카테고리를 먼저 선택해주세요!!" 라는 토스트 메시지를 표시합니다.
 - 스피너를 이용해서 카테고리를 선택하고 카테고리id와 검색 API를 이용해서 검색결과 데이터를 요청하고 응답받은 데이터를 리사이클러뷰의 GridView를 이용해서 화면에 표시해줍니다.
 - 카테고리에따라서 데이터가 갱신됩니다.
@@ -54,5 +54,46 @@
 - 항목의 갯수에 따라서 검색결과 우측 상단에 숫자로 표시되고, 추가 데이터에의해 갱신됩니다.
 - 내용은 최대 2줄까지 표시되고, 초과되는 내용은 ...으로 대체됩니다.
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
+
+### 🫀rt:VideoDetail🫀rt:
+![image]()
+
+##### CODE
+- ViewModel&LiveData를 이용해서 데이터를 관리합니다.
+- AlertDialog.Builder를 이용해서 세부정보를 표시합니다.
+- sharedPreferences를 이용해서 데이터를 저장합니다.
+
+##### 설명
+- 홈, 검색, 마이 프래그먼트에서 비디오 아이템을 클릭하면 해당 Position의 아이템을 Json 데이터로 변환 후 intent에 첨부하여 디테일 액티비티로 넘어옵니다.
+- intent에 첨부된 데이터를 YoutubeModel 객체로 변환하여 이용합니다.
+- YoutubeModel 객체를 이용하여 Webview 위젯을 사용해 Youtube 동영상을 실행합니다.
+- 상단의 플로팅 버튼을 통해 정보, 공유, 저장을 할 수 있습니다.
+    - 정보 버튼을 누르면  channel, CommentTrhreads 리소스를 받아오는 API 통신을 통해 응답 객체를 받아옵니다.
+        - 응답 객체의 데이터를 활용하여 영상과 그 영상의 채널에 대한 통계, 정보등을 표현합니다.
+        - 댓글의 경우 인피니티 스크롤이 적용된 리사이클러뷰로 표현이 됩니다.
+        - 댓글, 태그, 내용의 경우 이미지를 클릭함으로써 내용을 가리거나 나타나게 할 수 있습니다.
+    - 공유 버튼을 누르면 공유 인텐트 객체를 통해 링크를 공유하는 액티비티를 띄웁니다.
+    - 저장 버튼을 누르면 SharedPreferences를 통해 YoutubeModel 객체를 저장합니다.
+- LiveData와 Observe 메서드를 이용해 MVVM패턴을 적용하려는 시도를 하였습니다.
+    - VideoDetailActivitity
+        - VideoDetailViewModel, VideoRepository 인스턴스를 호출하였습니다.
+        - 다른 프래그먼트에서 받는 비디오 객체 데이터를 제외하고는, View에 대한 속성 변경 코드로 대부분의 코드가 이루어져 있습니다.
+        - 데이터의 변경, 가공과 관련된 부분은 ViewModel에서 적용하였습니다.
+        - ViewModel의 LiveData들을 호출하여 Observe 메서드를 통해 LiveData가 변경되면 일어날 실행문들을 작성하였습니다.
+        - 초기 설정, 플로팅 버튼, 다이어로그, 공유인텐트, 웹뷰를 실행하는 함수들이 있습니다.
+    - VideoDetailViewModel
+        - YoutubeModel, VideoRepository을 입력값으로 받습니다.(YoutubeModel은 Video 리소스를 통해 응답받은 객체중 필요한 데이터만 담은 Model입니다.)
+        - 다른 프래그먼트에서 받은 응답객체와, channel, CommentTrhreads 리소스를 받아오는 API 통신을 통해 반환된 응답 객체에 대한 데이터들중 일부를 LiveData로 선언합니다.
+        - 버튼 클릭을 감지하기 위한 변수를 LiveData로 선언합니다.
+        - 여러가지 데이터들을 선언하고, 그 데이터의 변경에 대한 여러가지 함수들이 있습니다.
+        - 마이 페이지 프래그먼트의 보관함에 데이터를 저장하고 삭제하는 함수가 있습니다.
+        - channel, CommentTrhreads 리소스를 받아오는 함수가 있습니다.
+    - VideoDetailViewModelFactory
+        - VideoDetailViewModel 인스턴스 호출시 입력값을 줄 수 있게 만들기 위한 클래스 입니다.
+    - VideoRepository
+        - 데이터의 변경에 대한 여러가지 함수들이 있습니다.
+    - VIdeoDetailCommentAdapter
+        - 다이어로그창에서 댓글의 표시에 대한 리사이클러뷰의 어댑터 입니다.
+
 
 
