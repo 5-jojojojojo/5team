@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+
+
+    <ImageView
+        android:id="@+id/iv_dialog"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_baseline_add_photo_alternate_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+        <EditText
+        android:id="@+id/et_dialog_name"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="닉네임"
+        android:inputType="text"
+        android:textSize="22dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dialog" />
+
+    <TextView
+        android:id="@+id/tvNicknameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="3글자 이상 입력하세요."
+        android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/et_dialog_name"
+        app:layout_constraintTop_toBottomOf="@id/iv_dialog" />
+
+    <EditText
+        android:id="@+id/et_dialog_id"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="아이디"
+        android:inputType="text"
+        android:textSize="22dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_name" />
+
+    <TextView
+        android:id="@+id/tv_dialog_id_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:text="4글자 이상 입력하세요."
+        android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/et_dialog_id"
+        app:layout_constraintTop_toBottomOf="@id/et_dialog_name" />
+
+
+    <TextView
+        android:id="@+id/dialog_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/text_button_bg"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Cancel"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toStartOf="@id/dialog_save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_id" />
+
+    <TextView
+        android:id="@+id/dialog_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="3dp"
+        android:background="@drawable/text_button_bg"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dialog_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_id" />
+
+    <TextView
+        android:id="@+id/dialogImgDefault"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:text="X"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:background="@drawable/text_button_bg"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
