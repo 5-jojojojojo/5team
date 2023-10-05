@@ -11,7 +11,9 @@ import android.webkit.WebViewClient
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.youtubeproject.R
+import com.android.youtubeproject.api.model.CommentModel
 import com.android.youtubeproject.api.model.YoutubeModel
 import com.android.youtubeproject.databinding.ActivityVideoDetailBinding
 import com.android.youtubeproject.databinding.DialogVideoDetailInformationBinding
@@ -20,6 +22,8 @@ import com.android.youtubeproject.fragment.myvideofragment.db.MyDatabase
 import com.android.youtubeproject.fragment.myvideofragment.repository.MyVideoRepository
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModel
 import com.android.youtubeproject.fragment.myvideofragment.viewmodel.MyVideoViewModelFactory
+import com.android.youtubeproject.infinityscroll.CommentsScrollListener
+import com.android.youtubeproject.infinityscroll.FavoritesScrollListener
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
@@ -41,7 +45,6 @@ class VideoDetail : AppCompatActivity() {
     private val profileViewModel: MyVideoViewModel by viewModels {
         MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -67,7 +70,12 @@ class VideoDetail : AppCompatActivity() {
 
     fun initialize() {
         overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
-        viewModel.getChannelData()
+        viewModel.videoid.observe(this){
+            viewModel.getComments(it)
+        }
+        viewModel.channelid.observe(this){
+            viewModel.getChannelData(it)
+        }
         viewModel.item.observe(this) {
             viewModel.addData(viewModel.item.value!!)
         }
@@ -154,6 +162,22 @@ class VideoDetail : AppCompatActivity() {
         binding_dialog.videoDetailDialogChannelvideoCounttext2.text = viewModel.channelvideoCount
         binding_dialog.videoDetailDialogVideotags2.text = viewModel.videotag
         binding_dialog.videoDetailDialogVideodescription2.text = viewModel.description
+        binding_dialog.videoDetailRecyclerViewcomment.layoutManager = LinearLayoutManager(this@VideoDetail)
+        binding_dialog.videoDetailRecyclerViewcomment.adapter = VideoDetailCommentAdapter(viewModel.commentitem.value ?: ArrayList<CommentModel>())
+        binding_dialog.videoDetailRecyclerViewcomment.apply {
+            addOnScrollListener(CommentsScrollListener(viewModel))
+            setHasFixedSize(true)
+        }
+        viewModel.commentitem.observe(this){
+            binding_dialog.videoDetailRecyclerViewcomment.adapter?.notifyDataSetChanged()
+
+        }
+
+        binding_dialog.videoDetailDialogVideoCommentCountimage.setOnClickListener {
+            if(binding_dialog.videoDetailRecyclerViewcomment.visibility == View.GONE){
+                binding_dialog.videoDetailRecyclerViewcomment.visibility = View.VISIBLE
+            }else{binding_dialog.videoDetailRecyclerViewcomment.visibility = View.GONE}
+        }
         builder.show()
     }
     fun shareVideoUrl() {
@@ -161,7 +185,7 @@ class VideoDetail : AppCompatActivity() {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                viewModel.videoid
+                viewModel.videoidurl
             )
             type = "text/plain"
         }

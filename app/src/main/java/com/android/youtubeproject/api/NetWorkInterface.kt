@@ -5,8 +5,7 @@ import com.android.youtubeproject.api.serverdata.FavoritesData
 import com.android.youtubeproject.Constants
 import com.android.youtubeproject.api.serverdata.CategoryData
 import com.android.youtubeproject.api.serverdata.ChannelData
-//import com.android.youtubeproject.api.serverdata.CommentThreadListResponse
-//import com.android.youtubeproject.api.serverdata.CommentThreadResponse
+import com.android.youtubeproject.api.serverdata.CommentThreadListResponse
 import com.android.youtubeproject.api.serverdata.DetailChannelData
 import com.android.youtubeproject.api.serverdata.SearchData
 import retrofit2.Call
@@ -49,9 +48,12 @@ interface NetWorkInterface {
         @Query("id") id:String,
         @Query("maxResults") maxResults:Int
     ): Call<FavoritesData?>?
-//    @GET("commentThreads")
-//    fun getComments(
-//        @Query("videoId") videoId: String,
-//        @Query("part") part: String
-//    ): Call<CommentThreadListResponse?>?
+    @GET("commentThreads")
+    fun getComments(
+        @Query("key") key:String,
+        @Query("maxResults") maxResults:Int,
+        @Query("videoId") videoId: String,
+        @Query("part") part: String,
+        @Query("PageToken") PageToken:String?
+    ): Call<CommentThreadListResponse?>?
 }

@@ -67,9 +67,9 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintBottom_toBottomOf="@id/video_detail_dialog_image_cardview_channel"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toEndOf="@id/video_detail_dialog_image_cardview_channel"
                     app:layout_constraintTop_toTopOf="@id/video_detail_dialog_image_cardview_channel" />
 
@@ -353,6 +353,18 @@
                     app:layout_constraintStart_toStartOf="@id/video_detail_dialog_videoCommentCount"
                     app:layout_constraintTop_toBottomOf="@id/video_detail_dialog_videoCommentCountimage" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/video_detail_recyclerViewcomment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="gone"
+                    android:layout_margin="10dp"
+                    app:layout_constraintBottom_toTopOf="@id/video_detail_dialog_videotagsimage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/video_detail_dialog_videoViewCount2" />
+
                 <ImageView
                     android:id="@+id/video_detail_dialog_videotagsimage"
                     android:layout_width="30dp"
@@ -362,7 +374,7 @@
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/ic_video_detail_tag"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/video_detail_dialog_videoViewCount2" />
+                    app:layout_constraintTop_toBottomOf="@id/video_detail_recyclerViewcomment" />
 
                 <TextView
                     android:id="@+id/video_detail_dialog_videotags"
@@ -383,8 +395,8 @@
                     android:text="태그들이달릴꺼라고하네요"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/video_detail_dialog_videotagsimage" />
 
                 <TextView
@@ -416,10 +428,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="영상 설명들이 올 자리에요"
-                    android:textSize="16sp"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/video_detail_dialog_videodescriptionimage" />
 
 
