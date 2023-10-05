@@ -14,6 +14,15 @@
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EA%B8%B0%EB%8A%A5%EA%B5%AC%ED%98%84.png)
 
 
-### HomeFragment : ViewModel,LiveData,ViewBinding, SharedPreferences, powerSpinner, addOnScrollListener,infinity Scroll
+### 🫀:HomeFragment🫀:
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/home.gif) 
+
+##### CODE
+- ViewModel&LiveData를 이용해서 데이터를 관리합니다.
+- SharedPreferences를 이용해서 카테고리 id를 저장합니다.
+- powerSpinner 라이브러리를 이용해서 스피너를 사용하고 카테고리를 선택할 수 있습니다.
+- addOnScrollListener, infinity Scroll을 이용해서 스크롤을 감지하고 추가데이터를 요청하고 응답받습니다.
+
+##### 설명
+- 
 
