@@ -20,8 +20,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
     var youtubeItems: ArrayList<YoutubeModel> = ArrayList()
-    var currentResults = 6
-
+    companion object{var currentResults = 6}
 
     fun FavoritesResults(maxResults: Int) {
         youtubeItems.clear()

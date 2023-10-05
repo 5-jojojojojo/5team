@@ -10,8 +10,8 @@ class FavoritesScrollListener(private val homeViewModel: HomeViewModel) : Recycl
 
         if (!recyclerView.canScrollHorizontally(1)) {
             Log.d("YouTubeProjects", "Favorites스크롤리스너 호출되니?")
-            homeViewModel.currentResults += 6
-            homeViewModel.FavoritesResults(homeViewModel.currentResults)
+            HomeViewModel.currentResults += 6
+            homeViewModel.FavoritesResults(HomeViewModel.currentResults)
         }
     }
 }

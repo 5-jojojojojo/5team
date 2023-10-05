@@ -17,10 +17,10 @@ searchFragment: SearchFragment,private val context:Context) : RecyclerView
             Log.d("YouTubeProjects","서치 무한스크롤")
             if(!searchFragment.searchQuery.isNullOrEmpty()&& !searchFragment.videoCategoryId
                     .isNullOrEmpty()) {
-                searchViewModel.currentResults += 6
+                SearchViewModel.currentResults += 6
                 searchViewModel.SearchServerResults(searchFragment.searchQuery!!,searchFragment
                     .videoCategoryId!!,
-                    searchViewModel.currentResults
+                    SearchViewModel.currentResults
                 )
             }else context.shortToast("카테고리를 먼저 선택해 주세요!!")
         }

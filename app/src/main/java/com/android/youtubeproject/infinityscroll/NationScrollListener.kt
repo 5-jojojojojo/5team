@@ -17,10 +17,9 @@ HomeFragment, private val context:Context) :
 
         if (homeFragment.nation_loading &&!recyclerView.canScrollHorizontally(1)) {
             Log.d("YouTubeProjects","스크롤리스너: ${homeFragment.categoryItems[index].id}?")
-            nationViewModel.currentResults += 6
+            NationViewModel.currentResults += 6
             nationViewModel.nationsServerResults(homeFragment.categoryItems[index].id.toInt(),
-                nationViewModel
-                .currentResults)
+                NationViewModel.currentResults)
         }
     }
 }

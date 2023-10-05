@@ -21,7 +21,7 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
 
     var nationItems: ArrayList<YoutubeModel> = ArrayList()
     var channelIdList: ArrayList<String> = ArrayList()
-    var currentResults = 6
+    companion object{var currentResults = 6}
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
