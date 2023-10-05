@@ -3,7 +3,7 @@
 ## :heart_on_fire:OhJIJO STREAMING:heart_on_fire:
 ### 유튜브 비디오를 입맛대로 볼 수 있는 앱 입니다.
 
-## :heart:MEMBER:heart:
+## 🫀rt:MEMBER🫀rt:
 |직책|이름|MBTI|취미|
 |--|---|----|--------|
 | 팀장 | 이동규 |INFP|롤|
