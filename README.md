@@ -10,5 +10,5 @@
 | 팀원 | 김현정 |ENFP|유튜브,넷플릭스|
 | 팀원 | 박성수 |ESFJ|드라마|
 
-##기능 구현
+## 기능 구현
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EA%B8%B0%EB%8A%A5%EA%B5%AC%ED%98%84.png)
