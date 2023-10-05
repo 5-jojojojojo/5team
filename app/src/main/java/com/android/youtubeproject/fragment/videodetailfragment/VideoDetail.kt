@@ -45,6 +45,7 @@ class VideoDetail : AppCompatActivity() {
     private val profileViewModel: MyVideoViewModel by viewModels {
         MyVideoViewModelFactory(MyVideoRepository(MyDatabase.getDatabase().getUser()))
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -70,10 +71,10 @@ class VideoDetail : AppCompatActivity() {
 
     fun initialize() {
         overridePendingTransition(R.anim.anim_video_detail, R.id.video_detail_constraint)
-        viewModel.videoid.observe(this){
+        viewModel.videoid.observe(this) {
             viewModel.getComments(it)
         }
-        viewModel.channelid.observe(this){
+        viewModel.channelid.observe(this) {
             viewModel.getChannelData(it)
         }
         viewModel.item.observe(this) {
@@ -149,7 +150,7 @@ class VideoDetail : AppCompatActivity() {
             .error(R.drawable.ic_glide_error)
 //            .override(viewModel.videowidth, viewModel.videoheight)
             .into(binding_dialog.videoDetailDialogVideoimage)
-        Log.d("YouTube",viewModel.url)
+        Log.d("YouTube", viewModel.url)
         Glide.with(this)
             .load(viewModel.channelurl)
             .placeholder(R.drawable.ic_glide_loading)
@@ -157,29 +158,48 @@ class VideoDetail : AppCompatActivity() {
 //            .override(viewModel.channelwidth, viewModel.channelheight)
             .into(binding_dialog.videoDetailDialogChannelimage)
         binding_dialog.videoDetailDialogChanneltitle.text = viewModel.channelTitle
-        binding_dialog.videoDetailDialogChannelsubscribetext2.text = viewModel.channelsubscriberCount
+        binding_dialog.videoDetailDialogChannelsubscribetext2.text =
+            viewModel.channelsubscriberCount
         binding_dialog.videoDetailDialogChannelviewCounttext2.text = viewModel.channelviewCount
         binding_dialog.videoDetailDialogChannelvideoCounttext2.text = viewModel.channelvideoCount
         binding_dialog.videoDetailDialogVideotags2.text = viewModel.videotag
         binding_dialog.videoDetailDialogVideodescription2.text = viewModel.description
-        binding_dialog.videoDetailRecyclerViewcomment.layoutManager = LinearLayoutManager(this@VideoDetail)
-        binding_dialog.videoDetailRecyclerViewcomment.adapter = VideoDetailCommentAdapter(viewModel.commentitem.value ?: ArrayList<CommentModel>())
+        binding_dialog.videoDetailRecyclerViewcomment.layoutManager =
+            LinearLayoutManager(this@VideoDetail)
+        binding_dialog.videoDetailRecyclerViewcomment.adapter =
+            VideoDetailCommentAdapter(viewModel.commentitem.value ?: ArrayList<CommentModel>())
         binding_dialog.videoDetailRecyclerViewcomment.apply {
             addOnScrollListener(CommentsScrollListener(viewModel))
             setHasFixedSize(true)
         }
-        viewModel.commentitem.observe(this){
+        viewModel.commentitem.observe(this) {
             binding_dialog.videoDetailRecyclerViewcomment.adapter?.notifyDataSetChanged()
-
+        }
+        binding_dialog.videoDetailDialogVideotagsimage.setOnClickListener {
+            if (binding_dialog.videoDetailDialogVideotags2.visibility == View.GONE) {
+                binding_dialog.videoDetailDialogVideotags2.visibility = View.VISIBLE
+            } else {
+                binding_dialog.videoDetailDialogVideotags2.visibility = View.GONE
+            }
+        }
+        binding_dialog.videoDetailDialogVideodescriptionimage.setOnClickListener {
+            if (binding_dialog.videoDetailDialogVideodescription2.visibility == View.GONE) {
+                binding_dialog.videoDetailDialogVideodescription2.visibility = View.VISIBLE
+            } else {
+                binding_dialog.videoDetailDialogVideodescription2.visibility = View.GONE
+            }
         }
 
         binding_dialog.videoDetailDialogVideoCommentCountimage.setOnClickListener {
-            if(binding_dialog.videoDetailRecyclerViewcomment.visibility == View.GONE){
+            if (binding_dialog.videoDetailRecyclerViewcomment.visibility == View.GONE) {
                 binding_dialog.videoDetailRecyclerViewcomment.visibility = View.VISIBLE
-            }else{binding_dialog.videoDetailRecyclerViewcomment.visibility = View.GONE}
+            } else {
+                binding_dialog.videoDetailRecyclerViewcomment.visibility = View.GONE
+            }
         }
         builder.show()
     }
+
     fun shareVideoUrl() {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND

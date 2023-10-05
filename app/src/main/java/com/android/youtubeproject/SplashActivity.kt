@@ -20,10 +20,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 애니메이션 로드 및 시작
-        val slideAndBounce = AnimationUtils.loadAnimation(this, R.anim.anim_splash)
+//        val slideAndBounce = AnimationUtils.loadAnimation(this, R.anim.anim_splash)
         val slideAndBounce2 = AnimationUtils.loadAnimation(this, R.anim.anim_splash2)
         val slideAndBounce3 = AnimationUtils.loadAnimation(this, R.anim.anim_splash3)
-        binding.logo.startAnimation(slideAndBounce)
+//        binding.logo.startAnimation(slideAndBounce)
         binding.logo2.startAnimation(slideAndBounce2)
         binding.logo3.startAnimation(slideAndBounce3)
 
