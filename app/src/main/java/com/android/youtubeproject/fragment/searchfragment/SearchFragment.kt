@@ -70,26 +70,7 @@ class SearchFragment : Fragment() {
 
         selectCategory()
         setUpView()
-        binding.searchView.apply {
-            isSubmitButtonEnabled = true
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if(!query.isNullOrEmpty()){
-                        searchQuery = query.trim()
-                        Log.d("YouTubeProjects", "검색어 : ${searchQuery}")
-                        setupListeners()
-                        search_loading = !search_loading
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
-                }
-
-            })
-
-        }
+        searchView()
 
         return binding.root
     }
@@ -117,6 +98,7 @@ class SearchFragment : Fragment() {
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.searchLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
                 }
+                binding.searchNum.text ="검색결과 : ${SearchViewModel.currentResults}"
         }
         }
         searchViewModel.youtubeResults.observe(viewLifecycleOwner){
@@ -167,7 +149,7 @@ class SearchFragment : Fragment() {
     private fun setupListeners(){
         Log.d("YouTubeProjects","검색 호출")
         if(!searchQuery.isNullOrEmpty()&& !videoCategoryId.isNullOrEmpty()){
-            searchViewModel.SearchServerResults(searchQuery!!,videoCategoryId!!,searchViewModel.currentResults)
+            searchViewModel.SearchServerResults(searchQuery!!,videoCategoryId!!,SearchViewModel.currentResults)
         } else if(videoCategoryId.isNullOrEmpty()){
             requireContext().shortToast("카테고리를 먼저 선택해 주세요!!")
         }else requireContext().shortToast("검색어를 입력해 주세요!!")
@@ -181,6 +163,28 @@ class SearchFragment : Fragment() {
                 }
             }
             setupListeners()
+        }
+    }
+    private fun searchView(){
+        binding.searchView.apply {
+            isSubmitButtonEnabled = true
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if(!query.isNullOrEmpty()){
+                        searchQuery = query.trim()
+                        Log.d("YouTubeProjects", "검색어 : ${searchQuery}")
+                        setupListeners()
+                        search_loading = !search_loading
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+
+            })
+
         }
     }
 }

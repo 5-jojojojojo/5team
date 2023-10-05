@@ -130,6 +130,16 @@
                 app:spinner_popup_elevation="10dp"
                 tools:ignore="HardcodedText,UnusedAttribute" />
 
+            <TextView
+                android:id="@+id/title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/home_spinner"
+                app:layout_constraintStart_toEndOf="@+id/home_spinner"
+                app:layout_constraintTop_toTopOf="@+id/home_spinner" />
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"

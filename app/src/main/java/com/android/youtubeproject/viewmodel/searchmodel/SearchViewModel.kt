@@ -21,7 +21,7 @@ class SearchViewModel(private val apiService:NetWorkInterface): ViewModel() {
     val isLoading:LiveData<Boolean> get() = _isLoading
 
     var searchItems : ArrayList<ChannelModel> = ArrayList()
-    var currentResults = 12
+    companion object{var currentResults = 12}
 
     val youtubeItems : ArrayList<YoutubeModel> = ArrayList()
     private val _youtubeResults = MutableLiveData<YoutubeModel>()

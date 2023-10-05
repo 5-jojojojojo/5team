@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
                     id = item.id.toInt()
                 }
             }
-            nationViewModel.nationsServerResults(id, nationViewModel.currentResults)
+            nationViewModel.nationsServerResults(id, NationViewModel.currentResults)
             SharedPref.saveIndex(requireContext(),newIndex)
         }
 
@@ -100,6 +100,8 @@ class HomeFragment : Fragment() {
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.favoritesLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
                 }
+                binding.title1.text = "Most Popular Videos(${HomeViewModel.currentResults})"
+                Log.d("변경된값","${HomeViewModel.currentResults}")
         }
     }
         categoryViewModel.categoryResults.observe(viewLifecycleOwner) {
@@ -125,6 +127,7 @@ class HomeFragment : Fragment() {
                 channelViewModel.channelServerResults(nationViewModel.channelIdList)
                 Log.d("YouTubeProjects", "channelId(프래그먼트) : ${nationViewModel.channelIdList}")
                 nationadapter.notifyDataSetChanged()
+                binding.title2.text = "(${NationViewModel.currentResults})"
             }
             isLoading.observe(viewLifecycleOwner){ isLoading ->
                 binding.nationLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
@@ -180,7 +183,6 @@ class HomeFragment : Fragment() {
                     }
                 }
                 addOnScrollListener(FavoritesScrollListener(homeViewModel))
-//                binding.title1.text = "Most Popular Videos(${homeViewModel.currentResults})"
                 setHasFixedSize(true)
             }
             homeRecyclerView2.apply {
@@ -212,7 +214,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        homeViewModel.FavoritesResults(homeViewModel.currentResults)
+        homeViewModel.FavoritesResults(HomeViewModel.currentResults)
         categoryViewModel.categoryServerResults()
     }
 }
