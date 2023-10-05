@@ -146,7 +146,7 @@ class SearchFragment : Fragment() {
         searchAdapter = SearchFragmentAdapter(requireContext())
 
         binding.searchRecyclerView.apply {
-            layoutManager = GridLayoutManager(requireContext(),2)
+            layoutManager = GridLayoutManager(requireContext(),3)
             adapter = searchAdapter.apply {
                 itemClick = object : ItemClick {
                     override fun onClick(view: View, position: Int) {

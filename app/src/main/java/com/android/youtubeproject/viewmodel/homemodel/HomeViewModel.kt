@@ -18,12 +18,12 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     val homeResult: LiveData<List<YoutubeModel>> get() = _homeReselts
 
     private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading : LiveData<Boolean> get() = _isLoading
+    val isLoading: LiveData<Boolean> get() = _isLoading
     var youtubeItems: ArrayList<YoutubeModel> = ArrayList()
     var currentResults = 6
 
 
-    fun FavoritesResults(maxResults:Int) {
+    fun FavoritesResults(maxResults: Int) {
         youtubeItems.clear()
         _isLoading.value = true
 
@@ -41,7 +41,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                 ) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            if(!it.items.isNullOrEmpty()){
+                            if (!it.items.isNullOrEmpty()) {
                                 for (items in it.items) {
                                     val id = items.id
                                     val channelId = items.snippet.channelId
@@ -64,9 +64,35 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                                     val videoheight = items.snippet.thumbnails.medium.width
 
                                     youtubeItems.add(
-                                        YoutubeModel( Constants.NATION_TYPE,id,channelId,title,url,date,description,channelname,tags,localtitle,viewcount,likecount,favoriteCount,commentcount,definition,videolength,videoPublishedDatetime,channeltitle,videowidth,videoheight))
-                                    Log.d("YouTubeProjects", "Favorites데이터 : ${youtubeItems[0]
-                                        .definition}")
+                                        YoutubeModel(
+                                            Constants.FAVORITES_TYPE,
+                                            id,
+                                            channelId,
+                                            title,
+                                            url,
+                                            date,
+                                            description,
+                                            channelname,
+                                            tags,
+                                            localtitle,
+                                            viewcount,
+                                            likecount,
+                                            favoriteCount,
+                                            commentcount,
+                                            definition,
+                                            videolength,
+                                            videoPublishedDatetime,
+                                            channeltitle,
+                                            videowidth,
+                                            videoheight
+                                        )
+                                    )
+                                    Log.d(
+                                        "YouTubeProjects", "Favorites데이터 : ${
+                                            youtubeItems[0]
+                                                .definition
+                                        }"
+                                    )
                                 }
                             }
                         }
@@ -76,6 +102,7 @@ class HomeViewModel(private val apiService: NetWorkInterface) : ViewModel() {
                         Log.e("YouTubeProjects", "API 에러: $errorBody")
                     }
                 }
+
                 override fun onFailure(call: Call<FavoritesData?>, t: Throwable) {
                     _isLoading.value = false
                     Log.e("YouTubeProjects", "에러 : ${t.message}")

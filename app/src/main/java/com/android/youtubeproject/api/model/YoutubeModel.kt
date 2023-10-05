@@ -14,7 +14,7 @@ class YoutubeModel(
     var viewcount: String,
     var likecount: String?,
     var favoriteCount: String,
-    var commentcount: String,
+    var commentcount: String?,
     var definition : String,
     var videolength: String,
     var videoPublishedDatetime: String,

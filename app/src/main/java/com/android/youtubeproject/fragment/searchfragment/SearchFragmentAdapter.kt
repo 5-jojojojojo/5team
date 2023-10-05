@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.api.model.ChannelModel
-import com.android.youtubeproject.databinding.SearchitemsBinding
+import com.android.youtubeproject.databinding.FavoritesitemsBinding
 import com.android.youtubeproject.`interface`.ItemClick
 import com.bumptech.glide.Glide
 
@@ -13,15 +13,14 @@ class SearchFragmentAdapter(private val context:Context):RecyclerView.Adapter<Re
 .ViewHolder>() {
     var items = ArrayList<ChannelModel>()
     var itemClick: ItemClick? = null
-
-    inner class SearchViewHolder(private val binding:SearchitemsBinding) : RecyclerView
+    inner class SearchViewHolder(private val binding:FavoritesitemsBinding) : RecyclerView
     .ViewHolder(binding.root){
         fun bind(items:ChannelModel){
             binding.apply {
-                SearchName.text = items.title
+                homeTitle.text = items.title
                 Glide.with(context)
                     .load(items.url)
-                    .into(SearchProfile)
+                    .into(homeUrl)
                 itemView.setOnClickListener{
                     itemClick?.onClick(it, position)
                 }
@@ -29,7 +28,7 @@ class SearchFragmentAdapter(private val context:Context):RecyclerView.Adapter<Re
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = SearchitemsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = FavoritesitemsBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return SearchViewHolder(binding)
     }
 
