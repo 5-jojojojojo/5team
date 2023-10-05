@@ -95,5 +95,22 @@
     - VIdeoDetailCommentAdapter
         - 다이어로그창에서 댓글의 표시에 대한 리사이클러뷰의 어댑터 입니다.
 
+### 🫀rt:MyPage🫀rt:
+![image]()
+##### CODE
+- ViewModel&LiveData를 이용해서 데이터를 관리합니다.
+- sharedPreferences를 이용해서 비디오데이터를 저장합니다.
+- Room을 이용해서 프로필사진, id, nickname을 저장합니다.
+- TextWatcher를 이용해서 유효성검사를 합니다.
+- onActivityResult, intent를 이용해서 DOCUMENT에서 이미지를 가져옵니다.
 
-
+##### 내용
+- 사용자 프로필 정보와 보관함(RecyclerView)을 포함하고 있는 마이페이지 레이아웃은 보관함(RecyclerView)에 데이터 바인딩을 적용하였고,  CoordinatorLayout을 사용하여 스크롤에 따라 앱 바가 축소 및 확장되는 효과를 적용하였습니다. 
+- 보관함 아이템이 없을 경우 버튼 클릭시 비디오 검색 페이지로 이동할 수 있도록 하였습니다. 
+- 사용자의 프로필 정보는 버튼 클릭 시 다이얼로그 화면에서 수정할 수 있으며 유저데이터는 Room를 사용하여 입력값을 저장, 삭제 할 수 있습니다.   
+- 프로필 사진은 Document에 저장된 이미지를 불러올 수 있으며 삭제가 가능합니다. 닉네임과 아이디 입력 시 실시간 유효성검사로 통해 조건에 맞지 않으면 에러메시지가 표시됩니다. 
+- 사용자의 프로필 정보가 갱신되면 Home Search Fragment, DetailAcitvity 앱 바 프로필도 함께 갱신되도록 하였으며 각 페이지에서 클릭 시 마이페이지로 이동할 수 있도록 하였습니다. 
+- Detail Acitivity에서 "좋아요" 버튼을 통해 추가된 비디오는 내부 SharedPreference에  저장되며, Myvideofragment에서는 이 정보를 가져와서 표시합니다.
+-  Myvideofragment 보관함의 아이템이 클릭되면 클릭된 아이템(**`item`**)을 **`Gson`**을 사용하여 JSON 문자열로 직렬화하고,  Intent로Detail Acitivity에 전달합니다. 
+- Room 라이브러리와 AAC ViewModel(MyVideoViewModel)을 활용하여 MVVM 패턴을 구현
+  
