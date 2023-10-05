@@ -11,6 +11,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class VideoRepository {
@@ -61,6 +64,31 @@ class VideoRepository {
             }
         } else {tags = "태그가 존재하지 않는 영상입니다."}
         return tags
+    }
+    fun timeAgo(publishedAt: String): String {
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        val dateTime = LocalDateTime.parse(publishedAt, formatter)
+        val now = LocalDateTime.now()
+        val diff = Duration.between(dateTime, now)
+
+        val seconds = diff.seconds
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = diff.toDays()
+        val months = days / 30
+        val years = days / 365
+
+        return when {
+            years > 1 -> "$years 년 전"
+            months == 12L -> "1 년 전"
+            months > 1 -> "$months 개월 전"
+            days == 30L -> "1 개월 전"
+            days >= 7 -> "${days / 7} 주 전"
+            days > 0 -> "$days 일 전"
+            hours > 0 -> "$hours 시간 전"
+            minutes > 0 -> "$minutes 분 전"
+            else -> "$seconds 초 전"
+        }
     }
 
 }
