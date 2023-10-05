@@ -14,7 +14,7 @@
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EA%B8%B0%EB%8A%A5%EA%B5%AC%ED%98%84.png)
 
 
-### 🫀rt:HomeFragment🫀rt:
+### :🫀rt:HomeFragment🫀rt:
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/home.gif) 
 
 ##### CODE
