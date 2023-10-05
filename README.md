@@ -36,7 +36,7 @@
 - 내용은 최대 2줄까지 표시되고, 초과되는 내용은 ...으로 대체됩니다.
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
 
-### 🫀rt:SearchFragment🫀rt:
+### 🫀:SearchFragment🫀:
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/search.gif)
 
 ##### CODE
