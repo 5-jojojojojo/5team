@@ -66,7 +66,7 @@ class VideoDetailViewModel(Item: YoutubeModel,private val repository: VideoRepos
         url = item.value!!.url
         videowidth = item.value!!.videowidth
         videoheight = item.value!!.videoheight
-        videocommentcount = repository.formatNumber(item.value!!.commentcount.toInt())
+        videocommentcount = repository.formatNumber(item.value!!.commentcount?.toInt() ?:0)
         videolikecount = repository.formatNumber(item.value!!.likecount?.toInt() ?: 0)
         videoviewcount = repository.formatNumber(item.value!!.viewcount.toInt())
         videotag = repository.tag(item.value!!.tags)

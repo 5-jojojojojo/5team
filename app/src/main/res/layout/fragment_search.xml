@@ -60,7 +60,7 @@
         android:hint="Category"
         android:padding="10dp"
         android:textColorHint="@color/white"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/searchView"
@@ -81,6 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/search_spinner"
         app:layout_constraintTop_toBottomOf="@+id/home_toolbar"
+        android:background="@drawable/outline"
         app:queryHint="검색" />
 
     <androidx.recyclerview.widget.RecyclerView

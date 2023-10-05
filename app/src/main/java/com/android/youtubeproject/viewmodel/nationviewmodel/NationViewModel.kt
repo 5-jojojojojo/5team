@@ -26,7 +26,8 @@ class NationViewModel(private val apiService: NetWorkInterface) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
     fun nationsServerResults(videoCategoryId: Int,maxResults:Int) {
-
+        Log.d("YouTubeProjects", "nationViewModel.currentResults : ${currentResults}")
+        Log.d("YouTubeProjects", "nationViewModel.currentResults : ${maxResults}")
         _isLoading.value = true
         nationItems.clear()
         channelIdList.clear()

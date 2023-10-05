@@ -180,6 +180,7 @@ class HomeFragment : Fragment() {
                     }
                 }
                 addOnScrollListener(FavoritesScrollListener(homeViewModel))
+//                binding.title1.text = "Most Popular Videos(${homeViewModel.currentResults})"
                 setHasFixedSize(true)
             }
             homeRecyclerView2.apply {

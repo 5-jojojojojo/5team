@@ -1,6 +1,7 @@
 package com.android.youtubeproject.infinityscroll
 
 import android.content.Context
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubeproject.fragment.searchfragment.SearchFragment
 import com.android.youtubeproject.method.shortToast
@@ -13,6 +14,7 @@ searchFragment: SearchFragment,private val context:Context) : RecyclerView
         super.onScrolled(recyclerView, dx, dy)
 
         if (searchFragment.search_loading&&!recyclerView.canScrollVertically(1)) {
+            Log.d("YouTubeProjects","서치 무한스크롤")
             if(!searchFragment.searchQuery.isNullOrEmpty()&& !searchFragment.videoCategoryId
                     .isNullOrEmpty()) {
                 searchViewModel.currentResults += 6
