@@ -1,6 +1,6 @@
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/5%EC%A1%B0%20%EB%A1%9C%EA%B3%A0.png)
 
-# :heart_on_fire:OhJIJO STREAMING
+# :heart_on_fire:OhJIJO STREAMING:heart_on_fire
 ### 유튜브 비디오를 입맛대로 볼 수 있는 앱 입니다.
 
 ## MEMBER
