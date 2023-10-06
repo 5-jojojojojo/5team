@@ -101,6 +101,8 @@
 ### 💖MyPage💖
 <img src="https://github.com/dklee1619/practicegithub/blob/main/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A6%AC%EB%93%9C%EB%AF%B8%20(2).gif" width="615">
 
+##### 데이터베이스 구조
+![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/%EB%8D%B0%EC%9D%B4%ED%84%B0%EA%B5%AC%EC%A1%B0.png)
 ##### CODE
 - ViewModel&LiveData를 이용해서 데이터를 관리합니다.
 - sharedPreferences를 이용해서 비디오데이터를 저장합니다.
