@@ -58,7 +58,7 @@
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
 
 ### 💖VideoDetail💖
-![image]()
+![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/search.gif)
 
 ##### CODE
 - ViewModel&LiveData를 이용해서 데이터를 관리합니다.
