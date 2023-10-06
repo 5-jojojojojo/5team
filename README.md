@@ -99,7 +99,7 @@
         - 다이어로그창에서 댓글의 표시에 대한 리사이클러뷰의 어댑터 입니다.
 
 ### 💖MyPage💖
-![image]()
+<img src="https://github.com/dklee1619/practicegithub/blob/main/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A6%AC%EB%93%9C%EB%AF%B8%20(2).gif" width="615">
 ##### CODE
 - ViewModel&LiveData를 이용해서 데이터를 관리합니다.
 - sharedPreferences를 이용해서 비디오데이터를 저장합니다.
