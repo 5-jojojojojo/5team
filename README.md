@@ -40,6 +40,7 @@
 
 ### 💖SearchFragment💖
 ![image](https://raw.githubusercontent.com/seongssu/ImageUrl/main/search.gif)
+<img src="https://raw.githubusercontent.com/dklee1619/practicegithub/main/%EB%94%94%ED%85%8C%EC%9D%BC%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A6%AC%EB%93%9C%EB%AF%B82.gif" width="500">
 
 ##### CODE
 - searchView를 이용해서 검색 합니다.
