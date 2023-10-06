@@ -58,7 +58,7 @@
 - 우측 상단에 있는 프로필을 누르면 MyPage로 이동됩니다.
 
 ### 💖VideoDetail💖
-![image]([https://raw.githubusercontent.com/seongssu/ImageUrl/main/search.gif](https://github.com/dklee1619/practicegithub/blob/main/%EB%94%94%ED%85%8C%EC%9D%BC%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A6%AC%EB%93%9C%EB%AF%B82.gif?raw=true))
+![image](https://github.com/dklee1619/practicegithub/blob/main/%EB%94%94%ED%85%8C%EC%9D%BC%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A6%AC%EB%93%9C%EB%AF%B82.gif?raw=true)
 
 ##### CODE
 - ViewModel&LiveData를 이용해서 데이터를 관리합니다.
